@@ -6,7 +6,8 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
 	[SerializeField] private Transform playerModel;
-	private PlayerStats stats;
+	private WeaponController weaponController;
+	[HideInInspector] public PlayerStats stats;
 
 
 	private void Start()
@@ -17,6 +18,7 @@ public class PlayerController : MonoBehaviour
 		}
 		
 		stats = GetComponent<PlayerStats>();
+		weaponController = GetComponent<WeaponController>();
 	}
 
 	private void Update()
@@ -33,7 +35,7 @@ public class PlayerController : MonoBehaviour
 
 	private void GetPlayerInput()
 	{
-
+		//TODO
 	}
 
 	private void CopyPositionToModel()
@@ -42,6 +44,6 @@ public class PlayerController : MonoBehaviour
 	}
 	private void CopyRotationToModel()
 	{
-
+		//TODO
 	}
 }

@@ -5,15 +5,18 @@ using UnityEngine.Events;
 
 public class Stats : MonoBehaviour
 {
+    [Header("Stats")]
     public float MaxHealth;
     public float Health { get; private set; }
     public float Damage;
 
     public bool IsDead = false;
 
+    [Header("Events")]
     public UnityEvent OnDamageTaken;
     public UnityEvent OnHeal;
     public UnityEvent OnDeath;
+
 
     public virtual void TakeDamage(float amount)
     {

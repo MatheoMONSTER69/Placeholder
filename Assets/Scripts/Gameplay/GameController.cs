@@ -7,13 +7,15 @@ public class GameController : MonoBehaviour
 {
     [Header("References")]
     [HideInInspector] public PlayerController PlayerController;
-    //public WavesController WavesController;
-    //public ScoreCounter ScoreCounter;
+    [HideInInspector] public WavesController WavesController;
+    [HideInInspector] public ScoreCounter ScoreCounter;
 
     [Header("Time")]
     public float CurrentTimeScale = 1.0f;
     private float previousTimeScale = 1.0f;
     public bool IsGamePaused => CurrentTimeScale == 0;
+
+    public Timer GameTimer = new();
 
     [Header("Events")]
     public UnityEvent OnGamePause;
@@ -41,6 +43,8 @@ public class GameController : MonoBehaviour
     {
         Time.timeScale = CurrentTimeScale;
         previousTimeScale = CurrentTimeScale;
+
+        GameTimer.StartTimer();
     }
 
     public void PauseGame()
@@ -49,14 +53,18 @@ public class GameController : MonoBehaviour
         CurrentTimeScale = 0;
         Time.timeScale = CurrentTimeScale;
 
-        OnGamePause.Invoke();
+		GameTimer.PauseTimer();
+
+		OnGamePause.Invoke();
     }
     public void ResumeGame()
     {
         CurrentTimeScale = previousTimeScale;
         Time.timeScale = CurrentTimeScale;
 
-        OnGameResume.Invoke();
+		GameTimer.ResumeTimer();
+
+		OnGameResume.Invoke();
     }
     public void TogglePauseGame()
     {

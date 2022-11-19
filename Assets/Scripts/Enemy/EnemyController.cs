@@ -14,8 +14,7 @@ public class EnemyController : MonoBehaviour
     private NavMeshAgent navMesh;
     private EnemyStats stats;
 
-    [Header("Settings")]
-    private float enemySpeed = 5.0f;
+    private Cooldown attackCooldown;
 
 
     private void Start()
@@ -27,20 +26,30 @@ public class EnemyController : MonoBehaviour
         if(EnemySO != null)
         {
             stats.Init(EnemySO);
-
-            enemySpeed = EnemySO.MovingSpeed;
 		}
         else
         {
             Debug.LogWarning($"{transform.name} has no EnemyScriptableObject assigned!");
         }
 
-        navMesh.speed = enemySpeed;
+        navMesh.speed = EnemySO.MovingSpeed;
+
+		attackCooldown = new(EnemySO.AttackCooldown);
+		attackCooldown.StartCooldown();
 	}
     
     private void Update()
     {
         NavigateTowardsPlayer();
+
+        if(EnemySO != null)
+        {
+			if (attackCooldown.CooldownEnded && GetDistanceToPlayer() <= EnemySO.AttackRange)
+			{
+				AttackPlayer();
+				attackCooldown.StartCooldown();
+			}
+		}
     }
 
     private void FixedUpdate()
@@ -54,6 +63,16 @@ public class EnemyController : MonoBehaviour
     {
         navMesh.SetDestination(playerTransform.position);
     }
+
+    private float GetDistanceToPlayer()
+    {
+        return Vector3.Distance(transform.position, playerTransform.position);
+    }
+
+    private void AttackPlayer()
+    {
+		GameController.Instance.PlayerController.stats.TakeDamage(EnemySO.Damage);
+	}
 
 	private void CopyPositionToModel()
 	{
