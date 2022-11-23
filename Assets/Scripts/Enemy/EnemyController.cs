@@ -81,6 +81,7 @@ public class EnemyController : MonoBehaviour
 	}
 	private void RotateModelTowardsPlayer()
     {
-        enemyModel.transform.LookAt(playerTransform.position);
+		//TODO: Change to Leprp
+		transform.LookAt(new Vector3(playerTransform.position.x, enemyModel.transform.position.y, playerTransform.position.z));
     }
 }

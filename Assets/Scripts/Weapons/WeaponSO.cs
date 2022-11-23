@@ -11,4 +11,5 @@ public class WeaponSO : ScriptableObject
     [Header("Stats")]
     public float Damage = 5.0f;
     public float AttackSpeed = 1.0f;
+    public float SwitchTime = 0.2f;
 }

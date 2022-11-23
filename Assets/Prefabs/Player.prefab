@@ -234,6 +234,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9164188474741499079}
+  - component: {fileID: 9164188476261508545}
   m_Layer: 0
   m_Name: PlayerModel
   m_TagString: Player
@@ -259,6 +260,26 @@ Transform:
   m_Father: {fileID: 9164188475793905794}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &9164188476261508545
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9164188474741499076}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &9164188475793905798
 GameObject:
   m_ObjectHideFlags: 0
@@ -303,6 +324,7 @@ GameObject:
   - component: {fileID: 9164188476265922736}
   - component: {fileID: 9164188476261508544}
   - component: {fileID: 9164188476261508546}
+  - component: {fileID: 9164188476261508547}
   m_Layer: 0
   m_Name: PlayerController
   m_TagString: Player
@@ -338,6 +360,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerModel: {fileID: 9164188474741499079}
+  stats: {fileID: 0}
+  inputPlaneLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  showDebug: 1
 --- !u!114 &9164188476261508546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -362,3 +389,18 @@ MonoBehaviour:
   OnDeath:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &9164188476261508547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9164188476265922737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78f50b856c779c44f8bfacc90dfac82a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PrevWeaponId: 0
+  CurrentWeaponId: 0
+  Weapons: []
