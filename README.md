@@ -1,2 +1,2 @@
 # Placeholder
-![alt text](cover.jpg)
+<img src="cover.jpg" width="50%" height="50%">
