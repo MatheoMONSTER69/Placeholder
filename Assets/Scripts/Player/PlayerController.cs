@@ -4,6 +4,7 @@ using UnityEditor.PackageManager.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XR;
 using UnityEngine.UIElements;
 using UnityEngine.Windows;
 using static Unity.Burst.Intrinsics.X86;
@@ -16,18 +17,18 @@ public class PlayerController : MonoBehaviour
 	private WeaponController weaponController;
 	[HideInInspector] public PlayerStats stats;
 	private Animator anim;
-	public GameObject shrek_aim_ball;
+    private CharacterController controller;
 
-	[Header("Settings")]
-	[SerializeField] private float movementSpeed = 10.0f;
-	[SerializeField] private float rotationSpeed = 5.0f;
+    [Header("Settings")]
+	[SerializeField] private float movementSpeed = 5.0f;
+	[SerializeField] private float rotationSpeed = 15.0f;
+    [SerializeField] private float AnimationTransitionSpeed = 0.2f;
 
-	[Header("Inputs")]
+    [Header("Inputs")]
 	private InputAction pointerPosition;
 	private InputAction movement;
 	private InputAction dodge;
 	private InputAction attack;
-	public float AnimationTransitionSpeed = 0.2f;
 
 	[SerializeField] private LayerMask inputPlaneLayer;
 
@@ -52,9 +53,10 @@ public class PlayerController : MonoBehaviour
 		
 		stats = GetComponent<PlayerStats>();
 		weaponController = GetComponent<WeaponController>();
-		anim = playerModel.GetChild(0).GetComponent<Animator>();
+		anim = playerModel.GetComponent<Animator>();
+        controller = gameObject.GetComponent<CharacterController>();
 
-		mainCam = Camera.main;
+        mainCam = Camera.main;
 	}
 
 	private void Update()
@@ -62,7 +64,7 @@ public class PlayerController : MonoBehaviour
 		GetPlayerInput();
 	}
 
-	private void FixedUpdate()
+	private void LateUpdate()
 	{
 		CopyPositionToModel();
 		CopyRotationToModel();
@@ -74,17 +76,12 @@ public class PlayerController : MonoBehaviour
 		Vector2 playerMovement = movement.ReadValue<Vector2>();
 		MovePlayer(playerMovement);
 
-		Vector2 pointerScreenPosVal = GetPointerValue();
-		RotatePlayer(PointerToWorldPos(pointerScreenPosVal));
-        shrek_aim_ball.transform.position = PointerToWorldPos(pointerScreenPosVal);
-
-
+        Vector2 pointerScreenPosVal = GetPointerValue();
+		if(pointerScreenPosVal != Vector2.zero)
+		{
+            RotatePlayer(PointerToWorldPos(pointerScreenPosVal));
+        }
 		
-
-
-        anim.SetFloat("WalkY", playerMovement.y, AnimationTransitionSpeed, Time.deltaTime);
-        anim.SetFloat("WalkX", playerMovement.x, AnimationTransitionSpeed, Time.deltaTime);
-
 
         if (attack.triggered)
         {
@@ -99,11 +96,9 @@ public class PlayerController : MonoBehaviour
 
 	private Vector3 GetPointerValue()
 	{
-		Vector2 targetPointerPos = new Vector2(Screen.width / 2, Screen.height / 2); //middle of the screen
+		Vector2 targetPointerPos = Vector2.zero;
 
 		Vector2 pointerPos = pointerPosition.ReadValue<Vector2>();
-
-        
 
         if (/*!EventSystem.current.IsPointerOverGameObject() &&*/
 			pointerPos.x <= Screen.width && pointerPos.x >= 0 &&
@@ -128,18 +123,33 @@ public class PlayerController : MonoBehaviour
 
 	private void MovePlayer(Vector2 input)
     {
-		Vector3 newInputPos = new Vector3(input.x, 0, input.y);
-		
-		//TODO: Change to Rigidbody or CharacterController
-		transform.position += newInputPos * movementSpeed * Time.deltaTime;
-	}
+        Vector3 right = mainCam.transform.right;
+        Vector3 forward = mainCam.transform.forward;
+
+        right.y = 0f;
+        forward.y = 0f;
+
+        Vector3 moveDirection = right.normalized * input.x + forward.normalized * input.y;
+
+		controller.Move(moveDirection * movementSpeed * Time.deltaTime);
+
+
+		//TODO: Improve
+        Vector3 facing = new Vector3(transform.forward.x * input.x, 0, transform.forward.z * input.y);
+
+        anim.SetFloat("WalkX", -facing.x, AnimationTransitionSpeed, Time.deltaTime);
+        anim.SetFloat("WalkY", -facing.z, AnimationTransitionSpeed, Time.deltaTime);
+    }
 
 	private void RotatePlayer(Vector3 lookAtPoint)
     {
-        //TODO: Change to Leprp
+        Vector3 targetDirection = lookAtPoint - transform.position;
 
-		transform.LookAt(new Vector3(lookAtPoint.x, transform.position.y, lookAtPoint.z));
-	}
+        Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, rotationSpeed * Time.deltaTime, 0.0f);
+
+        transform.rotation = Quaternion.LookRotation(new Vector3(newDirection.x, 0, newDirection.z));
+    }
+
 
 	private void CopyPositionToModel()
 	{
@@ -160,9 +170,9 @@ public class PlayerController : MonoBehaviour
 
 	private void Dodge()
     {
-		anim.SetTrigger("Dodge");
+		anim.SetTrigger("Roll");
 
-		//TODO: Add
+		//TODO: Implement
     }
 
 
