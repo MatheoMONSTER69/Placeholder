@@ -4,6 +4,9 @@ using UnityEditor.PackageManager.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
+using UnityEngine.Windows;
+using static Unity.Burst.Intrinsics.X86;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,6 +16,7 @@ public class PlayerController : MonoBehaviour
 	private WeaponController weaponController;
 	[HideInInspector] public PlayerStats stats;
 	private Animator anim;
+	public GameObject shrek_aim_ball;
 
 	[Header("Settings")]
 	[SerializeField] private float movementSpeed = 10.0f;
@@ -23,6 +27,7 @@ public class PlayerController : MonoBehaviour
 	private InputAction movement;
 	private InputAction dodge;
 	private InputAction attack;
+	public float AnimationTransitionSpeed = 0.2f;
 
 	[SerializeField] private LayerMask inputPlaneLayer;
 
@@ -47,7 +52,7 @@ public class PlayerController : MonoBehaviour
 		
 		stats = GetComponent<PlayerStats>();
 		weaponController = GetComponent<WeaponController>();
-		anim = playerModel.GetComponent<Animator>();
+		anim = playerModel.GetChild(0).GetComponent<Animator>();
 
 		mainCam = Camera.main;
 	}
@@ -71,8 +76,17 @@ public class PlayerController : MonoBehaviour
 
 		Vector2 pointerScreenPosVal = GetPointerValue();
 		RotatePlayer(PointerToWorldPos(pointerScreenPosVal));
+        shrek_aim_ball.transform.position = PointerToWorldPos(pointerScreenPosVal);
 
-		if (attack.triggered)
+
+		
+
+
+        anim.SetFloat("WalkY", playerMovement.y, AnimationTransitionSpeed, Time.deltaTime);
+        anim.SetFloat("WalkX", playerMovement.x, AnimationTransitionSpeed, Time.deltaTime);
+
+
+        if (attack.triggered)
         {
 			Attack();
         }
@@ -89,7 +103,9 @@ public class PlayerController : MonoBehaviour
 
 		Vector2 pointerPos = pointerPosition.ReadValue<Vector2>();
 
-		if (/*!EventSystem.current.IsPointerOverGameObject() &&*/
+        
+
+        if (/*!EventSystem.current.IsPointerOverGameObject() &&*/
 			pointerPos.x <= Screen.width && pointerPos.x >= 0 &&
 			pointerPos.y <= Screen.height && pointerPos.y >= 0)
 		{
@@ -113,14 +129,15 @@ public class PlayerController : MonoBehaviour
 	private void MovePlayer(Vector2 input)
     {
 		Vector3 newInputPos = new Vector3(input.x, 0, input.y);
-
+		
 		//TODO: Change to Rigidbody or CharacterController
 		transform.position += newInputPos * movementSpeed * Time.deltaTime;
 	}
 
 	private void RotatePlayer(Vector3 lookAtPoint)
-	{
-		//TODO: Change to Leprp
+    {
+        //TODO: Change to Leprp
+
 		transform.LookAt(new Vector3(lookAtPoint.x, transform.position.y, lookAtPoint.z));
 	}
 

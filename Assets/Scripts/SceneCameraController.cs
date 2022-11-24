@@ -10,6 +10,7 @@ namespace UnityTemplateProjects
     {
         class CameraState
         {
+            
             public float yaw;
             public float pitch;
             public float roll;
@@ -85,9 +86,11 @@ namespace UnityTemplateProjects
         InputAction lookAction;
         InputAction boostFactorAction;
         bool        mouseRightButtonPressed;
+       
 
         void Start()
         {
+            
             var map = new InputActionMap("Simple Camera Controller");
 
             lookAction = map.AddAction("look", binding: "<Mouse>/delta");
@@ -118,6 +121,7 @@ namespace UnityTemplateProjects
             lookAction.Enable();
             verticalMovementAction.Enable();
             boostFactorAction.Enable();
+
         }
 #endif
 
