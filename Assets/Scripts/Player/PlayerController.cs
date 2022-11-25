@@ -18,12 +18,12 @@ public class PlayerController : MonoBehaviour
 	[HideInInspector] public PlayerStats stats;
 	private Animator anim;
     private CharacterController controller;
+    [SerializeField] private GameObject aimTarget;
 
     [Header("Settings")]
 	[SerializeField] private float movementSpeed = 5.0f;
 	[SerializeField] private float rotationSpeed = 15.0f;
     [SerializeField] private float AnimationTransitionSpeed = 0.2f;
-	[SerializeField] private GameObject aimTarget; // nie wiem co robię, nie szkaluj - ważne że działa 
 
     [Header("Inputs")]
 	private InputAction pointerPosition;
@@ -58,8 +58,6 @@ public class PlayerController : MonoBehaviour
         controller = gameObject.GetComponent<CharacterController>();
 
         mainCam = Camera.main;
-
-
 	}
 
 	private void Update()
@@ -82,12 +80,12 @@ public class PlayerController : MonoBehaviour
         Vector2 pointerScreenPosVal = GetPointerValue();
 		if(pointerScreenPosVal != Vector2.zero)
 		{
-			Vector3 RotateDir = PointerToWorldPos(pointerScreenPosVal);
-            RotatePlayer(RotateDir);
-			aimTarget.transform.position = RotateDir;
+			Vector3 worldPointerPos = PointerToWorldPos(pointerScreenPosVal);
+            RotatePlayer(worldPointerPos);
+
+			aimTarget.transform.position = worldPointerPos;
         }
 		
-
         if (attack.triggered)
         {
 			Attack();
@@ -131,7 +129,7 @@ public class PlayerController : MonoBehaviour
         Vector3 right = mainCam.transform.right;
         Vector3 forward = mainCam.transform.forward;
 
-        right.y = 0f;
+		right.y = 0f;
         forward.y = 0f;
 
         Vector3 moveDirection = right.normalized * input.x + forward.normalized * input.y;
@@ -139,11 +137,10 @@ public class PlayerController : MonoBehaviour
 		controller.Move(moveDirection * movementSpeed * Time.deltaTime);
 
 
-        //TODO: Improve
-        Vector3 facing = new Vector3(transform.forward.x * input.x, 0, transform.forward.z * input.y);
-
-        anim.SetFloat("WalkX", -facing.x, AnimationTransitionSpeed, Time.deltaTime);
-        anim.SetFloat("WalkY", -facing.z, AnimationTransitionSpeed, Time.deltaTime);
+        Vector3 animDirection = transform.InverseTransformDirection(moveDirection);
+ 
+        anim.SetFloat("WalkX", animDirection.x, AnimationTransitionSpeed, Time.deltaTime);
+        anim.SetFloat("WalkY", animDirection.z, AnimationTransitionSpeed, Time.deltaTime);
     }
 
 	private void RotatePlayer(Vector3 lookAtPoint)
@@ -154,7 +151,6 @@ public class PlayerController : MonoBehaviour
 
         transform.rotation = Quaternion.LookRotation(new Vector3(newDirection.x, 0, newDirection.z));
     }
-
 
 	private void CopyPositionToModel()
 	{
