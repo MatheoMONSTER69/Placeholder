@@ -50,7 +50,7 @@ MonoBehaviour:
     m_SourceObjects:
       m_Length: 1
       m_Item0:
-        transform: {fileID: 0}
+        transform: {fileID: 1904253201}
         weight: 1
       m_Item1:
         transform: {fileID: 0}
@@ -73,9 +73,9 @@ MonoBehaviour:
       m_Item7:
         transform: {fileID: 0}
         weight: 0
-    m_Offset: {x: 0, y: 26, z: 0}
-    m_MinLimit: -80
-    m_MaxLimit: 110
+    m_Offset: {x: 0, y: 35, z: 0}
+    m_MinLimit: -50
+    m_MaxLimit: 50
     m_AimAxis: 4
     m_UpAxis: 2
     m_WorldUpType: 0
@@ -83,9 +83,9 @@ MonoBehaviour:
     m_WorldUpAxis: 2
     m_MaintainOffset: 0
     m_ConstrainedAxes:
-      x: 1
+      x: 0
       y: 1
-      z: 1
+      z: 0
 --- !u!1 &1904253200
 GameObject:
   m_ObjectHideFlags: 0
@@ -250,10 +250,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerModel: {fileID: 779988912302885753}
   stats: {fileID: 0}
-  movementSpeed: 5
+  aimTarget: {fileID: 1904253200}
+  movementSpeed: 7
   rotationSpeed: 5
   AnimationTransitionSpeed: 0.2
-  aimTarget: {fileID: 1904253200}
   inputPlaneLayer:
     serializedVersion: 2
     m_Bits: 8
