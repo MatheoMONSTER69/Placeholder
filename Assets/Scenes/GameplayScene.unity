@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 2138677392}
-  m_IndirectSpecularColor: {r: 0.2850269, g: 0.3713935, b: 0.49601045, a: 1}
+  m_IndirectSpecularColor: {r: 0.2850265, g: 0.3713928, b: 0.49600852, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -790,7 +790,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7773224, y: 1}
+    m_SensorSize: {x: 1.7774903, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -1069,6 +1069,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2026912174}
   m_CullTransparentMesh: 1
+--- !u!4 &2066579343 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1904253201, guid: 462992bc33b1cd84d8153df300f0ca92, type: 3}
+  m_PrefabInstance: {fileID: 9164188476261508541}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2138677391
 GameObject:
   m_ObjectHideFlags: 0
@@ -1361,6 +1366,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 7087238814704567243, guid: e890bf3a8793ebc4f9766d4811af7e93, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7087238814704567247, guid: e890bf3a8793ebc4f9766d4811af7e93, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -1414,6 +1423,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 993848009, guid: 462992bc33b1cd84d8153df300f0ca92, type: 3}
+      propertyPath: m_Data.m_MaxLimit
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 993848009, guid: 462992bc33b1cd84d8153df300f0ca92, type: 3}
+      propertyPath: m_Data.m_MinLimit
+      value: -50
+      objectReference: {fileID: 0}
+    - target: {fileID: 993848009, guid: 462992bc33b1cd84d8153df300f0ca92, type: 3}
+      propertyPath: m_Data.m_Offset.y
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 993848009, guid: 462992bc33b1cd84d8153df300f0ca92, type: 3}
+      propertyPath: m_Data.m_ConstrainedAxes.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 993848009, guid: 462992bc33b1cd84d8153df300f0ca92, type: 3}
+      propertyPath: m_Data.m_ConstrainedAxes.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 993848009, guid: 462992bc33b1cd84d8153df300f0ca92, type: 3}
+      propertyPath: m_Data.m_SourceObjects.m_Item0.transform
+      value: 
+      objectReference: {fileID: 2066579343}
     - target: {fileID: 9164188475793905794, guid: 462992bc33b1cd84d8153df300f0ca92, type: 3}
       propertyPath: m_RootOrder
       value: 5

@@ -131,19 +131,19 @@ public class PlayerController : MonoBehaviour
         Vector3 right = mainCam.transform.right;
         Vector3 forward = mainCam.transform.forward;
 
-        right.y = 0f;
+		right.y = 0f;
         forward.y = 0f;
 
         Vector3 moveDirection = right.normalized * input.x + forward.normalized * input.y;
 
 		controller.Move(moveDirection * movementSpeed * Time.deltaTime);
 
-
+        moveDirection = transform.InverseTransformDirection(moveDirection);
         //TODO: Improve
-        Vector3 facing = new Vector3(transform.forward.x * input.x, 0, transform.forward.z * input.y);
-
-        anim.SetFloat("WalkX", -facing.x, AnimationTransitionSpeed, Time.deltaTime);
-        anim.SetFloat("WalkY", -facing.z, AnimationTransitionSpeed, Time.deltaTime);
+ 
+        anim.SetFloat("WalkX", moveDirection.x, AnimationTransitionSpeed, Time.deltaTime);
+        anim.SetFloat("WalkY", moveDirection.z, AnimationTransitionSpeed, Time.deltaTime);
+		Debug.Log(input.ToString());
     }
 
 	private void RotatePlayer(Vector3 lookAtPoint)
