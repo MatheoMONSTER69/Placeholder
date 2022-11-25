@@ -139,7 +139,7 @@ public class PlayerController : MonoBehaviour
 		controller.Move(moveDirection * movementSpeed * Time.deltaTime);
 
 
-		//TODO: Improve
+        //TODO: Improve
         Vector3 facing = new Vector3(transform.forward.x * input.x, 0, transform.forward.z * input.y);
 
         anim.SetFloat("WalkX", -facing.x, AnimationTransitionSpeed, Time.deltaTime);
