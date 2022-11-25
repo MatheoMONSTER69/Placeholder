@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private float movementSpeed = 5.0f;
 	[SerializeField] private float rotationSpeed = 15.0f;
     [SerializeField] private float AnimationTransitionSpeed = 0.2f;
+	[SerializeField] private GameObject aimTarget; // nie wiem co robię, nie szkaluj - ważne że działa 
 
     [Header("Inputs")]
 	private InputAction pointerPosition;
@@ -57,6 +58,8 @@ public class PlayerController : MonoBehaviour
         controller = gameObject.GetComponent<CharacterController>();
 
         mainCam = Camera.main;
+
+
 	}
 
 	private void Update()
@@ -79,7 +82,9 @@ public class PlayerController : MonoBehaviour
         Vector2 pointerScreenPosVal = GetPointerValue();
 		if(pointerScreenPosVal != Vector2.zero)
 		{
-            RotatePlayer(PointerToWorldPos(pointerScreenPosVal));
+			Vector3 RotateDir = PointerToWorldPos(pointerScreenPosVal);
+            RotatePlayer(RotateDir);
+			aimTarget.transform.position = RotateDir;
         }
 		
 
