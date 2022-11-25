@@ -2,7 +2,6 @@ using System.ComponentModel;
 using System.Security.Cryptography;
 using UnityEditor.PackageManager.UI;
 using UnityEngine;
-using UnityEngine.Animations.Rigging;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XR;
@@ -12,158 +11,117 @@ using static Unity.Burst.Intrinsics.X86;
 
 public class PlayerController : MonoBehaviour
 {
-	[Header("References")]
-	[SerializeField] private Transform playerModel;
-	private Camera mainCam;
-	private WeaponController weaponController;
-	[HideInInspector] public PlayerStats stats;
-	private Animator anim;
+    [Header("References")]
+    [SerializeField] private Transform playerModel;
+    private Camera mainCam;
+    private WeaponController weaponController;
+    [HideInInspector] public PlayerStats stats;
+    private Animator anim;
     private CharacterController controller;
+    [SerializeField] private GameObject aimTarget;
 
     [Header("Settings")]
-	[SerializeField] private float movementSpeed = 5.0f;
-	[SerializeField] private float rotationSpeed = 15.0f;
+    [SerializeField] private float movementSpeed = 5.0f;
+    [SerializeField] private float rotationSpeed = 15.0f;
     [SerializeField] private float AnimationTransitionSpeed = 0.2f;
-	[SerializeField] private GameObject aimTarget; // nie wiem co robię, nie szkaluj - ważne że działa 
 
     [Header("Inputs")]
-	private InputAction pointerPosition;
-	private InputAction movement;
-	private InputAction dodge;
-	private InputAction attack;
+    private InputAction pointerPosition;
+    private InputAction movement;
+    private InputAction dodge;
+    private InputAction attack;
 
-	[SerializeField] private LayerMask inputPlaneLayer;
+    [SerializeField] private LayerMask inputPlaneLayer;
 
-	[Header("Debug")]
-	[SerializeField] private bool showDebug = false;
+    [Header("Debug")]
+    [SerializeField] private bool showDebug = false;
 
 
-	private void Awake()
-	{
-		pointerPosition = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.PointerPosition);
-		movement = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.Movement);
-		dodge = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.Dodge);
-		attack = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.Attack);
-	}
+    private void Awake()
+    {
+        pointerPosition = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.PointerPosition);
+        movement = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.Movement);
+        dodge = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.Dodge);
+        attack = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.Attack);
+    }
 
-	private void Start()
-	{
-		if(GameController.Instance != null)
-		{
-			GameController.Instance.PlayerController = this;
-		}
-		
-		stats = GetComponent<PlayerStats>();
-		weaponController = GetComponent<WeaponController>();
-		anim = playerModel.GetComponent<Animator>();
+    private void Start()
+    {
+        if (GameController.Instance != null)
+        {
+            GameController.Instance.PlayerController = this;
+        }
+
+        stats = GetComponent<PlayerStats>();
+        weaponController = GetComponent<WeaponController>();
+        anim = playerModel.GetComponent<Animator>();
         controller = gameObject.GetComponent<CharacterController>();
 
         mainCam = Camera.main;
+    }
+
+    private void Update()
+    {
+        GetPlayerInput();
+    }
+
+    private void LateUpdate()
+    {
+        CopyPositionToModel();
+        CopyRotationToModel();
+    }
 
 
-	}
-
-	private void Update()
-	{
-		GetPlayerInput();
-		
-	}
-
-	private void LateUpdate()
-	{
-		CopyPositionToModel();
-		CopyRotationToModel();
-	}
-
-
-	private void GetPlayerInput()
-	{
-		Vector2 playerMovement = movement.ReadValue<Vector2>();
-
-		MovePlayer(playerMovement);
-		MovementAnimations(playerMovement);
+    private void GetPlayerInput()
+    {
+        Vector2 playerMovement = movement.ReadValue<Vector2>();
+        MovePlayer(playerMovement);
 
         Vector2 pointerScreenPosVal = GetPointerValue();
-		if(pointerScreenPosVal != Vector2.zero)
-		{
-			Vector3 RotateDir = PointerToWorldPos(pointerScreenPosVal);
-            RotatePlayer(RotateDir);
-			aimTarget.transform.position = RotateDir;
+        if (pointerScreenPosVal != Vector2.zero)
+        {
+            Vector3 worldPointerPos = PointerToWorldPos(pointerScreenPosVal);
+            RotatePlayer(worldPointerPos);
+
+            aimTarget.transform.position = worldPointerPos;
         }
-		
 
         if (attack.triggered)
         {
-			Attack();
+            Attack();
         }
 
-		if(dodge.triggered)
+        if (dodge.triggered)
         {
-			Dodge();
+            Dodge();
         }
-	}
-
-	private Vector3 GetPointerValue()
-	{
-		Vector2 targetPointerPos = Vector2.zero;
-
-		Vector2 pointerPos = pointerPosition.ReadValue<Vector2>();
-
-        if (/*!EventSystem.current.IsPointerOverGameObject() &&*/
-			pointerPos.x <= Screen.width && pointerPos.x >= 0 &&
-			pointerPos.y <= Screen.height && pointerPos.y >= 0)
-		{
-			targetPointerPos = pointerPosition.ReadValue<Vector2>();
-		}
-
-		return targetPointerPos;
-	}
-	private Vector3 PointerToWorldPos(Vector2 pointerScreenPos)
-	{
-		Ray ray = mainCam.ScreenPointToRay(pointerScreenPos);
-
-		if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, inputPlaneLayer))
-		{
-			return raycastHit.point;
-		}
-
-		return Vector3.zero;
-	}
-
-    Vector3 CameraRelativeFlatten(Vector3 input, Vector3 localUp)
-    {
-        Transform cam = Camera.main.transform; // You can cache this to save a search.
-
-        Quaternion flatten = Quaternion.LookRotation(
-                                            -localUp,
-                                            cam.forward
-                                       )
-                                        * Quaternion.Euler(-90f, 0, 0);
-
-        return flatten * input;
     }
 
-    private void MovementAnimations(Vector2 input)
-	{
+    private Vector3 GetPointerValue()
+    {
+        Vector2 targetPointerPos = Vector2.zero;
 
+        Vector2 pointerPos = pointerPosition.ReadValue<Vector2>();
 
-        Vector3 moveDirection = Vector3.zero;
-
-
-        moveDirection = new Vector3(input.x, 0, input.y);
-		
-        if (moveDirection.magnitude > 1.0f)
+        if (/*!EventSystem.current.IsPointerOverGameObject() &&*/
+            pointerPos.x <= Screen.width && pointerPos.x >= 0 &&
+            pointerPos.y <= Screen.height && pointerPos.y >= 0)
         {
-            moveDirection = moveDirection.normalized;
+            targetPointerPos = pointerPosition.ReadValue<Vector2>();
         }
-        
-        moveDirection = transform.TransformDirection(moveDirection);
 
+        return targetPointerPos;
+    }
+    private Vector3 PointerToWorldPos(Vector2 pointerScreenPos)
+    {
+        Ray ray = mainCam.ScreenPointToRay(pointerScreenPos);
 
-        Debug.Log("Move: " + moveDirection.ToString());
+        if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, inputPlaneLayer))
+        {
+            return raycastHit.point;
+        }
 
-        anim.SetFloat("WalkX", moveDirection.x, AnimationTransitionSpeed, Time.deltaTime);
-        anim.SetFloat("WalkY", -moveDirection.z, AnimationTransitionSpeed, Time.deltaTime);
+        return Vector3.zero;
     }
 
     private void MovePlayer(Vector2 input)
@@ -176,17 +134,18 @@ public class PlayerController : MonoBehaviour
 
         Vector3 moveDirection = right.normalized * input.x + forward.normalized * input.y;
 
-		controller.Move(moveDirection * movementSpeed * Time.deltaTime);
+        //TODO: limit speed when going diagonally
+
+        controller.Move(moveDirection * movementSpeed * Time.deltaTime);
 
 
-		//TODO: Improve
-       // Vector3 facing = new Vector3(transform.forward.x * input.x, 0, transform.forward.z * input.y);
+        Vector3 animDirection = transform.InverseTransformDirection(moveDirection);
 
-        //anim.SetFloat("WalkX", -facing.x, AnimationTransitionSpeed, Time.deltaTime);
-       // anim.SetFloat("WalkY", -facing.z, AnimationTransitionSpeed, Time.deltaTime);
+        anim.SetFloat("WalkX", animDirection.x, AnimationTransitionSpeed, Time.deltaTime);
+        anim.SetFloat("WalkY", animDirection.z, AnimationTransitionSpeed, Time.deltaTime);
     }
 
-	private void RotatePlayer(Vector3 lookAtPoint)
+    private void RotatePlayer(Vector3 lookAtPoint)
     {
         Vector3 targetDirection = lookAtPoint - transform.position;
 
@@ -195,42 +154,41 @@ public class PlayerController : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(new Vector3(newDirection.x, 0, newDirection.z));
     }
 
-
-	private void CopyPositionToModel()
-	{
-		playerModel.transform.position = transform.position;
-	}
-	private void CopyRotationToModel()
-	{
-		playerModel.transform.rotation = transform.rotation;
-	}
-
-	private void Attack()
+    private void CopyPositionToModel()
     {
-		if(weaponController.CurrentWeapon != null)
-		{
-			weaponController.CurrentWeapon.Attack();
-		}
+        playerModel.transform.position = transform.position;
+    }
+    private void CopyRotationToModel()
+    {
+        playerModel.transform.rotation = transform.rotation;
     }
 
-	private void Dodge()
+    private void Attack()
     {
-		anim.SetTrigger("Roll");
+        if (weaponController.CurrentWeapon != null)
+        {
+            weaponController.CurrentWeapon.Attack();
+        }
+    }
 
-		//TODO: Implement
+    private void Dodge()
+    {
+        anim.SetTrigger("Roll");
+
+        //TODO: Implement
     }
 
 
-	private void OnDrawGizmos()
-	{
-		if(showDebug)
-		{
-			if (GameController.Instance != null && GameController.Instance.IsGameStarted)
-			{
-				Gizmos.color = Color.red;
-				Vector2 pointerScreenPosVal = GetPointerValue();
-				Gizmos.DrawWireSphere(PointerToWorldPos(pointerScreenPosVal), 0.25f);
-			}
-		}
-	}
+    private void OnDrawGizmos()
+    {
+        if (showDebug)
+        {
+            if (GameController.Instance != null && GameController.Instance.IsGameStarted)
+            {
+                Gizmos.color = Color.red;
+                Vector2 pointerScreenPosVal = GetPointerValue();
+                Gizmos.DrawWireSphere(PointerToWorldPos(pointerScreenPosVal), 0.25f);
+            }
+        }
+    }
 }
