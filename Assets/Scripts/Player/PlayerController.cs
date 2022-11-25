@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Security.Cryptography;
 using UnityEditor.PackageManager.UI;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XR;
@@ -63,6 +64,7 @@ public class PlayerController : MonoBehaviour
 	private void Update()
 	{
 		GetPlayerInput();
+		
 	}
 
 	private void LateUpdate()
@@ -75,7 +77,9 @@ public class PlayerController : MonoBehaviour
 	private void GetPlayerInput()
 	{
 		Vector2 playerMovement = movement.ReadValue<Vector2>();
+
 		MovePlayer(playerMovement);
+		MovementAnimations(playerMovement);
 
         Vector2 pointerScreenPosVal = GetPointerValue();
 		if(pointerScreenPosVal != Vector2.zero)
@@ -124,7 +128,43 @@ public class PlayerController : MonoBehaviour
 		return Vector3.zero;
 	}
 
-	private void MovePlayer(Vector2 input)
+    Vector3 CameraRelativeFlatten(Vector3 input, Vector3 localUp)
+    {
+        Transform cam = Camera.main.transform; // You can cache this to save a search.
+
+        Quaternion flatten = Quaternion.LookRotation(
+                                            -localUp,
+                                            cam.forward
+                                       )
+                                        * Quaternion.Euler(-90f, 0, 0);
+
+        return flatten * input;
+    }
+
+    private void MovementAnimations(Vector2 input)
+	{
+
+
+        Vector3 moveDirection = Vector3.zero;
+
+
+        moveDirection = new Vector3(input.x, 0, input.y);
+		
+        if (moveDirection.magnitude > 1.0f)
+        {
+            moveDirection = moveDirection.normalized;
+        }
+        
+        moveDirection = transform.TransformDirection(moveDirection);
+
+
+        Debug.Log("Move: " + moveDirection.ToString());
+
+        anim.SetFloat("WalkX", moveDirection.x, AnimationTransitionSpeed, Time.deltaTime);
+        anim.SetFloat("WalkY", -moveDirection.z, AnimationTransitionSpeed, Time.deltaTime);
+    }
+
+    private void MovePlayer(Vector2 input)
     {
         Vector3 right = mainCam.transform.right;
         Vector3 forward = mainCam.transform.forward;
