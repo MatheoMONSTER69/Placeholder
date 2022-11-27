@@ -12,13 +12,21 @@ public class PlayerStats : Stats
         base.Die();
     }
 
+    public override void TakeDamage(float amount)
+    {
+        if(!GameController.Instance.PlayerController.IsDodging)
+        {
+            base.TakeDamage(amount);
+        }
+    }
+
     private void OnGUI()
     {
         if (GameController.Instance.ShowDebug)
         {
             GUI.color = Color.black;
 
-            GUILayout.BeginArea(new Rect(0, (Screen.height / 2) + 75f, 200f, 50f));
+            GUILayout.BeginArea(new Rect(0, (Screen.height / 2) + 50f, 200f, 50f));
 
             GUILayout.Label($"Player Health: {Health} / {MaxHealth}");
 

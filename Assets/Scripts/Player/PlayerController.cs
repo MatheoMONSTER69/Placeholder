@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -19,6 +20,7 @@ public class PlayerController : MonoBehaviour
     [Space(10)]
 
     [SerializeField] private float AnimationTransitionSpeed = 0.2f;
+    [SerializeField] private float dodgingTime = 1.0f;
 
     [Space(10)]
 
@@ -35,6 +37,9 @@ public class PlayerController : MonoBehaviour
 
     private Vector2 movementInput = Vector2.zero;
     private Vector3 worldPointerPos = Vector3.zero;
+
+    [Header("States")]
+    [HideInInspector] public bool IsDodging = false;
 
 
     private void Awake()
@@ -77,24 +82,27 @@ public class PlayerController : MonoBehaviour
 
     private void GetPlayerInput()
     {
-        movementInput = movement.ReadValue<Vector2>();
-        movementInput = Vector3.ClampMagnitude(movementInput, 1); //Limit when going sideways
-
-        Vector2 pointerScreenPosVal = GetPointerValue();
-        if (pointerScreenPosVal != Vector2.zero)
+        if (!IsDodging)
         {
-            worldPointerPos = PointerToWorldPos(pointerScreenPosVal);
-            aimTarget.transform.position = worldPointerPos;
-        }
+            movementInput = movement.ReadValue<Vector2>();
+            movementInput = Vector3.ClampMagnitude(movementInput, 1); //Limit when going sideways
 
-        if (attack.triggered)
-        {
-            Attack();
-        }
+            Vector2 pointerScreenPosVal = GetPointerValue();
+            if (pointerScreenPosVal != Vector2.zero)
+            {
+                worldPointerPos = PointerToWorldPos(pointerScreenPosVal);
+                aimTarget.transform.position = worldPointerPos;
+            }
 
-        if (dodge.triggered)
-        {
-            Dodge();
+            if (attack.triggered)
+            {
+                Attack();
+            }
+
+            if (dodge.triggered)
+            {
+                Dodge();
+            }
         }
     }
 
@@ -171,7 +179,15 @@ public class PlayerController : MonoBehaviour
     {
         anim.SetTrigger("Roll");
 
-        //TODO: Implement
+        StartCoroutine(DodgingCoroutine(dodgingTime));
+    }
+    private IEnumerator DodgingCoroutine(float dodgeTime)
+    {
+        IsDodging = true;
+
+        yield return new WaitForSeconds(dodgeTime);
+
+        IsDodging = false;
     }
 
 
@@ -217,10 +233,11 @@ public class PlayerController : MonoBehaviour
         {
             GUI.color = Color.black;
 
-            GUILayout.BeginArea(new Rect(0, (Screen.height / 2) + 25f, 250f, 50f));
+            GUILayout.BeginArea(new Rect(0, (Screen.height / 2) - 25f, 250f, 75f));
 
             GUILayout.Label($"Player Input: {movementInput}");
             GUILayout.Label($"Player Velocity: {controller.velocity}");
+            GUILayout.Label($"IsDodging: {IsDodging}");
 
             GUILayout.EndArea();
         }
