@@ -1,13 +1,5 @@
-using System.ComponentModel;
-using System.Security.Cryptography;
-using UnityEditor.PackageManager.UI;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.XR;
-using UnityEngine.UIElements;
-using UnityEngine.Windows;
-using static Unity.Burst.Intrinsics.X86;
 
 public class PlayerController : MonoBehaviour
 {
@@ -22,16 +14,27 @@ public class PlayerController : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private float movementSpeed = 5.0f;
-    [SerializeField] private float rotationSpeed = 15.0f;
+    [SerializeField] private float gravity = 1.0f;
+
+    [Space(10)]
+
     [SerializeField] private float AnimationTransitionSpeed = 0.2f;
 
+    [Space(10)]
+
+    [SerializeField] private bool rigidbodyForceEnabled = true;
+    [SerializeField] private float rigidbodyPushForce = 2.0f;
+
     [Header("Inputs")]
+    [SerializeField] private LayerMask inputPlaneLayer;
+
     private InputAction pointerPosition;
     private InputAction movement;
     private InputAction dodge;
     private InputAction attack;
 
-    [SerializeField] private LayerMask inputPlaneLayer;
+    private Vector2 movementInput = Vector2.zero;
+    private Vector3 worldPointerPos = Vector3.zero;
 
     [Header("Debug")]
     [SerializeField] private bool showDebug = false;
@@ -55,7 +58,7 @@ public class PlayerController : MonoBehaviour
         stats = GetComponent<PlayerStats>();
         weaponController = GetComponent<WeaponController>();
         anim = playerModel.GetComponent<Animator>();
-        controller = gameObject.GetComponent<CharacterController>();
+        controller = GetComponent<CharacterController>();
 
         mainCam = Camera.main;
     }
@@ -63,6 +66,9 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         GetPlayerInput();
+
+        MovePlayer(movementInput);
+        RotatePlayer(worldPointerPos);
     }
 
     private void LateUpdate()
@@ -74,15 +80,13 @@ public class PlayerController : MonoBehaviour
 
     private void GetPlayerInput()
     {
-        Vector2 playerMovement = movement.ReadValue<Vector2>();
-        MovePlayer(playerMovement);
+        movementInput = movement.ReadValue<Vector2>();
+        movementInput = Vector3.ClampMagnitude(movementInput, 1); //Limit when going sideways
 
         Vector2 pointerScreenPosVal = GetPointerValue();
         if (pointerScreenPosVal != Vector2.zero)
         {
-            Vector3 worldPointerPos = PointerToWorldPos(pointerScreenPosVal);
-            RotatePlayer(worldPointerPos);
-
+            worldPointerPos = PointerToWorldPos(pointerScreenPosVal);
             aimTarget.transform.position = worldPointerPos;
         }
 
@@ -133,10 +137,9 @@ public class PlayerController : MonoBehaviour
         forward.y = 0f;
 
         Vector3 moveDirection = right.normalized * input.x + forward.normalized * input.y;
+        moveDirection = new Vector3(moveDirection.x, moveDirection.y - gravity, moveDirection.z);
 
-        //TODO: limit speed when going diagonally
-
-        controller.Move(moveDirection * movementSpeed * Time.deltaTime);
+        controller.Move(movementSpeed * Time.deltaTime * moveDirection);
 
 
         Vector3 animDirection = transform.InverseTransformDirection(moveDirection);
@@ -147,11 +150,7 @@ public class PlayerController : MonoBehaviour
 
     private void RotatePlayer(Vector3 lookAtPoint)
     {
-        Vector3 targetDirection = lookAtPoint - transform.position;
-
-        Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, rotationSpeed * Time.deltaTime, 0.0f);
-
-        transform.rotation = Quaternion.LookRotation(new Vector3(newDirection.x, 0, newDirection.z));
+        transform.LookAt(new Vector3(lookAtPoint.x, transform.position.y, lookAtPoint.z));
     }
 
     private void CopyPositionToModel()
@@ -176,6 +175,29 @@ public class PlayerController : MonoBehaviour
         anim.SetTrigger("Roll");
 
         //TODO: Implement
+    }
+
+
+    private void OnControllerColliderHit(ControllerColliderHit hit) //Apply player push force on rigidbody objects
+    {
+        if (rigidbodyForceEnabled)
+        {
+            Rigidbody body = hit.collider.attachedRigidbody;
+
+            if (body == null || body.isKinematic) // If object has no rigidbody
+            {
+                return;
+            }
+
+            if (hit.moveDirection.y < -0.3) // if object is below us
+            {
+                body.AddForceAtPosition(new Vector3(0, -1.0f, 0) * rigidbodyPushForce, hit.point);
+            }
+            else
+            {
+                body.velocity = new Vector3(hit.moveDirection.x, 0.0f, hit.moveDirection.z) * rigidbodyPushForce;// Calculate push direction from move direction
+            }
+        }
     }
 
 

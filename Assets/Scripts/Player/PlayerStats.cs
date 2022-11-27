@@ -4,5 +4,10 @@ using UnityEngine;
 
 public class PlayerStats : Stats
 {
-    //TODO
+    public override void Die()
+    {
+        GameController.Instance.StopGame();
+
+        base.Die();
+    }
 }
