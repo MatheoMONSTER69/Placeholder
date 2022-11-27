@@ -26,4 +26,19 @@ public class ScoreCounter : MonoBehaviour
 
         OnScoreChange.Invoke();
     }
+
+
+    private void OnGUI()
+    {
+        if (GameController.Instance.ShowDebug)
+        {
+            GUI.color = Color.black;
+
+            GUILayout.BeginArea(new Rect(0, 125f, 150f, 25f));
+
+            GUILayout.Label($"Score: {Score}");
+
+            GUILayout.EndArea();
+        }
+    }
 }

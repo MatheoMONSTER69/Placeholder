@@ -27,7 +27,7 @@ public class EnemyStats : Stats
 
         if(GameController.Instance != null && GameController.Instance.WavesController != null)
         {
-            GameController.Instance.WavesController.RemoveEnemyFromCount(enemyType);
+            GameController.Instance.EnemySpawner.RemoveEnemyFromCount(enemyType);
         }
 	}
 }

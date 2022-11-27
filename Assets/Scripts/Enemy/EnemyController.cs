@@ -18,9 +18,6 @@ public class EnemyController : MonoBehaviour
     [Tooltip("How far from opponent should entity stop for them to not collide with each other")]
     [SerializeField] private float movementOffset = 1.5f;
 
-    [Space(15)]
-    [SerializeField] private bool showDebug = true;
-
 
     private void Start()
     {
@@ -98,9 +95,9 @@ public class EnemyController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (showDebug)
+        if (GameController.Instance != null && GameController.Instance.ShowDebug)
         {
-            if (GameController.Instance != null && GameController.Instance.IsGameStarted)
+            if (GameController.Instance.IsGameStarted)
             {
                 if (GetDistanceToPlayer() <= EnemySO.AttackRange)
                 {

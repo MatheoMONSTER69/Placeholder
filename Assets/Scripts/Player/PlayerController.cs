@@ -36,9 +36,6 @@ public class PlayerController : MonoBehaviour
     private Vector2 movementInput = Vector2.zero;
     private Vector3 worldPointerPos = Vector3.zero;
 
-    [Header("Debug")]
-    [SerializeField] private bool showDebug = false;
-
 
     private void Awake()
     {
@@ -203,14 +200,29 @@ public class PlayerController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (showDebug)
+        if (GameController.Instance != null && GameController.Instance.ShowDebug)
         {
-            if (GameController.Instance != null && GameController.Instance.IsGameStarted)
+            if (GameController.Instance.IsGameStarted)
             {
                 Gizmos.color = Color.red;
                 Vector2 pointerScreenPosVal = GetPointerValue();
                 Gizmos.DrawWireSphere(PointerToWorldPos(pointerScreenPosVal), 0.25f);
             }
+        }
+    }
+
+    private void OnGUI()
+    {
+        if (GameController.Instance.ShowDebug)
+        {
+            GUI.color = Color.black;
+
+            GUILayout.BeginArea(new Rect(0, (Screen.height / 2) + 25f, 250f, 50f));
+
+            GUILayout.Label($"Player Input: {movementInput}");
+            GUILayout.Label($"Player Velocity: {controller.velocity}");
+
+            GUILayout.EndArea();
         }
     }
 }
