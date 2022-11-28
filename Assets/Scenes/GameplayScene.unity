@@ -1495,7 +1495,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 2.148073, y: 1}
+    m_SensorSize: {x: 1.3346856, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -2695,11 +2695,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6643723269020274947, guid: 462992bc33b1cd84d8153df300f0ca92, type: 3}
       propertyPath: m_WarningMessage
-      value: "\nBinding warning: Some generic clip(s) animate transforms that are
-        already bound by a Humanoid avatar. These transforms can only be changed
-        by Humanoid clips.\n\tTransform 'mixamorig:Spine1'\n\tTransform 'mixamorig:Spine'\n\tTransform
-        'mixamorig:Spine1'\n\tTransform 'mixamorig:Spine'\n\tTransform 'mixamorig:Spine1'\n\tTransform
-        'mixamorig:Spine'"
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6643723269020274947, guid: 462992bc33b1cd84d8153df300f0ca92, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9164188475793905794, guid: 462992bc33b1cd84d8153df300f0ca92, type: 3}
       propertyPath: m_RootOrder
