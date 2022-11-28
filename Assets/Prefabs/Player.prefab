@@ -195,6 +195,7 @@ GameObject:
   - component: {fileID: 9164188476261508544}
   - component: {fileID: 9164188476261508546}
   - component: {fileID: 9164188476261508547}
+  - component: {fileID: 9164188476261508548}
   m_Layer: 0
   m_Name: PlayerController
   m_TagString: Player
@@ -252,8 +253,9 @@ MonoBehaviour:
   stats: {fileID: 0}
   aimTarget: {fileID: 1904253200}
   movementSpeed: 7
-  rotationSpeed: 5
   AnimationTransitionSpeed: 0.2
+  rigidbodyForceEnabled: 1
+  rigidbodyPushForce: 2
   inputPlaneLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -297,6 +299,20 @@ MonoBehaviour:
   PrevWeaponId: 0
   CurrentWeaponId: 0
   Weapons: []
+--- !u!136 &9164188476261508548
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9164188476265922737}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1001 &961987689789516946
 PrefabInstance:
   m_ObjectHideFlags: 0

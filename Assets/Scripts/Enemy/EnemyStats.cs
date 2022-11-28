@@ -15,6 +15,8 @@ public class EnemyStats : Stats
         MaxHealth = enemySO.Health;
         Damage = enemySO.Damage;
         PointsForKill = enemySO.PointsForKill;
+
+        Health = MaxHealth;
 	}
 
     public override void Die()
@@ -25,7 +27,7 @@ public class EnemyStats : Stats
 
         if(GameController.Instance != null && GameController.Instance.WavesController != null)
         {
-            GameController.Instance.WavesController.RemoveEnemyFromCount(enemyType);
+            GameController.Instance.EnemySpawner.RemoveEnemyFromCount(enemyType);
         }
 	}
 }

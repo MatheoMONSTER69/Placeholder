@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -15,6 +13,10 @@ public class EnemyController : MonoBehaviour
     private EnemyStats stats;
 
     private Cooldown attackCooldown;
+
+    [Header("Settings")]
+    [Tooltip("How far from opponent should entity stop for them to not collide with each other")]
+    [SerializeField] private float movementOffset = 1.5f;
 
 
     private void Start()
@@ -37,31 +39,37 @@ public class EnemyController : MonoBehaviour
 		attackCooldown = new(EnemySO.AttackCooldown);
 		attackCooldown.StartCooldown();
 	}
-    
+
     private void Update()
     {
         NavigateTowardsPlayer();
+        RotateModelTowardsPlayer();
 
-        if(EnemySO != null)
+        if (EnemySO != null)
         {
-			if (attackCooldown.CooldownEnded && GetDistanceToPlayer() <= EnemySO.AttackRange)
-			{
-				AttackPlayer();
-				attackCooldown.StartCooldown();
-			}
-		}
+            if (attackCooldown.CooldownEnded && GetDistanceToPlayer() <= EnemySO.AttackRange)
+            {
+                AttackPlayer();
+                attackCooldown.StartCooldown();
+            }
+        }
     }
 
-    private void FixedUpdate()
+    private void LateUpdate()
     {
-		CopyPositionToModel();
-		RotateModelTowardsPlayer();
-	}
+        CopyPositionToModel();
+        CopyRotationToModel();
+    }
 
 
     private void NavigateTowardsPlayer()
     {
-        navMesh.SetDestination(playerTransform.position);
+        Vector3 movePos = Vector3.MoveTowards(playerTransform.position, transform.position, movementOffset);
+        navMesh.SetDestination(movePos);
+    }
+    private void RotateModelTowardsPlayer()
+    {
+        transform.LookAt(new Vector3(playerTransform.position.x, enemyModel.transform.position.y, playerTransform.position.z));
     }
 
     private float GetDistanceToPlayer()
@@ -69,19 +77,39 @@ public class EnemyController : MonoBehaviour
         return Vector3.Distance(transform.position, playerTransform.position);
     }
 
-    private void AttackPlayer()
-    {
-		GameController.Instance.PlayerController.stats.TakeDamage(EnemySO.Damage);
-	}
-
 	private void CopyPositionToModel()
 	{
 		enemyModel.transform.position = transform.position;
 
 	}
-	private void RotateModelTowardsPlayer()
+    private void CopyRotationToModel()
     {
-		//TODO: Change to Leprp
-		transform.LookAt(new Vector3(playerTransform.position.x, enemyModel.transform.position.y, playerTransform.position.z));
+        enemyModel.transform.rotation = transform.rotation;
+    }
+
+    private void AttackPlayer()
+    {
+        GameController.Instance.PlayerController.stats.TakeDamage(EnemySO.Damage);
+    }
+
+
+    private void OnDrawGizmos()
+    {
+        if (GameController.Instance != null && GameController.Instance.ShowDebug)
+        {
+            if (GameController.Instance.IsGameStarted)
+            {
+                if (GetDistanceToPlayer() <= EnemySO.AttackRange)
+                {
+                    Gizmos.color = Color.red;
+                }
+                else
+                {
+                    Gizmos.color = Color.yellow;
+                }
+
+                Gizmos.DrawRay(new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z), transform.forward * EnemySO.AttackRange);
+            }
+        }
     }
 }

@@ -14,7 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: DefaultEnemy
   Prefab: {fileID: 7087238814704567243, guid: e890bf3a8793ebc4f9766d4811af7e93, type: 3}
+  EnemyType: 0
   Health: 10
   Damage: 5
   MovingSpeed: 5
   PointsForKill: 1
+  AttackRange: 2
+  AttackCooldown: 1

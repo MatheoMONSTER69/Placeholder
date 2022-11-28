@@ -58,6 +58,7 @@ GameObject:
   - component: {fileID: 1737032784729929898}
   - component: {fileID: 1737032784729929896}
   - component: {fileID: 1737032784729929897}
+  - component: {fileID: 320262071}
   - component: {fileID: 1737032784729929903}
   - component: {fileID: 1737032784729929902}
   m_Layer: 0
@@ -97,6 +98,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerController: {fileID: 0}
   WavesController: {fileID: 0}
+  EnemySpawner: {fileID: 0}
   ScoreCounter: {fileID: 0}
   CurrentTimeScale: 1
   IsGameStarted: 0
@@ -112,6 +114,7 @@ MonoBehaviour:
   OnGameStop:
     m_PersistentCalls:
       m_Calls: []
+  ShowDebug: 1
 --- !u!114 &1737032784729929896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -141,27 +144,67 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 174bcd14d8eb55745b291a9e4ca17bcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enemies:
-    dictionaryAsList:
-    - key: 0
-      value:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-    - key: 1
-      value:
-      - {fileID: 0}
-      - {fileID: 0}
-    - key: 2
-      value:
-      - {fileID: 0}
   Waves:
+  - Enemies:
+      dictionaryAsList:
+      - key: {fileID: 11400000, guid: 138100be116295340b5506476c0c5280, type: 2}
+        value: 3
+    Cooldown: 10
+    Finished: 0
+    Time: 0
+    WaveScore: 0
+  - Enemies:
+      dictionaryAsList:
+      - key: {fileID: 11400000, guid: 138100be116295340b5506476c0c5280, type: 2}
+        value: 3
+    Cooldown: 10
+    Finished: 0
+    Time: 0
+    WaveScore: 0
+  - Enemies:
+      dictionaryAsList:
+      - key: {fileID: 11400000, guid: 138100be116295340b5506476c0c5280, type: 2}
+        value: 3
+    Cooldown: 10
+    Finished: 0
+    Time: 0
+    WaveScore: 0
+  initialCooldown: 5
+  isWaveRunning: 0
+  currentWaveId: 0
+  OnWaveStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnWaveFinish:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &320262071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1737032784729929877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42f55506d74f17345bec3aea11f2e5a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnPoints:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
-  CurrentWave: 0
+  enemyContainer: {fileID: 0}
+  OnEnemySpawn:
+    m_PersistentCalls:
+      m_Calls: []
+  OnEnemyRemove:
+    m_PersistentCalls:
+      m_Calls: []
+  OnNoEnemiesLeft:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1737032784729929903
 MonoBehaviour:
   m_ObjectHideFlags: 0

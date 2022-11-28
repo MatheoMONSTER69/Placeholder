@@ -9,6 +9,7 @@ public class GameController : MonoBehaviour
     [Header("References")]
     [HideInInspector] public PlayerController PlayerController;
     [HideInInspector] public WavesController WavesController;
+    [HideInInspector] public EnemySpawner EnemySpawner;
     [HideInInspector] public ScoreCounter ScoreCounter;
 
     private InputAction pauseGameplay;
@@ -28,8 +29,11 @@ public class GameController : MonoBehaviour
     public UnityEvent OnGameResume;
 	public UnityEvent OnGameStop;
 
+    [Header("Debug")]
+    public bool ShowDebug = true;
 
-	public static GameController Instance { get; private set; }
+
+    public static GameController Instance { get; private set; }
 
     private void Awake()
     {
@@ -103,7 +107,7 @@ public class GameController : MonoBehaviour
 		OnGameResume.Invoke();
     }
 
-	public void StopGame()
+	public void StopGame(bool win)
 	{
 		InputManager.Instance.SwitchCurrentActionMap(ActionMapType.Menu);
 
@@ -127,6 +131,26 @@ public class GameController : MonoBehaviour
         else
         {
             PauseGame();
+        }
+    }
+
+
+    private void OnGUI()
+    {
+        if (ShowDebug)
+        {
+            GUI.color = Color.black;
+
+            GUILayout.BeginArea(new Rect(0, 0, 150f, 100f));
+
+            GUILayout.Label($"IsGamePaused: {IsGamePaused}");
+            GUILayout.Label($"IsGameStarted: {IsGameStarted}");
+
+            GUILayout.Label($"TimeScale: {Time.timeScale}");
+
+            GUILayout.Label($"GameTimer: {TimeConverter.ConvertTimeStripped(GameTimer.GetTime())}");
+
+            GUILayout.EndArea();
         }
     }
 }

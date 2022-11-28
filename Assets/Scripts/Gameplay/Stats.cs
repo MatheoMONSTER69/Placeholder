@@ -7,7 +7,7 @@ public class Stats : MonoBehaviour
 {
     [Header("Stats")]
     public float MaxHealth;
-    public float Health { get; private set; }
+    public float Health { get; protected set; }
     public float Damage;
 
     public bool IsDead = false;
@@ -17,6 +17,11 @@ public class Stats : MonoBehaviour
     public UnityEvent OnHeal;
     public UnityEvent OnDeath;
 
+
+    protected void Awake()
+    {
+        Health = MaxHealth;
+    }
 
     public virtual void TakeDamage(float amount)
     {
