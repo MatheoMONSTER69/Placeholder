@@ -6,19 +6,23 @@ public class WeaponSwitch : MonoBehaviour
 {
     private Animator anim;
     [SerializeField] private Transform playerModel;
-    [SerializeField] public int weapon;
+    [SerializeField] public int weaponNr;
     [SerializeField] private GameObject[] BackWeapons;
     [SerializeField] private GameObject[] HandWeapons;
-    private int currentWeapon;
+    [SerializeField] private GameObject Melee;
+    int currentWeapon;
 
     void Start()
     {
         anim = this.GetComponent<Animator>();
-        // weapon = 0;
+
+
+        anim.SetInteger("Weapon", 0);
+     
         DisableEnableWeapons(HandWeapons, false);
-        anim.SetInteger("Weapon", weapon);
         anim.SetBool("WeaponSwap", false);
         DisableEnableWeapons(BackWeapons, true);
+        
     }
 
 
@@ -28,44 +32,52 @@ public class WeaponSwitch : MonoBehaviour
     {
         
         
-        if (weapon == 0 && weapon!=currentWeapon) // uzi
+        if (weaponNr == 0 && weaponNr!=currentWeapon) // uzi
         {
             anim.SetInteger("Weapon", 0);
             anim.SetBool("WeaponSwap", true);
-            // SwapVisibleWeapon(1);
+            
         }
-        else if (weapon == 1 && weapon != currentWeapon) // ak
+        else if (weaponNr == 1 && weaponNr != currentWeapon) // ak
         {
             anim.SetInteger("Weapon", 1);
             anim.SetBool("WeaponSwap", true);
-            // SwapVisibleWeapon(2);
+            
         }
-        else if (weapon == 2 && weapon != currentWeapon) // shotgun
+        else if (weaponNr == 2 && weaponNr != currentWeapon) // shotgun
         {
             anim.SetInteger("Weapon", 1);
             anim.SetBool("WeaponSwap", true);
-            // SwapVisibleWeapon(3);
+           
         }
-        else if (weapon == 3 && weapon != currentWeapon) // rpg
+        else if (weaponNr == 3 && weaponNr != currentWeapon) // rpg
         {
             anim.SetInteger("Weapon", 1);
             anim.SetBool("WeaponSwap", true);
-            // SwapVisibleWeapon(4);
+            
         }
        
-
-        currentWeapon = weapon;
+        currentWeapon = weaponNr;
     }
     public void SwapVisibleWeapon()
     {
         DisableEnableWeapons(BackWeapons, true);
-        BackWeapons[weapon].active = false;
+        BackWeapons[weaponNr].active = false;
         DisableEnableWeapons(HandWeapons, false);
-        HandWeapons[weapon].active = true;
+        HandWeapons[weaponNr].active = true;
+
+
         anim.SetBool("WeaponSwap", false);
-
-
     }
+    public void meleINVisible()
+    {
+        Melee.active = false;
+    }
+    public void meleVisible()
+    {
+        Melee.active = true;
+    }
+
     private void DisableEnableWeapons(GameObject[] array, bool state)
     {
         foreach(GameObject x in array)
