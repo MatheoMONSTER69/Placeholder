@@ -49,7 +49,7 @@ public class WeaponController : MonoBehaviour
 
     private void Update()
     {
-        if(!switchCooldown.IsStarted || switchCooldown.CooldownEnded)
+        if((!switchCooldown.IsStarted || switchCooldown.CooldownEnded) && !Meele.IsInUse)
         {
             float weaponChangeValue = weaponChangeAxis.ReadValue<float>();
 
@@ -152,6 +152,7 @@ public class WeaponController : MonoBehaviour
 
             GUILayout.Label($"CurrentWeapon: {CurrentWeapon}");
             GUILayout.Label($"PrevWeapon: {PrevWeapon}");
+            GUILayout.Label($"MeeleInUse: {Meele.IsInUse}");
 
             GUILayout.EndArea();
         }
