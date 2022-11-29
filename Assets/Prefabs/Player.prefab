@@ -637,8 +637,9 @@ MonoBehaviour:
   stats: {fileID: 0}
   aimTarget: {fileID: 1904253200}
   movementSpeed: 7
-  rotationSpeed: 5
   AnimationTransitionSpeed: 0.2
+  rigidbodyForceEnabled: 1
+  rigidbodyPushForce: 2
   inputPlaneLayer:
     serializedVersion: 2
     m_Bits: 8
