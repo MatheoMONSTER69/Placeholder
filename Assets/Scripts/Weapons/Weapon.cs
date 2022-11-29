@@ -4,34 +4,51 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
+    [Header("References")]
     public WeaponSO WeaponScriptableObject;
 
-    protected float Damage;
-    protected float AttackSpeed;
-    protected float SwitchTime;
+    public GameObject BackGameObject = null;
+    public GameObject HandGameObject = null;
+    public WeaponAnimStance WeaponAnimStance = WeaponAnimStance.Long;
 
-    protected Cooldown SwitchColldown;
+    public bool IsInUse => HandGameObject.activeInHierarchy;
+
+    [Header("Settings")]
+    protected float Damage;
+    protected float AttackSpeed = 0.1f;
+    public float SwitchTime = 1.5f;
+
     protected Cooldown AttackCooldown;
 
 
     private void Start()
     {
-        Damage = WeaponScriptableObject.Damage;
-        AttackSpeed = WeaponScriptableObject.AttackSpeed;
-        SwitchTime = WeaponScriptableObject.SwitchTime;
+        if(WeaponScriptableObject != null)
+        {
+            Damage = WeaponScriptableObject.Damage;
+            AttackSpeed = WeaponScriptableObject.AttackSpeed;
+            SwitchTime = WeaponScriptableObject.SwitchTime;
+        }
 
         AttackCooldown = new Cooldown(AttackSpeed);
-        SwitchColldown = new Cooldown(SwitchTime);
-    }
 
-    private void Awake()
-    {
-        SwitchColldown.StartCooldown();
+        ShowBack();
     }
 
 
-    public void Attack()
+    public virtual void Attack()
     {
         AttackCooldown.StartCooldown();
+    }
+
+    public void ShowBack()
+    {
+        BackGameObject.SetActive(true);
+        HandGameObject.SetActive(false);
+    }
+    public void ShowHand()
+    {
+        HandGameObject.SetActive(true);
+        BackGameObject.SetActive(false);
     }
 }
