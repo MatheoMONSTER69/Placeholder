@@ -6,10 +6,13 @@ public enum InputType
     Dodge,
     Attack,
     PrevWeapon,
-	WeaponChange,
+	WeaponChangeAxis,
+    WeaponChangePrevButton,
+    WeaponChangeNextButton,
+    Meele,
 
     //Menu
 
-	//Menu and Gameplay
-	PauseToggle
+    //Menu and Gameplay
+    PauseToggle
 }

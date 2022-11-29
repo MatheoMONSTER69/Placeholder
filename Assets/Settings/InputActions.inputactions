@@ -60,13 +60,40 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "WeaponChange",
+                    "name": "WeaponChangeAxis",
                     "type": "Value",
                     "id": "32a32dea-114e-46e2-8274-a8a74c063dbc",
                     "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "WeaponChangeNextButton",
+                    "type": "Button",
+                    "id": "fcef7b9a-d026-421b-bf82-a7ea18baaf90",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "WeaponChangePrevButton",
+                    "type": "Button",
+                    "id": "41e25308-b9ca-4456-85d7-4eec12752844",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Meele",
+                    "type": "Button",
+                    "id": "1ce89795-f4a9-4208-aa9d-a6a4fa63d2ec",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -132,42 +159,9 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "WeaponChange",
+                    "action": "WeaponChangeAxis",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "1D Axis",
-                    "id": "d624b5c4-c84a-451b-832d-903e2ac35d2b",
-                    "path": "1DAxis",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "WeaponChange",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "negative",
-                    "id": "af8c5a55-c10b-4d8a-b906-237b15baf936",
-                    "path": "<Mouse>/backButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "WeaponChange",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "positive",
-                    "id": "ae88b942-a14b-4f7f-ab63-68ab963bfd92",
-                    "path": "<Mouse>/forwardButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "WeaponChange",
-                    "isComposite": false,
-                    "isPartOfComposite": true
                 },
                 {
                     "name": "",
@@ -221,6 +215,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "PrevWeapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0bad4a25-f6f1-4768-9921-56f911d5ecfe",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Meele",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bab29593-0afd-4a6c-a7b3-019a7d79aa38",
+                    "path": "<Mouse>/forwardButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "WeaponChangeNextButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "abf4a353-22f8-4188-a12c-4471b7574019",
+                    "path": "<Mouse>/backButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "WeaponChangePrevButton",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

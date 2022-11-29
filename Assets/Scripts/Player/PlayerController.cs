@@ -165,7 +165,7 @@ public class PlayerController : MonoBehaviour
 
     private void Attack()
     {
-        if (weaponController.CurrentWeapon != null)
+        if (weaponController.CurrentWeapon != null && !weaponController.Meele.IsInUse)
         {
             weaponController.CurrentWeapon.Attack();
         }
