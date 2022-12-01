@@ -190,6 +190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42f55506d74f17345bec3aea11f2e5a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawningEnabled: 1
   spawnPoints:
   - {fileID: 0}
   - {fileID: 0}
