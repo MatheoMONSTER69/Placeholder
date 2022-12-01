@@ -119,6 +119,8 @@ public class PlayerController : MonoBehaviour
             targetPointerPos = pointerPosition.ReadValue<Vector2>();
         }
 
+        //TODO: Add gamepad right stick support
+
         return targetPointerPos;
     }
     private Vector3 PointerToWorldPos(Vector2 pointerScreenPos)

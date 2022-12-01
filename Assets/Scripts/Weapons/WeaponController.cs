@@ -19,8 +19,6 @@ public class WeaponController : MonoBehaviour
 
     [Header("Inputs")]
     private InputAction weaponChangeAxis;
-    private InputAction weaponChangePrevButton;
-    private InputAction weaponChangeNextButton;
     private InputAction prevWeapon;
     private InputAction meeleInput;
 
@@ -30,12 +28,8 @@ public class WeaponController : MonoBehaviour
     private void Awake()
     {
         weaponChangeAxis = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.WeaponChangeAxis);
-        weaponChangePrevButton = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.WeaponChangePrevButton);
-        weaponChangeNextButton = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.WeaponChangeNextButton);
         prevWeapon = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.PrevWeapon);
         meeleInput = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.Meele);
-
-        //TODO: Add 1,2,3,4... support
 
         foreach (Weapon weapon in Weapons)
         {
@@ -43,8 +37,7 @@ public class WeaponController : MonoBehaviour
         }
         Meele.ShowBack();
 
-        anim.SetInteger("Weapon", 0);
-        anim.SetBool("WeaponSwap", false);
+        EquipWeapon(0);
     }
 
     private void Update()
@@ -53,18 +46,28 @@ public class WeaponController : MonoBehaviour
         {
             float weaponChangeValue = weaponChangeAxis.ReadValue<float>();
 
-            if (weaponChangeValue > 0 || weaponChangeNextButton.triggered)
+            if (weaponChangeValue > 0)
             {
-                WeaponUp();
+                //1-9 keys
+                if (int.TryParse(weaponChangeAxis.activeControl.name, out int key))
+                {
+                    EquipWeapon(key - 1);
+                }
+                //scroll / mouse buttons
+                else
+                {
+                    EquipWeaponUp();
+                }
             }
-            else if (weaponChangeValue < 0 || weaponChangePrevButton.triggered)
+            //scroll / mouse buttons
+            else if (weaponChangeValue < 0)
             {
-                WeaponDown();
+                EquipWeaponDown();
             }
 
             if (prevWeapon.triggered)
             {
-                PreviousWeapon();
+                EquipPreviousWeapon();
             }
 
             if (meeleInput.triggered)
@@ -75,45 +78,44 @@ public class WeaponController : MonoBehaviour
     }
 
 
-    public void PreviousWeapon()
+    public void EquipPreviousWeapon()
     {
-        int tempId = CurrentWeaponId;
-        CurrentWeaponId = PrevWeaponId;
-        PrevWeaponId = tempId;
-
-        LoadCurrentWeapon();
+        EquipWeapon(PrevWeaponId);
     }
 
-    public void WeaponDown()
+    public void EquipWeaponDown()
     {
-        PrevWeaponId = CurrentWeaponId;
-
-        if(CurrentWeaponId == 0)
+        if (CurrentWeaponId == 0)
         {
-            CurrentWeaponId = Weapons.Count - 1;
+            EquipWeapon(Weapons.Count - 1);
         }
         else
         {
-            CurrentWeaponId--;
+            EquipWeapon(CurrentWeaponId - 1);
         }
-
-        LoadCurrentWeapon();
     }
-
-    public void WeaponUp()
+    public void EquipWeaponUp()
     {
-        PrevWeaponId = CurrentWeaponId;
-
         if(CurrentWeaponId == Weapons.Count - 1)
         {
-            CurrentWeaponId = 0;
+            EquipWeapon(0);
         }
         else
         {
-            CurrentWeaponId++;
+            EquipWeapon(CurrentWeaponId + 1);
         }
+    }
 
-        LoadCurrentWeapon();
+    public void EquipWeapon(int weaponId)
+    {
+        if(Weapons.Count > 0 && weaponId < Weapons.Count)
+        {
+            PrevWeaponId = CurrentWeaponId;
+
+            CurrentWeaponId = weaponId;
+
+            LoadCurrentWeapon();
+        }
     }
 
     public void ShowMeele()
@@ -148,11 +150,12 @@ public class WeaponController : MonoBehaviour
         {
             GUI.color = Color.black;
 
-            GUILayout.BeginArea(new Rect(Screen.width - 250f, Screen.height - 75f, 250f, 75f));
+            GUILayout.BeginArea(new Rect(Screen.width - 250f, Screen.height - 100f, 250f, 100f));
 
             GUILayout.Label($"CurrentWeapon: {CurrentWeapon}");
             GUILayout.Label($"PrevWeapon: {PrevWeapon}");
             GUILayout.Label($"MeeleInUse: {Meele.IsInUse}");
+            GUILayout.Label($"SwitchCooldown: {switchCooldown.IsStarted}");
 
             GUILayout.EndArea();
         }
