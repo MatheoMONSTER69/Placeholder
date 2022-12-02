@@ -5,31 +5,24 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     [Header("References")]
-    public WeaponSO WeaponScriptableObject;
 
     public GameObject BackGameObject = null;
     public GameObject HandGameObject = null;
     public WeaponAnimStance WeaponAnimStance = WeaponAnimStance.Long;
 
-    public bool IsInUse => HandGameObject.activeInHierarchy;
-
     [Header("Settings")]
-    protected float Damage;
-    protected float AttackSpeed = 0.1f;
+    public string Name = "Weapon";
+    public float Damage = 5;
+    public float AttackSpeed = 0.1f;
     public float SwitchTime = 1.5f;
 
     protected Cooldown AttackCooldown;
 
+    public bool IsInUse => HandGameObject.activeInHierarchy;
+
 
     private void Start()
     {
-        if(WeaponScriptableObject != null)
-        {
-            Damage = WeaponScriptableObject.Damage;
-            AttackSpeed = WeaponScriptableObject.AttackSpeed;
-            SwitchTime = WeaponScriptableObject.SwitchTime;
-        }
-
         AttackCooldown = new Cooldown(AttackSpeed);
 
         ShowBack();

@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Use on object with animator to launch animation events
+/// </summary>
 public class WeaponSwitch : MonoBehaviour
 {
     [SerializeField] private WeaponController weaponController;
