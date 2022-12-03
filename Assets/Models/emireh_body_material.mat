@@ -96,7 +96,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaClip: 0
-    - _AmbientStrength: 0.19
+    - _AmbientStrength: 0.1
     - _Blend: 0
     - _BumpScale: 1
     - _ClearCoatMask: 0
@@ -120,7 +120,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 0.31622776
+    - _Smoothness: 0.315
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1

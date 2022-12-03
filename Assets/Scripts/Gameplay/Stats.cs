@@ -8,7 +8,6 @@ public class Stats : MonoBehaviour
     [Header("Stats")]
     public float MaxHealth;
     public float Health { get; protected set; }
-    public float Damage;
 
     public bool IsDead = false;
 

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8380050876542235132}
-  - component: {fileID: 8380050876542235135}
+  - component: {fileID: 7559151285297199234}
   m_Layer: 0
   m_Name: Uzi
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8380050876542235135
+--- !u!114 &7559151285297199234
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,13 +41,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 8380050876542235133}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2541b328959d1bb42b3f9f557caca9f8, type: 3}
+  m_Script: {fileID: 11500000, guid: 1d9992f686ac0f04d86f9d5bf12acf3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   BackGameObject: {fileID: 0}
   HandGameObject: {fileID: 0}
   WeaponAnimStance: 0
+  weaponBarrelEnd: {fileID: 0}
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 64
   Name: Uzi
-  Damage: 10
-  AttackSpeed: 0.05
-  SwitchTime: 75
+  Damage: 1
+  AttackSpeed: 0.1
+  SwitchTime: 0.75
+  usePenetration: 0
+  muzzleFlash: {fileID: 0}
+  muzzleFlashDuration: 0.05
+  trail: {fileID: 0}
+  trailDuration: 0.2
+  trailWidth: 0.075
+  trailLength: 50

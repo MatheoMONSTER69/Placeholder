@@ -1,0 +1,141 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Meele : Weapon
+{
+    [Header("Meele")]
+    [SerializeField] private float range = 5.0f;
+    [SerializeField] private float damageTime = 0.75f;
+
+    [Header("Effects")]
+    [Header("Bullet Trail")]
+    [SerializeField] private TrailRenderer trail;
+    [SerializeField] private float trailDuration = 0.19f;
+
+    private Coroutine trailCoroutine;
+    private bool trailCoroutineIsRunning = false;
+
+
+    protected override void Start()
+    {
+        base.Start();
+    }
+
+    private void Awake()
+    {
+        //Effects
+        if (trail != null)
+        {
+            trail.gameObject.SetActive(false);
+        }
+    }
+
+
+    public override void Attack(Vector3 targetPos)
+    {
+        List<EnemyStats> enemies = GetEnemies(targetPos);
+
+        ApplyDamage(enemies);
+
+
+        TrailEffect();
+
+
+        base.Attack(targetPos);
+    }
+
+
+    protected override List<EnemyStats> GetEnemies(Vector3 targetPos)
+    {
+        List<EnemyStats> enemies = new();
+
+        if (weaponBarrelEnd != null && GameController.Instance.PlayerController != null)
+        {
+            RaycastHit[] hits = Physics.SphereCastAll(GameController.Instance.PlayerController.transform.position, range / 2, GameController.Instance.PlayerController.transform.forward, range, enemyLayer);
+
+            if (hits.Length > 0)
+            {
+                foreach (RaycastHit hit in hits)
+                {
+                    if (hit.transform.TryGetComponent(out EnemyStats enemyStats))
+                    {
+                        enemies.Add(enemyStats);
+                    }
+                }
+            }
+        }
+
+        return enemies;
+    }
+
+    protected override void ApplyDamage(List<EnemyStats> enemies)
+    {
+        if (enemies.Count > 0)
+        {
+            int damagedEnemies = 0;
+            foreach (EnemyStats enemy in enemies)
+            {
+                float delay = (float)(damagedEnemies / (float)(enemies.Count - 1)) * damageTime;
+
+                StartCoroutine(DeleyedDamage(enemy, Damage, delay));
+
+                damagedEnemies++;
+            }
+        }
+    }
+
+    private IEnumerator DeleyedDamage(EnemyStats enemy, float Damage, float cooldown)
+    {
+        yield return new WaitForSeconds(cooldown);
+
+        if(enemy != null)
+        {
+            enemy.TakeDamage(Damage);
+        }
+
+    }
+
+
+    //Effects
+    private void TrailEffect()
+    {
+        if (trail != null)
+        {
+            if (trailCoroutineIsRunning)
+            {
+                StopCoroutine(trailCoroutine);
+                trailCoroutineIsRunning = false;
+            }
+
+            trailCoroutine = StartCoroutine(Trail(trailDuration));
+        }
+    }
+    private IEnumerator Trail(float trailDuration)
+    {
+        trailCoroutineIsRunning = true;
+
+        yield return new WaitForSeconds(trailDuration);
+
+        trail.gameObject.SetActive(false);
+
+        trailCoroutineIsRunning = false;
+    }
+
+
+    //protected override void OnGUI()
+    //{
+       //base.OnGUI();
+
+        /*if (GameController.Instance.ShowDebug && IsInUse)
+        {
+            GUI.color = Color.black;
+
+            GUILayout.BeginArea(new Rect(Screen.width - 250f, (Screen.height / 2) + 50f, 250f, 25f));
+
+            //GUILayout.Label($"usePenetration: {usePenetration}");
+
+            GUILayout.EndArea();
+        }*/
+    //}
+}

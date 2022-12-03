@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyStats : Stats
 {
     [Header("Enemy")]
+    public float Damage = 5;
     private int PointsForKill = 1;
     private EnemyType enemyType;
 
@@ -23,11 +24,16 @@ public class EnemyStats : Stats
     {
         base.Die();
 
-        GameController.Instance.ScoreCounter.AddScore(PointsForKill);
-
-        if(GameController.Instance != null && GameController.Instance.WavesController != null)
+        if (GameController.Instance != null)
         {
-            GameController.Instance.EnemySpawner.RemoveEnemyFromCount(enemyType);
+            GameController.Instance.ScoreCounter.AddScore(PointsForKill);
+
+            if (GameController.Instance.WavesController != null)
+            {
+                GameController.Instance.EnemySpawner.RemoveEnemyFromCount(enemyType);
+            }
         }
+
+        Destroy(transform.parent.gameObject);
 	}
 }

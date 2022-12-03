@@ -696,7 +696,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 50b573adcb56d904aaba18d7f36461b2, type: 2}
+  - {fileID: 2100000, guid: b2a3585e5aa6b48409d8730b07538ab3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1082,7 +1082,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1684568219}
-  m_LocalRotation: {x: -0.12044598, y: 0.87692595, z: -0.2907824, w: -0.36323458}
+  m_LocalRotation: {x: -0.120446, y: 0.87692595, z: -0.29078236, w: -0.36323464}
   m_LocalPosition: {x: 8, y: 9.75, z: 8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1197,7 +1197,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 119
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -1216,7 +1216,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1687258581}
-  m_LocalRotation: {x: -0.12044598, y: 0.87692595, z: -0.2907824, w: -0.36323458}
+  m_LocalRotation: {x: -0.120446, y: 0.87692595, z: -0.29078236, w: -0.36323464}
   m_LocalPosition: {x: 8, y: 9.75, z: 8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1897,7 +1897,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7087238814704567247, guid: e890bf3a8793ebc4f9766d4811af7e93, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3
+      value: 2.26
       objectReference: {fileID: 0}
     - target: {fileID: 7087238814704567247, guid: e890bf3a8793ebc4f9766d4811af7e93, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1991,10 +1991,6 @@ PrefabInstance:
     - target: {fileID: 9164188475793905798, guid: 462992bc33b1cd84d8153df300f0ca92, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 9164188476261508546, guid: 462992bc33b1cd84d8153df300f0ca92, type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 462992bc33b1cd84d8153df300f0ca92, type: 3}
