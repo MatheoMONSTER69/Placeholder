@@ -72,7 +72,6 @@ public class WeaponController : MonoBehaviour
 
             if (meeleInput.triggered)
             {
-                anim.SetTrigger("Meele");
                 MeeleAttack(transform.position);
             }
         }
@@ -162,8 +161,10 @@ public class WeaponController : MonoBehaviour
             CurrentWeapon != null &&
             (CurrentWeapon != Meele && !Meele.IsInUse) &&
             (!switchCooldown.IsStarted || switchCooldown.CooldownEnded) &&
-            (!CurrentWeapon.AttackCooldown.IsStarted || CurrentWeapon.AttackCooldown.CooldownEnded))
+            (!CurrentWeapon.AttackCooldown.IsStarted || CurrentWeapon.AttackCooldown.CooldownEnded) &&
+            (!Meele.AttackCooldown.IsStarted || Meele.AttackCooldown.CooldownEnded))
         {
+            anim.SetTrigger("Meele");
             Meele.Attack(targetPos);
         }
     }

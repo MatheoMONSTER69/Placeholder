@@ -126,19 +126,22 @@ public class Meele : Weapon
     }
 
 
-    //protected override void OnGUI()
-    //{
-       //base.OnGUI();
-
-        /*if (GameController.Instance.ShowDebug && IsInUse)
+    protected override void OnGUI()
+    {
+        if (GameController.Instance.ShowDebug)
         {
             GUI.color = Color.black;
 
-            GUILayout.BeginArea(new Rect(Screen.width - 250f, (Screen.height / 2) + 50f, 250f, 25f));
+            GUILayout.BeginArea(new Rect(Screen.width - 250f, (Screen.height / 2) + 100f, 250f, 150f));
 
-            //GUILayout.Label($"usePenetration: {usePenetration}");
+            GUILayout.Label($"Name: {Name}");
+            GUILayout.Label($"Damage: {Damage}");
+            GUILayout.Label($"AttackSpeed: {AttackSpeed}");
+            GUILayout.Label($"AttackCooldown: {AttackCooldown.IsStarted && !AttackCooldown.CooldownEnded}");
+            GUILayout.Label($"Range: {range}");
+            GUILayout.Label($"DamageTime: {damageTime}");
 
             GUILayout.EndArea();
-        }*/
-    //}
+        }
+    }
 }
