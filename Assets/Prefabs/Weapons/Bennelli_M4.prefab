@@ -52,7 +52,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   Name: Bennelli M4
-  Damage: 10
+  Damage: 20
   AttackSpeed: 1
   SwitchTime: 2
   penetrationAmount: -1

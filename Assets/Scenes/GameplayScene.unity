@@ -1600,10 +1600,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 184691853}
     - target: {fileID: 320262071, guid: 1f99f9b8b0f2e114482ec893a9bd1b2e, type: 3}
-      propertyPath: spawningEnabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 320262071, guid: 1f99f9b8b0f2e114482ec893a9bd1b2e, type: 3}
       propertyPath: spawnPoints.Array.data[0]
       value: 
       objectReference: {fileID: 3711065496729331731}
@@ -1622,10 +1618,6 @@ PrefabInstance:
     - target: {fileID: 1737032784729929877, guid: 1f99f9b8b0f2e114482ec893a9bd1b2e, type: 3}
       propertyPath: m_Name
       value: GameManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 1737032784729929897, guid: 1f99f9b8b0f2e114482ec893a9bd1b2e, type: 3}
-      propertyPath: Waves.Array.data[0].Enemies.dictionaryAsList.Array.data[0].value
-      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1737032784729929898, guid: 1f99f9b8b0f2e114482ec893a9bd1b2e, type: 3}
       propertyPath: PlayerController
