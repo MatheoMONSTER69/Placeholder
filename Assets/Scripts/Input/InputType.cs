@@ -2,6 +2,7 @@ public enum InputType
 {
     //Gameplay
     PointerPosition,
+    GamepadPosition,
     Movement,
     Dodge,
     Attack,

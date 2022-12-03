@@ -24,6 +24,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "GamepadPosition",
+                    "type": "Value",
+                    "id": "c93edca6-2fe9-4de7-9ffe-65a72091fe14",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Movement",
                     "type": "Value",
                     "id": "7222e5e1-a7c4-44eb-b1d0-f47f1d57fa09",
@@ -356,17 +365,6 @@
                 },
                 {
                     "name": "",
-                    "id": "89d47310-65a9-44d9-8330-bb709854f861",
-                    "path": "<Gamepad>/rightStick",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "PointerPosition",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "3b81e6b4-2072-40db-811b-3b97a0a67923",
                     "path": "<Keyboard>/space",
                     "interactions": "",
@@ -450,6 +448,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Meele",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b7418baf-e41a-4cc8-a55b-db0efef3e621",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "GamepadPosition",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

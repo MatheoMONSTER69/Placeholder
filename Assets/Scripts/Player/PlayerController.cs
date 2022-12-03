@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.InputSystem;
+using UnityEngine.Windows;
 
 public class PlayerController : MonoBehaviour
 {
@@ -31,12 +33,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask inputPlaneLayer;
 
     private InputAction pointerPosition;
+    private InputAction gamepadPosition;
     private InputAction movement;
     private InputAction dodge;
     private InputAction attack;
 
     private Vector2 movementInput = Vector2.zero;
     private Vector3 worldPointerPos = Vector3.zero;
+
+    private Vector2 prevPointerPos = Vector2.zero;
 
     [Header("States")]
     [HideInInspector] public bool IsDodging = false;
@@ -45,6 +50,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         pointerPosition = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.PointerPosition);
+        gamepadPosition = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.GamepadPosition);
         movement = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.Movement);
         dodge = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.Dodge);
         attack = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.Attack);
@@ -87,12 +93,35 @@ public class PlayerController : MonoBehaviour
             movementInput = movement.ReadValue<Vector2>();
             movementInput = Vector3.ClampMagnitude(movementInput, 1); //Limit when going sideways
 
-            Vector2 pointerScreenPosVal = GetPointerValue();
-            if (pointerScreenPosVal != Vector2.zero)
+
+            Vector2 gamepadPos = gamepadPosition.ReadValue<Vector2>();
+            Vector2 pointerPos = pointerPosition.ReadValue<Vector2>();
+
+            //Gamepad
+            if (Gamepad.current != null && gamepadPos != Vector2.zero && pointerPos == prevPointerPos)
             {
-                worldPointerPos = PointerToWorldPos(pointerScreenPosVal);
-                aimTarget.transform.position = worldPointerPos;
+                Vector3 right = mainCam.transform.right;
+                Vector3 forward = mainCam.transform.forward;
+
+                Vector3 dir = right.normalized * gamepadPos.x + forward.normalized * gamepadPos.y;
+
+                worldPointerPos = new Vector3(transform.position.x + dir.x, transform.position.y, transform.position.z + dir.z);
+            }  
+            //Mouse
+            else if(Mouse.current != null && pointerPos != prevPointerPos)
+            {
+                prevPointerPos = pointerPos;
+
+                Vector2 pointerScreenPosVal = GetPointerValue(pointerPos);
+
+                if(pointerScreenPosVal != Vector2.zero)
+                {
+                    worldPointerPos = PointerToWorldPos(pointerScreenPosVal);
+                }
             }
+
+            aimTarget.transform.position = worldPointerPos;
+
 
             if (attack.inProgress)
             {
@@ -106,11 +135,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private Vector3 GetPointerValue()
+    private Vector3 GetPointerValue(Vector2 pointerPos)
     {
         Vector2 targetPointerPos = Vector2.zero;
-
-        Vector2 pointerPos = pointerPosition.ReadValue<Vector2>();
 
         if (/*!EventSystem.current.IsPointerOverGameObject() &&*/
             pointerPos.x <= Screen.width && pointerPos.x >= 0 &&
@@ -223,8 +250,7 @@ public class PlayerController : MonoBehaviour
             if (GameController.Instance.IsGameStarted)
             {
                 Gizmos.color = Color.red;
-                Vector2 pointerScreenPosVal = GetPointerValue();
-                Gizmos.DrawWireSphere(PointerToWorldPos(pointerScreenPosVal), 0.25f);
+                Gizmos.DrawWireSphere(worldPointerPos, 0.25f);
             }
         }
     }
