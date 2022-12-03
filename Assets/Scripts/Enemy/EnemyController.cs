@@ -40,7 +40,7 @@ public class EnemyController : MonoBehaviour
 		attackCooldown.StartCooldown();
 	}
 
-    private void Update()
+    private void FixedUpdate()
     {
         NavigateTowardsPlayer();
         RotateModelTowardsPlayer();

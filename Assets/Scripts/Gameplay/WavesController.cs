@@ -121,7 +121,7 @@ public class WavesController : MonoBehaviour
         {
             GUI.color = Color.black;
 
-            GUILayout.BeginArea(new Rect(0, Screen.height - 100f, 150f, 100));
+            GUILayout.BeginArea(new Rect(0, Screen.height - 125f, 250f, 125));
 
             GUILayout.Label($"CurrentWaveId: {currentWaveId}");
             GUILayout.Label($"IsWaveRunning: {isWaveRunning}");
@@ -129,6 +129,8 @@ public class WavesController : MonoBehaviour
             GUILayout.Label($"WaveTimer: {TimeConverter.ConvertTimeStripped(waveTimer.GetTime())}");
 
             GUILayout.Label($"EnemiesCount: {enemySpawner.TotalCount}");
+
+            GUILayout.Label($"cooldownTimer: {TimeConverter.ConvertTimeStripped(cooldownTimer.GetTime())}");
 
             GUILayout.EndArea();
         }

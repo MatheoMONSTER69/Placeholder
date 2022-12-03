@@ -94,7 +94,7 @@ public class PlayerController : MonoBehaviour
                 aimTarget.transform.position = worldPointerPos;
             }
 
-            if (attack.triggered)
+            if (attack.inProgress)
             {
                 Attack();
             }
@@ -171,9 +171,9 @@ public class PlayerController : MonoBehaviour
 
     private void Attack()
     {
-        if (weaponController.CurrentWeapon != null && !weaponController.Meele.IsInUse)
+        if (weaponController != null)
         {
-            weaponController.CurrentWeapon.Attack();
+            weaponController.Attack(worldPointerPos);
         }
     }
 
