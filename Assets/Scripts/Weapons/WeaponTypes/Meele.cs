@@ -36,10 +36,11 @@ public class Meele : Weapon
     {
         List<EnemyStats> enemies = GetEnemies(targetPos);
 
-        ApplyDamage(enemies);
-
 
         TrailEffect();
+
+
+        ApplyDamage(enemies);
 
 
         base.Attack(targetPos);
@@ -50,9 +51,9 @@ public class Meele : Weapon
     {
         List<EnemyStats> enemies = new();
 
-        if (weaponBarrelEnd != null && GameController.Instance.PlayerController != null)
+        if (weaponBarrelEnd != null && playerController != null)
         {
-            RaycastHit[] hits = Physics.SphereCastAll(GameController.Instance.PlayerController.transform.position, range / 2, GameController.Instance.PlayerController.transform.forward, range, enemyLayer);
+            RaycastHit[] hits = Physics.SphereCastAll(playerController.transform.position, range / 2, playerController.transform.forward, range, enemyLayer);
 
             if (hits.Length > 0)
             {
@@ -76,7 +77,9 @@ public class Meele : Weapon
             int damagedEnemies = 0;
             foreach (EnemyStats enemy in enemies)
             {
-                float delay = (float)(damagedEnemies / (float)(enemies.Count - 1)) * damageTime;
+                //Apply half of weapon damage, then apply the other half scaled by how close the enemy is to the player
+                float enemyFract = 1 - (float)((float)damagedEnemies / (float)enemies.Count);
+                float delay = damageTime * enemyFract;
 
                 StartCoroutine(DeleyedDamage(enemy, Damage, delay));
 

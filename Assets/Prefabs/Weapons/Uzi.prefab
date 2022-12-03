@@ -54,8 +54,8 @@ MonoBehaviour:
   Name: Uzi
   Damage: 1
   AttackSpeed: 0.1
-  SwitchTime: 0.75
-  usePenetration: 0
+  SwitchTime: 1.5
+  penetrationAmount: 1
   muzzleFlash: {fileID: 0}
   muzzleFlashDuration: 0.05
   trail: {fileID: 0}

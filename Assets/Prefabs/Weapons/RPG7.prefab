@@ -54,4 +54,4 @@ MonoBehaviour:
   Name: RPG-7
   Damage: 100
   AttackSpeed: 3
-  SwitchTime: 1.5
+  SwitchTime: 3

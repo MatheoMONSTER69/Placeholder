@@ -11,12 +11,13 @@ public class Weapon : MonoBehaviour
     public WeaponAnimStance WeaponAnimStance = WeaponAnimStance.Long;
     [SerializeField] protected Transform weaponBarrelEnd;
     [SerializeField] protected LayerMask enemyLayer;
+    protected PlayerController playerController;
 
     [Header("Settings")]
     public string Name = "Weapon";
     public float Damage = 5;
     public float AttackSpeed = 0.1f;
-    public float SwitchTime = 1.5f;
+    public float SwitchTime = 1.5f; //1.5 is anim time
 
     public Cooldown AttackCooldown;
 
@@ -28,6 +29,11 @@ public class Weapon : MonoBehaviour
         AttackCooldown = new Cooldown(AttackSpeed);
 
         ShowBack();
+
+        if(GameController.Instance != null)
+        {
+            playerController = GameController.Instance.PlayerController;
+        }
     }
 
 
@@ -38,6 +44,22 @@ public class Weapon : MonoBehaviour
 
     //Meant to be overridden
     protected virtual List<EnemyStats> GetEnemies(Vector3 targetPos) { return new List<EnemyStats>(); }
+
+    protected virtual Vector3 GetDirectionToTarget(Vector3 targetPos)
+    {
+        Vector3 risedPlayerPos = new Vector3(playerController.transform.position.x, weaponBarrelEnd.position.y, playerController.transform.position.z);
+        Vector3 raisedTargetPos = new Vector3(targetPos.x, weaponBarrelEnd.position.y, targetPos.z);
+
+        return (raisedTargetPos - risedPlayerPos).normalized;
+    }
+    protected virtual RaycastHit[] RaycastEnemies(Vector3 targetPos)
+    {
+        Vector3 risedPlayerPos = new Vector3(playerController.transform.position.x, weaponBarrelEnd.position.y, playerController.transform.position.z);
+
+        Vector3 dir = GetDirectionToTarget(targetPos);
+
+        return Physics.RaycastAll(risedPlayerPos, dir, float.MaxValue, enemyLayer);
+    }
 
     protected virtual void ApplyDamage(List<EnemyStats> enemies)
     {

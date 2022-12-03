@@ -56,5 +56,6 @@ MonoBehaviour:
   AttackSpeed: 10
   SwitchTime: 0
   range: 3
+  damageTime: 0.75
   trail: {fileID: 0}
   trailDuration: 0.19

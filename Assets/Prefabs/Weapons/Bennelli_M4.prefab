@@ -54,8 +54,8 @@ MonoBehaviour:
   Name: Bennelli M4
   Damage: 10
   AttackSpeed: 1
-  SwitchTime: 1
-  usePenetration: 1
+  SwitchTime: 2
+  penetrationAmount: -1
   muzzleFlash: {fileID: 0}
   muzzleFlashDuration: 0.05
   trail: {fileID: 0}

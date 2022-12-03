@@ -6,7 +6,7 @@ using UnityEngine;
 public class Rifle : Weapon
 {
     [Header("Rifle")]
-    [SerializeField] private bool usePenetration = false;
+    [SerializeField] private int penetrationAmount = -1; // -1: no limit
 
     [Header("Effects")]
     [Header("Muzzle Flash")]
@@ -47,12 +47,13 @@ public class Rifle : Weapon
     {
         List<EnemyStats> enemies = GetEnemies(targetPos);
 
-        ApplyDamage(enemies);
-
 
         MuzzleFlashEffect();
 
-        BulletTrailEffect(targetPos, enemies.Count > 0 ? enemies[0].transform : null);
+        BulletTrailEffect(targetPos, (penetrationAmount != -1 && enemies.Count > penetrationAmount - 1) ? enemies[penetrationAmount-1].transform : null);
+
+
+        ApplyDamage(enemies);
 
 
         base.Attack(targetPos);
@@ -63,11 +64,11 @@ public class Rifle : Weapon
     {
         List<EnemyStats> enemies = new();
 
-        if(weaponBarrelEnd != null)
+        if(weaponBarrelEnd != null && playerController != null)
         {
-            Vector3 dir = (new Vector3(targetPos.x, weaponBarrelEnd.position.y, targetPos.z) - weaponBarrelEnd.position).normalized;
+            RaycastHit[] hits = RaycastEnemies(targetPos);
 
-            RaycastHit[] hits = Physics.RaycastAll(weaponBarrelEnd.position, dir, float.MaxValue, enemyLayer);
+            int damagedEnemies = 0;
 
             if (hits.Length > 0)
             {
@@ -75,12 +76,14 @@ public class Rifle : Weapon
                 {
                     if (hit.transform.TryGetComponent(out EnemyStats enemyStats))
                     {
-                        enemies.Add(enemyStats);
-
-                        if (!usePenetration)
+                        if (penetrationAmount != -1 && damagedEnemies >= penetrationAmount)
                         {
                             break;
                         }
+
+                        enemies.Add(enemyStats);
+
+                        damagedEnemies++;
                     }
                 }
             }
@@ -93,20 +96,16 @@ public class Rifle : Weapon
     {
         if(enemies.Count > 0)
         {
-            if (usePenetration)
+            int damagedEnemies = 0;
+            foreach (EnemyStats enemy in enemies)
             {
-                foreach (EnemyStats enemy in enemies)
-                {
-                    float damage = Damage;
+                //Apply half of weapon damage, then apply the other half scaled by how close the enemy is to the player
+                float enemyFract = 1 - (float)((float)damagedEnemies / (float)enemies.Count);
+                float damage = (Damage / 2) + ((Damage / 2) * enemyFract);
 
-                    //TODO scale damage based on distance and amount of enemies hit (enemies.Count and Vector3.Distance(weaponBarrelEnd.position, enemy.transform.position))
+                enemy.TakeDamage(damage);
 
-                    enemy.TakeDamage(damage);
-                }
-            }
-            else
-            {
-                enemies[0].TakeDamage(Damage);
+                damagedEnemies++;
             }
         }
     }
@@ -131,7 +130,7 @@ public class Rifle : Weapon
 
     private void BulletTrailEffect(Vector3 targetPos, Transform enemy)
     {
-        if (trail != null && weaponBarrelEnd != null)
+        if (trail != null && weaponBarrelEnd != null && playerController != null)
         {
             if (trailCoroutineIsRunning)
             {
@@ -144,14 +143,16 @@ public class Rifle : Weapon
             trail.SetPosition(0, weaponBarrelEnd.position);
 
             float currentTrailLength = trailLength;
-            if (!usePenetration && enemy != null)
+            if (enemy != null)
             {
                 currentTrailLength = Vector3.Distance(trail.GetPosition(0), enemy.transform.position);
             }
 
             //Direction on same Y level
-            Vector3 dir = (new Vector3(targetPos.x, weaponBarrelEnd.position.y, targetPos.z) - weaponBarrelEnd.position).normalized;
-            trail.SetPosition(trail.positionCount - 1, weaponBarrelEnd.position + dir * currentTrailLength);
+            Vector3 risedPlayerPos = new Vector3(playerController.transform.position.x, weaponBarrelEnd.position.y, playerController.transform.position.z);
+            Vector3 dir = GetDirectionToTarget(targetPos);
+
+            trail.SetPosition(trail.positionCount - 1, risedPlayerPos + dir * currentTrailLength);
 
             trailCoroutine = StartCoroutine(BulletTrail(trailDuration));
         }
@@ -192,7 +193,7 @@ public class Rifle : Weapon
 
             GUILayout.BeginArea(new Rect(Screen.width - 250f, (Screen.height / 2) + 50f, 250f, 25f));
 
-            GUILayout.Label($"usePenetration: {usePenetration}");
+            GUILayout.Label($"penetrationAmount: {penetrationAmount}");
 
             GUILayout.EndArea();
         }

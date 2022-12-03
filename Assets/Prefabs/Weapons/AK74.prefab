@@ -54,8 +54,8 @@ MonoBehaviour:
   Name: AK-74
   Damage: 5
   AttackSpeed: 0.3
-  SwitchTime: 1
-  usePenetration: 1
+  SwitchTime: 1.5
+  penetrationAmount: 3
   muzzleFlash: {fileID: 0}
   muzzleFlashDuration: 0.05
   trail: {fileID: 0}
