@@ -5,7 +5,7 @@ using UnityEngine;
 public class Meele : Weapon
 {
     [Header("Meele")]
-    [SerializeField] private float range = 5.0f;
+    [SerializeField] private float range = 3.0f;
     [SerializeField] private float damageTime = 0.75f;
 
     [Header("Effects")]

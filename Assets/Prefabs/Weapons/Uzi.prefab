@@ -52,10 +52,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   Name: Uzi
-  Damage: 1
+  Damage: 5
   AttackSpeed: 0.1
   SwitchTime: 1.5
-  penetrationAmount: 1
+  penetrationAmount: 2
   muzzleFlash: {fileID: 0}
   muzzleFlashDuration: 0.05
   trail: {fileID: 0}

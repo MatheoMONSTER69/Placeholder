@@ -221,6 +221,7 @@ MonoBehaviour:
   EnemySO: {fileID: 11400000, guid: 138100be116295340b5506476c0c5280, type: 2}
   enemyModel: {fileID: 7087238813634609034}
   movementOffset: 1.5
+  pathfindCooldown: 0.5
 --- !u!114 &8609907924405114482
 MonoBehaviour:
   m_ObjectHideFlags: 0

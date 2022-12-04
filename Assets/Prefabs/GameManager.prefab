@@ -148,30 +148,34 @@ MonoBehaviour:
   - Enemies:
       dictionaryAsList:
       - key: {fileID: 11400000, guid: 138100be116295340b5506476c0c5280, type: 2}
-        value: 3
-    Cooldown: 10
+        value: 500
+    CooldownAfterWave: 10
     Finished: 0
     Time: 0
     WaveScore: 0
   - Enemies:
       dictionaryAsList:
       - key: {fileID: 11400000, guid: 138100be116295340b5506476c0c5280, type: 2}
-        value: 3
-    Cooldown: 10
+        value: 750
+    CooldownAfterWave: 10
     Finished: 0
     Time: 0
     WaveScore: 0
   - Enemies:
       dictionaryAsList:
       - key: {fileID: 11400000, guid: 138100be116295340b5506476c0c5280, type: 2}
-        value: 3
-    Cooldown: 10
+        value: 1000
+    CooldownAfterWave: 10
     Finished: 0
     Time: 0
     WaveScore: 0
-  initialCooldown: 5
-  isWaveRunning: 0
   currentWaveId: 0
+  initialCooldown: 5
+  maxEnemiesOnScene: 200
+  cooldownBetweenEnemySpawn: 0.1
+  isWaveRunning: 0
+  allEnemiesSpawned: 0
+  enemiesSpawnedInCurrentWave: 0
   OnWaveStart:
     m_PersistentCalls:
       m_Calls: []

@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.InputSystem;
+using UnityEngine.Windows;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,7 +13,7 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public PlayerStats stats;
     private Animator anim;
     private CharacterController controller;
-    [SerializeField] private GameObject aimTarget;
+    [SerializeField] private Transform aimTarget;
 
     [Header("Settings")]
     [SerializeField] private float movementSpeed = 5.0f;
@@ -31,12 +33,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask inputPlaneLayer;
 
     private InputAction pointerPosition;
+    private InputAction gamepadPosition;
     private InputAction movement;
     private InputAction dodge;
     private InputAction attack;
 
     private Vector2 movementInput = Vector2.zero;
-    private Vector3 worldPointerPos = Vector3.zero;
 
     [Header("States")]
     [HideInInspector] public bool IsDodging = false;
@@ -45,6 +47,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         pointerPosition = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.PointerPosition);
+        gamepadPosition = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.GamepadPosition);
         movement = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.Movement);
         dodge = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.Dodge);
         attack = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.Attack);
@@ -70,7 +73,7 @@ public class PlayerController : MonoBehaviour
         GetPlayerInput();
 
         MovePlayer(movementInput);
-        RotatePlayer(worldPointerPos);
+        RotatePlayer(aimTarget.position);
     }
 
     private void LateUpdate()
@@ -87,12 +90,49 @@ public class PlayerController : MonoBehaviour
             movementInput = movement.ReadValue<Vector2>();
             movementInput = Vector3.ClampMagnitude(movementInput, 1); //Limit when going sideways
 
-            Vector2 pointerScreenPosVal = GetPointerValue();
-            if (pointerScreenPosVal != Vector2.zero)
+
+            Vector2 gamepadPos = gamepadPosition.ReadValue<Vector2>();
+            Vector2 pointerPos = pointerPosition.ReadValue<Vector2>();
+
+            if(InputManager.Instance.LastPointerDevice == InputDeviceType.Gamepad)
             {
-                worldPointerPos = PointerToWorldPos(pointerScreenPosVal);
-                aimTarget.transform.position = worldPointerPos;
+                Vector3 right = mainCam.transform.right;
+                Vector3 forward = mainCam.transform.forward;
+
+                Vector3 dir = right.normalized * gamepadPos.x + forward.normalized * gamepadPos.y;
+
+                if (gamepadPos != Vector2.zero)
+                {
+                    aimTarget.parent = transform.parent;
+                    aimTarget.position = new Vector3(transform.position.x + dir.x, transform.position.y, transform.position.z + dir.z);
+                }
+                else
+                {
+                    //move with player
+                    aimTarget.parent = transform;
+                }
             }
+            else if(InputManager.Instance.LastPointerDevice == InputDeviceType.Mouse || InputManager.Instance.LastPointerDevice == InputDeviceType.Touchscreen)
+            {
+                Vector2 pointerScreenPosVal = GetPointerValue(pointerPos);
+
+                if (pointerScreenPosVal != Vector2.zero)
+                {
+                    aimTarget.parent = transform.parent;
+                    aimTarget.position = PointerToWorldPos(pointerScreenPosVal);
+                }
+                else
+                {
+                    //move with player
+                    aimTarget.parent = transform;
+                }
+            }
+            else
+            {
+                //move with player
+                aimTarget.parent = transform;
+            }
+
 
             if (attack.inProgress)
             {
@@ -106,11 +146,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private Vector3 GetPointerValue()
+    private Vector3 GetPointerValue(Vector2 pointerPos)
     {
         Vector2 targetPointerPos = Vector2.zero;
-
-        Vector2 pointerPos = pointerPosition.ReadValue<Vector2>();
 
         if (/*!EventSystem.current.IsPointerOverGameObject() &&*/
             pointerPos.x <= Screen.width && pointerPos.x >= 0 &&
@@ -118,8 +156,6 @@ public class PlayerController : MonoBehaviour
         {
             targetPointerPos = pointerPosition.ReadValue<Vector2>();
         }
-
-        //TODO: Add gamepad right stick support
 
         return targetPointerPos;
     }
@@ -173,7 +209,7 @@ public class PlayerController : MonoBehaviour
     {
         if (weaponController != null)
         {
-            weaponController.Attack(worldPointerPos);
+            weaponController.Attack(aimTarget.position);
         }
     }
 
@@ -223,8 +259,7 @@ public class PlayerController : MonoBehaviour
             if (GameController.Instance.IsGameStarted)
             {
                 Gizmos.color = Color.red;
-                Vector2 pointerScreenPosVal = GetPointerValue();
-                Gizmos.DrawWireSphere(PointerToWorldPos(pointerScreenPosVal), 0.25f);
+                Gizmos.DrawWireSphere(aimTarget.position, 0.25f);
             }
         }
     }

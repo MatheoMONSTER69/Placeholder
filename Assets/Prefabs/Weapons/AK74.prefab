@@ -52,10 +52,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   Name: AK-74
-  Damage: 5
+  Damage: 10
   AttackSpeed: 0.3
   SwitchTime: 1.5
-  penetrationAmount: 3
+  penetrationAmount: 5
   muzzleFlash: {fileID: 0}
   muzzleFlashDuration: 0.05
   trail: {fileID: 0}
