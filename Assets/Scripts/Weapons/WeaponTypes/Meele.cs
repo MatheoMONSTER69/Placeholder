@@ -137,7 +137,7 @@ public class Meele : Weapon
             GUILayout.Label($"Name: {Name}");
             GUILayout.Label($"Damage: {Damage}");
             GUILayout.Label($"AttackSpeed: {AttackSpeed}");
-            GUILayout.Label($"AttackCooldown: {AttackCooldown.IsStarted && !AttackCooldown.CooldownEnded}");
+            GUILayout.Label($"AttackCooldown: {AttackCooldown.IsInCooldown}");
             GUILayout.Label($"Range: {range}");
             GUILayout.Label($"DamageTime: {damageTime}");
 

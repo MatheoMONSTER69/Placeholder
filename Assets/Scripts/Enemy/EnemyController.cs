@@ -48,7 +48,7 @@ public class EnemyController : MonoBehaviour
 
         if (EnemySO != null)
         {
-            if (attackCooldown.CooldownEnded && GetDistanceToPlayer() <= EnemySO.AttackRange)
+            if (!attackCooldown.IsInCooldown && GetDistanceToPlayer() <= EnemySO.AttackRange)
             {
                 AttackPlayer();
                 attackCooldown.StartCooldown();
