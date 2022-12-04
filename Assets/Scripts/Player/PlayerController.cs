@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour
         gamepadPosition = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.GamepadPosition);
         movement = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.Movement);
         dodge = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.Dodge);
-        attack = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.Attack);
+        attack = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.Attack); 
     }
 
     private void Start()
@@ -66,6 +66,13 @@ public class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController>();
 
         mainCam = Camera.main;
+
+        stats.OnDamageTaken.AddListener(TakeDamage);
+    }
+
+    private void OnDisable()
+    {
+        stats.OnDamageTaken.RemoveListener(TakeDamage);
     }
 
     private void Update()
@@ -211,6 +218,11 @@ public class PlayerController : MonoBehaviour
         {
             weaponController.Attack(aimTarget.position);
         }
+    }
+
+    private void TakeDamage()
+    {
+        anim.SetTrigger("GetHurt");
     }
 
     private void Dodge()

@@ -5,7 +5,6 @@ public class Cooldown
     public bool IsInCooldown => Time.time <= _nextFireTime;
 
     private readonly float _cooldownTime;
-
     private float _nextFireTime = 0;
 
 
