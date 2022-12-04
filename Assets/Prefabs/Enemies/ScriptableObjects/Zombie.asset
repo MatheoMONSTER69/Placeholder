@@ -19,5 +19,5 @@ MonoBehaviour:
   Damage: 5
   MovingSpeed: 5
   PointsForKill: 1
-  AttackRange: 2
+  AttackRange: 1.75
   AttackCooldown: 1

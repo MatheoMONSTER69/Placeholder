@@ -18,6 +18,6 @@ public class EnemySO : ScriptableObject
     public int PointsForKill = 1;
 
     [Header("Combat")]
-    public float AttackRange = 2.0f;
+    public float AttackRange = 1.75f;
     public float AttackCooldown = 1.0f;
 }

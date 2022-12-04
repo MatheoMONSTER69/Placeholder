@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour
         gamepadPosition = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.GamepadPosition);
         movement = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.Movement);
         dodge = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.Dodge);
-        attack = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.Attack);
+        attack = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.Attack); 
     }
 
     private void Start()
@@ -66,6 +66,13 @@ public class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController>();
 
         mainCam = Camera.main;
+
+        stats.OnDamageTaken.AddListener(TakeDamage);
+    }
+
+    private void OnDisable()
+    {
+        stats.OnDamageTaken.RemoveListener(TakeDamage);
     }
 
     private void Update()
@@ -94,7 +101,7 @@ public class PlayerController : MonoBehaviour
             Vector2 gamepadPos = gamepadPosition.ReadValue<Vector2>();
             Vector2 pointerPos = pointerPosition.ReadValue<Vector2>();
 
-            if(InputManager.Instance.LastPointerDevice == InputDeviceType.Gamepad)
+            if(InputManager.Instance.LastInputDevice == InputDeviceType.Gamepad)
             {
                 Vector3 right = mainCam.transform.right;
                 Vector3 forward = mainCam.transform.forward;
@@ -112,7 +119,7 @@ public class PlayerController : MonoBehaviour
                     aimTarget.parent = transform;
                 }
             }
-            else if(InputManager.Instance.LastPointerDevice == InputDeviceType.Mouse || InputManager.Instance.LastPointerDevice == InputDeviceType.Touchscreen)
+            else if(InputManager.Instance.LastInputDevice == InputDeviceType.MouseAndKeyboard || InputManager.Instance.LastInputDevice == InputDeviceType.Touchscreen)
             {
                 Vector2 pointerScreenPosVal = GetPointerValue(pointerPos);
 
@@ -211,6 +218,11 @@ public class PlayerController : MonoBehaviour
         {
             weaponController.Attack(aimTarget.position);
         }
+    }
+
+    private void TakeDamage()
+    {
+        anim.SetTrigger("GetHurt");
     }
 
     private void Dodge()

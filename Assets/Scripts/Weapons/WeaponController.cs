@@ -42,7 +42,7 @@ public class WeaponController : MonoBehaviour
 
     private void Update()
     {
-        if((!switchCooldown.IsStarted || switchCooldown.CooldownEnded) && !Meele.IsInUse)
+        if((!switchCooldown.IsInCooldown) && !Meele.IsInUse)
         {
             float weaponChangeValue = weaponChangeAxis.ReadValue<float>();
 
@@ -149,8 +149,8 @@ public class WeaponController : MonoBehaviour
         if(
             CurrentWeapon != null && 
             (CurrentWeapon != Meele && !Meele.IsInUse) &&
-            (!switchCooldown.IsStarted || switchCooldown.CooldownEnded) &&
-            (!CurrentWeapon.AttackCooldown.IsStarted || CurrentWeapon.AttackCooldown.CooldownEnded))
+            !switchCooldown.IsInCooldown &&
+            !CurrentWeapon.AttackCooldown.IsInCooldown)
         {
             CurrentWeapon.Attack(targetPos);
         }
@@ -160,9 +160,9 @@ public class WeaponController : MonoBehaviour
         if (
             CurrentWeapon != null &&
             (CurrentWeapon != Meele && !Meele.IsInUse) &&
-            (!switchCooldown.IsStarted || switchCooldown.CooldownEnded) &&
-            (!CurrentWeapon.AttackCooldown.IsStarted || CurrentWeapon.AttackCooldown.CooldownEnded) &&
-            (!Meele.AttackCooldown.IsStarted || Meele.AttackCooldown.CooldownEnded))
+            !switchCooldown.IsInCooldown &&
+            !CurrentWeapon.AttackCooldown.IsInCooldown &&
+            !Meele.AttackCooldown.IsInCooldown)
         {
             anim.SetTrigger("Meele");
             Meele.Attack(targetPos);
@@ -181,7 +181,7 @@ public class WeaponController : MonoBehaviour
             GUILayout.Label($"CurrentWeapon: {CurrentWeapon}");
             GUILayout.Label($"PrevWeapon: {PrevWeapon}");
             GUILayout.Label($"MeeleInUse: {Meele.IsInUse}");
-            GUILayout.Label($"SwitchCooldown: {switchCooldown.IsStarted}");
+            GUILayout.Label($"SwitchCooldown: {switchCooldown.IsInCooldown}");
 
             GUILayout.EndArea();
         }

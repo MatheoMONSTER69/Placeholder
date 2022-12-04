@@ -8,6 +8,7 @@ public class EnemyController : MonoBehaviour
 	public EnemySO EnemySO = null;
 
 	[SerializeField] private Transform enemyModel;
+    private Animator anim;
 
 	private Transform playerTransform;
     private NavMeshAgent navMesh;
@@ -25,8 +26,9 @@ public class EnemyController : MonoBehaviour
         playerTransform = GameController.Instance.PlayerController.transform;
         navMesh = GetComponent<NavMeshAgent>();
         stats = GetComponent<EnemyStats>();
+        anim = enemyModel.GetComponentInChildren<Animator>();
 
-        if(EnemySO != null)
+        if (EnemySO != null)
         {
             stats.Init(EnemySO);
 		}
@@ -39,7 +41,14 @@ public class EnemyController : MonoBehaviour
 
 		attackCooldown = new(EnemySO.AttackCooldown);
 		attackCooldown.StartCooldown();
-	}
+
+        stats.OnDamageTaken.AddListener(TakeDamage);
+    }
+
+    private void OnDisable()
+    {
+        stats.OnDamageTaken.RemoveListener(TakeDamage);
+    }
 
     private void FixedUpdate()
     {
@@ -48,7 +57,7 @@ public class EnemyController : MonoBehaviour
 
         if (EnemySO != null)
         {
-            if (attackCooldown.CooldownEnded && GetDistanceToPlayer() <= EnemySO.AttackRange)
+            if (!attackCooldown.IsInCooldown && GetDistanceToPlayer() <= EnemySO.AttackRange)
             {
                 AttackPlayer();
                 attackCooldown.StartCooldown();
@@ -90,7 +99,12 @@ public class EnemyController : MonoBehaviour
 
     private void AttackPlayer()
     {
+        anim.SetTrigger("Attack");
         GameController.Instance.PlayerController.stats.TakeDamage(EnemySO.Damage);
+    }
+    private void TakeDamage()
+    {
+        anim.SetTrigger("GetHurt");
     }
 
 

@@ -2,14 +2,10 @@ using UnityEngine;
 
 public class Cooldown
 {
-    public bool CooldownEnded => IsCooldownEnded();
+    public bool IsInCooldown => Time.time <= _nextFireTime;
 
     private readonly float _cooldownTime;
-
-    private float _nextFireTime = Mathf.Infinity;
-
-    private bool _isStarted;
-    public bool IsStarted => _isStarted;
+    private float _nextFireTime = 0;
 
 
     public Cooldown(float cooldownTime, bool startWhenInit = false)
@@ -22,20 +18,8 @@ public class Cooldown
         } 
     }
 
-
     public void StartCooldown()
     {
         _nextFireTime = Time.time + _cooldownTime;
-        _isStarted = true;
-    }
-
-    private bool IsCooldownEnded()
-    {
-        if (Time.time > _nextFireTime)
-        {
-            _isStarted = false;
-        }
-
-        return Time.time > _nextFireTime;
     }
 }

@@ -97,7 +97,7 @@ public class Weapon : MonoBehaviour
             GUILayout.Label($"Damage: {Damage}");
             GUILayout.Label($"AttackSpeed: {AttackSpeed}");
             GUILayout.Label($"SwitchTime: {SwitchTime}");
-            GUILayout.Label($"AttackCooldown: {AttackCooldown.IsStarted && !AttackCooldown.CooldownEnded}");
+            GUILayout.Label($"AttackCooldown: {AttackCooldown.IsInCooldown}");
 
             GUILayout.EndArea();
         }

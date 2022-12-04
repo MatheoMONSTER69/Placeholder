@@ -1,20 +1,20 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
+using UnityEngine.InputSystem.Utilities;
+using UnityEngine.InputSystem.LowLevel;
 
 [DefaultExecutionOrder(-100)]
 public class InputManager : MonoBehaviour
 {
     [Header("States")]
-    public InputDeviceType LastPointerDevice = InputDeviceType.Unknown;
+    public InputDeviceType LastInputDevice = InputDeviceType.Unknown;
 
     [Header("Reference")]
     private InputActionAsset actionMapAsset;
     private PlayerInput playerInput;
 
-    private InputAction mousePointerInput;
-    private InputAction gamepadPointerPosition;
-    private Vector2 prevMousePointerPos = Vector2.zero;
+    private IDisposable anyInputListener;
 
 
     public static InputManager Instance { get; private set; }
@@ -35,42 +35,18 @@ public class InputManager : MonoBehaviour
 
         playerInput = GetComponent<PlayerInput>();
 		actionMapAsset = playerInput.actions;
-
-
-        //For pointer detection
-        mousePointerInput = GetAction(ActionMapType.Gameplay, InputType.PointerPosition);
-        gamepadPointerPosition = GetAction(ActionMapType.Gameplay, InputType.GamepadPosition);
     }
 
-    private void Update()
+    void OnEnable()
     {
-        CheckPointerInputDevice();
+        anyInputListener = InputSystem.onEvent.Call(DetectLastInputDevice);
     }
 
-
-    private void CheckPointerInputDevice()
+    void OnDisable()
     {
-        Vector2 gamepadPos = gamepadPointerPosition.ReadValue<Vector2>();
-        Vector2 mousePos = mousePointerInput.ReadValue<Vector2>();
-
-        //Gamepad
-        if (Gamepad.current != null && gamepadPos != Vector2.zero && mousePos == prevMousePointerPos)
-        {
-            LastPointerDevice = InputDeviceType.Gamepad;
-        }
-        //Touchscreen
-        else if (Touchscreen.current != null && Touchscreen.current.touches.Count > 0)
-        {
-            LastPointerDevice = InputDeviceType.Touchscreen;
-        }
-        //Mouse
-        else if (Mouse.current != null && mousePos != prevMousePointerPos)
-        {
-            prevMousePointerPos = mousePos;
-
-            LastPointerDevice = InputDeviceType.Mouse;
-        }
+        anyInputListener.Dispose();
     }
+
 
     public InputAction GetAction(ActionMapType actionMap, InputType actionType)
     {
@@ -90,5 +66,31 @@ public class InputManager : MonoBehaviour
         {
             action.Enable();
 		}
+    }
+
+    private void DetectLastInputDevice(InputEventPtr e)
+    {
+        try
+        {
+            InputDevice currentInputDevice = InputSystem.GetDeviceById(e.deviceId);
+
+            if (currentInputDevice is Keyboard || currentInputDevice is Mouse)
+            {
+                LastInputDevice = InputDeviceType.MouseAndKeyboard;
+            }
+            else if(currentInputDevice is Gamepad)
+            {
+                LastInputDevice = InputDeviceType.Gamepad;
+            }
+            else if (currentInputDevice is Touchscreen)
+            {
+                LastInputDevice = InputDeviceType.Touchscreen;
+            }
+            else
+            {
+                LastInputDevice = InputDeviceType.Unknown;
+            }
+        }
+        catch { }
     }
 }

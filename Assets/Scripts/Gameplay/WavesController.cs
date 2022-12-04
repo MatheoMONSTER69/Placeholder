@@ -122,12 +122,12 @@ public class WavesController : MonoBehaviour
 
     private IEnumerator EnemySpawning()
     {
+        float maxEnemyAmountToSpawn = CurrentWave.Enemies.dictionary.Values.Max();
+
         while (enemiesSpawnedInCurrentWave < CurrentWave.TotalEnemyCount)
         {
             while (enemySpawner.TotalCount < maxEnemiesOnScene)
             {
-                float maxEnemyAmountToSpawn = CurrentWave.Enemies.dictionary.Values.Max();
-
                 foreach (EnemySO enemy in CurrentWave.Enemies.dictionary.Keys)
                 {
                     //TODO: Test with different enemy types
