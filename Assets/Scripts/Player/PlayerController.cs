@@ -101,7 +101,7 @@ public class PlayerController : MonoBehaviour
             Vector2 gamepadPos = gamepadPosition.ReadValue<Vector2>();
             Vector2 pointerPos = pointerPosition.ReadValue<Vector2>();
 
-            if(InputManager.Instance.LastPointerDevice == InputDeviceType.Gamepad)
+            if(InputManager.Instance.LastInputDevice == InputDeviceType.Gamepad)
             {
                 Vector3 right = mainCam.transform.right;
                 Vector3 forward = mainCam.transform.forward;
@@ -119,7 +119,7 @@ public class PlayerController : MonoBehaviour
                     aimTarget.parent = transform;
                 }
             }
-            else if(InputManager.Instance.LastPointerDevice == InputDeviceType.Mouse || InputManager.Instance.LastPointerDevice == InputDeviceType.Touchscreen)
+            else if(InputManager.Instance.LastInputDevice == InputDeviceType.MouseAndKeyboard || InputManager.Instance.LastInputDevice == InputDeviceType.Touchscreen)
             {
                 Vector2 pointerScreenPosVal = GetPointerValue(pointerPos);
 

@@ -1,7 +1,7 @@
 ﻿public enum InputDeviceType
 {
     Unknown,
-    Mouse,
+    MouseAndKeyboard,
     Gamepad,
     Touchscreen
 }
