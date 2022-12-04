@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public PlayerStats stats;
     private Animator anim;
     private CharacterController controller;
-    [SerializeField] private GameObject aimTarget;
+    [SerializeField] private Transform aimTarget;
 
     [Header("Settings")]
     [SerializeField] private float movementSpeed = 5.0f;
@@ -39,9 +39,6 @@ public class PlayerController : MonoBehaviour
     private InputAction attack;
 
     private Vector2 movementInput = Vector2.zero;
-    private Vector3 worldPointerPos = Vector3.zero;
-
-    private Vector2 prevPointerPos = Vector2.zero;
 
     [Header("States")]
     [HideInInspector] public bool IsDodging = false;
@@ -76,7 +73,7 @@ public class PlayerController : MonoBehaviour
         GetPlayerInput();
 
         MovePlayer(movementInput);
-        RotatePlayer(worldPointerPos);
+        RotatePlayer(aimTarget.position);
     }
 
     private void LateUpdate()
@@ -97,30 +94,44 @@ public class PlayerController : MonoBehaviour
             Vector2 gamepadPos = gamepadPosition.ReadValue<Vector2>();
             Vector2 pointerPos = pointerPosition.ReadValue<Vector2>();
 
-            //Gamepad
-            if (Gamepad.current != null && gamepadPos != Vector2.zero && pointerPos == prevPointerPos)
+            if(InputManager.Instance.LastPointerDevice == InputDeviceType.Gamepad)
             {
                 Vector3 right = mainCam.transform.right;
                 Vector3 forward = mainCam.transform.forward;
 
                 Vector3 dir = right.normalized * gamepadPos.x + forward.normalized * gamepadPos.y;
 
-                worldPointerPos = new Vector3(transform.position.x + dir.x, transform.position.y, transform.position.z + dir.z);
-            }  
-            //Mouse
-            else if(Mouse.current != null && pointerPos != prevPointerPos)
-            {
-                prevPointerPos = pointerPos;
-
-                Vector2 pointerScreenPosVal = GetPointerValue(pointerPos);
-
-                if(pointerScreenPosVal != Vector2.zero)
+                if (gamepadPos != Vector2.zero)
                 {
-                    worldPointerPos = PointerToWorldPos(pointerScreenPosVal);
+                    aimTarget.parent = transform.parent;
+                    aimTarget.position = new Vector3(transform.position.x + dir.x, transform.position.y, transform.position.z + dir.z);
+                }
+                else
+                {
+                    //move with player
+                    aimTarget.parent = transform;
                 }
             }
+            else if(InputManager.Instance.LastPointerDevice == InputDeviceType.Mouse || InputManager.Instance.LastPointerDevice == InputDeviceType.Touchscreen)
+            {
+                Vector2 pointerScreenPosVal = GetPointerValue(pointerPos);
 
-            aimTarget.transform.position = worldPointerPos;
+                if (pointerScreenPosVal != Vector2.zero)
+                {
+                    aimTarget.parent = transform.parent;
+                    aimTarget.position = PointerToWorldPos(pointerScreenPosVal);
+                }
+                else
+                {
+                    //move with player
+                    aimTarget.parent = transform;
+                }
+            }
+            else
+            {
+                //move with player
+                aimTarget.parent = transform;
+            }
 
 
             if (attack.inProgress)
@@ -145,8 +156,6 @@ public class PlayerController : MonoBehaviour
         {
             targetPointerPos = pointerPosition.ReadValue<Vector2>();
         }
-
-        //TODO: Add gamepad right stick support
 
         return targetPointerPos;
     }
@@ -200,7 +209,7 @@ public class PlayerController : MonoBehaviour
     {
         if (weaponController != null)
         {
-            weaponController.Attack(worldPointerPos);
+            weaponController.Attack(aimTarget.position);
         }
     }
 
@@ -250,7 +259,7 @@ public class PlayerController : MonoBehaviour
             if (GameController.Instance.IsGameStarted)
             {
                 Gizmos.color = Color.red;
-                Gizmos.DrawWireSphere(worldPointerPos, 0.25f);
+                Gizmos.DrawWireSphere(aimTarget.position, 0.25f);
             }
         }
     }

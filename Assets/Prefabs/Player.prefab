@@ -644,7 +644,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerModel: {fileID: 779988912302885753}
   stats: {fileID: 0}
-  aimTarget: {fileID: 1904253200}
+  aimTarget: {fileID: 1904253201}
   movementSpeed: 7
   gravity: 1
   AnimationTransitionSpeed: 0.2
