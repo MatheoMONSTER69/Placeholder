@@ -55,6 +55,7 @@ MonoBehaviour:
   Damage: 10
   AttackSpeed: 0.3
   SwitchTime: 1.5
+  weaponSoundName: WeaponAK74Attack
   penetrationAmount: 5
   muzzleFlash: {fileID: 0}
   muzzleFlashDuration: 0.05

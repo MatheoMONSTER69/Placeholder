@@ -43,6 +43,8 @@ public class EnemySpawner : MonoBehaviour
             Instantiate(enemy.Prefab, spawnPoint.position, spawnPoint.rotation, enemyContainer);
 
             AddEnemyToCount(enemy.EnemyType);
+
+            AudioController.Instance.Play("EnemySpawn");
         }
         else
         {

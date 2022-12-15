@@ -55,6 +55,7 @@ MonoBehaviour:
   Damage: 5
   AttackSpeed: 0.1
   SwitchTime: 1.5
+  weaponSoundName: WeaponUziAttack
   penetrationAmount: 2
   muzzleFlash: {fileID: 0}
   muzzleFlashDuration: 0.05

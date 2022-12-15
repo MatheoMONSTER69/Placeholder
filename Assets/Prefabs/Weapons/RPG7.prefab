@@ -55,3 +55,4 @@ MonoBehaviour:
   Damage: 100
   AttackSpeed: 3
   SwitchTime: 3
+  weaponSoundName: WeaponRPG7Attack

@@ -24,6 +24,8 @@ public class ScoreCounter : MonoBehaviour
     {
         Score += score * CurrentMultiplier;
 
+        AudioController.Instance.Play("ScoreAdded");
+
         OnScoreChange.Invoke();
     }
 

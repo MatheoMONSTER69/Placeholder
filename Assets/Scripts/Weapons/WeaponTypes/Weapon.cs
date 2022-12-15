@@ -19,6 +19,8 @@ public class Weapon : MonoBehaviour
     public float AttackSpeed = 0.1f;
     public float SwitchTime = 1.5f; //1.5 is anim time
 
+    [SerializeField] protected string weaponSoundName;
+
     public Cooldown AttackCooldown;
 
     public bool IsInUse => HandGameObject.activeInHierarchy;
@@ -39,6 +41,8 @@ public class Weapon : MonoBehaviour
 
     public virtual void Attack(Vector3 targetPos)
     {
+        AudioController.Instance.Play(weaponSoundName);
+
         AttackCooldown.StartCooldown();
     }
 

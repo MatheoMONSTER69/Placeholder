@@ -8,17 +8,17 @@ public class EnemyController : MonoBehaviour
 	public EnemySO EnemySO = null;
 
 	[SerializeField] private Transform enemyModel;
-    private Animator anim;
+    protected Animator anim;
 
-	private Transform playerTransform;
-    private NavMeshAgent navMesh;
-    private EnemyStats stats;
+	protected Transform playerTransform;
+    protected NavMeshAgent navMesh;
+    protected EnemyStats stats;
 
-    private Cooldown attackCooldown;
+    protected Cooldown attackCooldown;
 
     [Header("Settings")]
     [Tooltip("How far from opponent should entity stop for them to not collide with each other")]
-    [SerializeField] private float movementOffset = 1.5f;
+    [SerializeField] protected float movementOffset = 1.5f;
 
 
     private void Start()
@@ -100,6 +100,9 @@ public class EnemyController : MonoBehaviour
     private void AttackPlayer()
     {
         anim.SetTrigger("Attack");
+
+        AudioController.Instance.Play("EnemyAttack");
+
         GameController.Instance.PlayerController.stats.TakeDamage(EnemySO.Damage);
     }
     private void TakeDamage()

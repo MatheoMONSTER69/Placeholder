@@ -55,6 +55,7 @@ MonoBehaviour:
   Damage: 20
   AttackSpeed: 1
   SwitchTime: 2
+  weaponSoundName: WeaponBennelli_M4Attack
   penetrationAmount: -1
   muzzleFlash: {fileID: 0}
   muzzleFlashDuration: 0.05

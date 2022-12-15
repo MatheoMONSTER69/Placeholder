@@ -55,6 +55,7 @@ MonoBehaviour:
   Damage: 10
   AttackSpeed: 10
   SwitchTime: 0
+  weaponSoundName: WeaponKatanaAttack
   range: 4
   damageTime: 0.75
   trail: {fileID: 0}

@@ -1,6 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UIElements;
+
 
 public class EnemyStats : Stats
 {
@@ -10,7 +14,7 @@ public class EnemyStats : Stats
     private EnemyType enemyType;
 
 
-	public void Init(EnemySO enemySO)
+    public void Init(EnemySO enemySO)
     {
         enemyType = enemySO.EnemyType;
         MaxHealth = enemySO.Health;
@@ -20,9 +24,18 @@ public class EnemyStats : Stats
         Health = MaxHealth;
 	}
 
+    public override void TakeDamage(float amount)
+    {
+        base.TakeDamage(amount);
+
+        AudioController.Instance.Play("EnemyTakeDamage");
+    }
+
     public override void Die()
     {
         base.Die();
+
+        AudioController.Instance.Play("EnemyDie");
 
         if (GameController.Instance != null)
         {
@@ -33,6 +46,8 @@ public class EnemyStats : Stats
                 GameController.Instance.EnemySpawner.RemoveEnemyFromCount(enemyType);
             }
         }
+
+        EnemyRemainsPlacer.PlaceRemains(transform.position);
 
         Destroy(transform.parent.gameObject);
 	}

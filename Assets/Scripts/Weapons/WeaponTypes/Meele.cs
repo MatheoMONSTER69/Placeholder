@@ -11,10 +11,10 @@ public class Meele : Weapon
     [Header("Effects")]
     [Header("Bullet Trail")]
     [SerializeField] private TrailRenderer trail;
-    [SerializeField] private float trailDuration = 0.19f;
+    /*[SerializeField] private float trailDuration = 0.19f;
 
     private Coroutine trailCoroutine;
-    private bool trailCoroutineIsRunning = false;
+    private bool trailCoroutineIsRunning = false;*/
 
 
     protected override void Start()
@@ -25,10 +25,10 @@ public class Meele : Weapon
     private void Awake()
     {
         //Effects
-        if (trail != null)
+        /*if (trail != null)
         {
             trail.gameObject.SetActive(false);
-        }
+        }*/
     }
 
 
@@ -37,7 +37,7 @@ public class Meele : Weapon
         List<EnemyStats> enemies = GetEnemies(targetPos);
 
 
-        TrailEffect();
+        //TrailEffect();
 
 
         ApplyDamage(enemies);
@@ -101,7 +101,7 @@ public class Meele : Weapon
 
 
     //Effects
-    private void TrailEffect()
+    /*private void TrailEffect()
     {
         if (trail != null)
         {
@@ -123,7 +123,7 @@ public class Meele : Weapon
         trail.gameObject.SetActive(false);
 
         trailCoroutineIsRunning = false;
-    }
+    }*/
 
 
     protected override void OnGUI()

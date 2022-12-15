@@ -5,18 +5,52 @@ using UnityEngine.InputSystem.XR;
 
 public class PlayerStats : Stats
 {
+    [Header("Health Rregeneration")]
+    [SerializeField] private float healthRegen = 5.0f;
+    [SerializeField] private float regenTime = 3.0f;
+
+    private Cooldown regenCooldown;
+
+
+    private void Start()
+    {
+        regenCooldown = new Cooldown(regenTime);
+    }
+
+    private void Update()
+    {
+        if(Health != MaxHealth && !regenCooldown.IsInCooldown)
+        {
+            Heal(healthRegen);
+            regenCooldown.StartCooldown();
+        }
+    }
+
+
     public override void Die()
     {
+        AudioController.Instance.Play("PlayerDie");
+
         GameController.Instance.StopGame(false);
 
         base.Die();
+    }
+
+    public override void Heal(float amount)
+    {
+        base.Heal(amount);
+
+        AudioController.Instance.Play("PlayerHeal");
     }
 
     public override void TakeDamage(float amount)
     {
         if(!GameController.Instance.PlayerController.IsDodging)
         {
+            AudioController.Instance.Play("PlayerTakeDamage");
+
             base.TakeDamage(amount);
+            regenCooldown.StartCooldown();
         }
     }
 

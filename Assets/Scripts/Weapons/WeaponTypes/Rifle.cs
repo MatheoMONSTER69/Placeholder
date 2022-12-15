@@ -52,7 +52,6 @@ public class Rifle : Weapon
 
         BulletTrailEffect(targetPos, (penetrationAmount != -1 && enemies.Count > penetrationAmount - 1) ? enemies[penetrationAmount-1].transform : null);
 
-
         ApplyDamage(enemies);
 
 
