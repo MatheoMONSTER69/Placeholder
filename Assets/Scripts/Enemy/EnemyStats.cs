@@ -47,7 +47,7 @@ public class EnemyStats : Stats
             }
         }
 
-        EnemyRemainsPlacer.PlaceRemains(transform.position);
+        EnemyParticlesPlacer.SpawnParticles(transform.position);
 
         Destroy(transform.parent.gameObject);
 	}
