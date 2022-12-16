@@ -11,28 +11,15 @@ public class AudioController : MonoBehaviour
 	[SerializeField] private List<Sound> sounds;
 
 
-    #region Singleton
-    public static AudioController Instance { get; private set; }
-	private void Awake()
-	{
-		// If there is an instance, and it's not me, delete myself.
-
-		if (Instance != null && Instance != this)
-		{
-			Destroy(this);
-		}
-		else
-		{
-			Instance = this;
-		}
-	}
-    #endregion
-
-
     private void Start()
 	{
-		//Set up source settings
-		foreach (Sound s in sounds)
+        if (GameController.Instance != null)
+        {
+            GameController.Instance.AudioController = this;
+        }
+
+        //Set up source settings
+        foreach (Sound s in sounds)
 		{
 			s.source.clip = s.clip;
 

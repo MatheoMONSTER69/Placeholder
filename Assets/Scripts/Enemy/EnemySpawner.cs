@@ -44,7 +44,7 @@ public class EnemySpawner : MonoBehaviour
 
             AddEnemyToCount(enemy.EnemyType);
 
-            AudioController.Instance.Play("EnemySpawn");
+            GameController.Instance.AudioController.Play("EnemySpawn");
         }
         else
         {

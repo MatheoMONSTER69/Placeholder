@@ -77,7 +77,7 @@ public class WavesController : MonoBehaviour
 
         StartCoroutine(EnemySpawning());
 
-        AudioController.Instance.Play("WaveStart");
+        GameController.Instance.AudioController.Play("WaveStart");
 
         OnWaveStart.Invoke();
     }
@@ -110,7 +110,7 @@ public class WavesController : MonoBehaviour
         CurrentWave.Finished = true;
         CurrentWave.Time = waveTimer.GetTime();
 
-        AudioController.Instance.Play("WaveFinish");
+        GameController.Instance.AudioController.Play("WaveFinish");
     }
     
     public IEnumerator WaveCooldown(byte waveIdToLaunch, float time)

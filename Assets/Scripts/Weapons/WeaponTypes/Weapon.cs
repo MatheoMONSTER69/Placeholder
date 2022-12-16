@@ -41,7 +41,7 @@ public class Weapon : MonoBehaviour
 
     public virtual void Attack(Vector3 targetPos)
     {
-        AudioController.Instance.Play(weaponSoundName);
+        GameController.Instance.AudioController.Play(weaponSoundName);
 
         AttackCooldown.StartCooldown();
     }

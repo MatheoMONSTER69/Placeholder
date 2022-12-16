@@ -197,7 +197,7 @@ public class PlayerController : MonoBehaviour
         anim.SetFloat("WalkX", animDirection.x, AnimationTransitionSpeed, Time.deltaTime);
         anim.SetFloat("WalkY", animDirection.z, AnimationTransitionSpeed, Time.deltaTime);
 
-        AudioController.Instance.Play("PlayerWalk");
+        GameController.Instance.AudioController.Play("PlayerWalk");
     }
 
     private void RotatePlayer(Vector3 lookAtPoint)
@@ -231,7 +231,7 @@ public class PlayerController : MonoBehaviour
     {
         anim.SetTrigger("Roll");
 
-        AudioController.Instance.Play("PlayerDodge");
+        GameController.Instance.AudioController.Play("PlayerDodge");
 
         StartCoroutine(DodgingCoroutine(dodgingTime));
     }

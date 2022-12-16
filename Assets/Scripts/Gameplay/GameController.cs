@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
+[DefaultExecutionOrder(-50)]
 public class GameController : MonoBehaviour
 {
     [Header("References")]
@@ -11,6 +12,7 @@ public class GameController : MonoBehaviour
     [HideInInspector] public WavesController WavesController;
     [HideInInspector] public EnemySpawner EnemySpawner;
     [HideInInspector] public ScoreCounter ScoreCounter;
+    [HideInInspector] public AudioController AudioController;
 
     private InputAction pauseGameplay;
 	private InputAction pauseMenu;

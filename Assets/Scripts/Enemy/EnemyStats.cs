@@ -28,14 +28,14 @@ public class EnemyStats : Stats
     {
         base.TakeDamage(amount);
 
-        AudioController.Instance.Play("EnemyTakeDamage");
+        GameController.Instance.AudioController.Play("EnemyTakeDamage");
     }
 
     public override void Die()
     {
         base.Die();
 
-        AudioController.Instance.Play("EnemyDie");
+        GameController.Instance.AudioController.Play("EnemyDie");
 
         if (GameController.Instance != null)
         {

@@ -101,7 +101,7 @@ public class EnemyController : MonoBehaviour
     {
         anim.SetTrigger("Attack");
 
-        AudioController.Instance.Play("EnemyAttack");
+        GameController.Instance.AudioController.Play("EnemyAttack");
 
         GameController.Instance.PlayerController.stats.TakeDamage(EnemySO.Damage);
     }

@@ -29,7 +29,7 @@ public class PlayerStats : Stats
 
     public override void Die()
     {
-        AudioController.Instance.Play("PlayerDie");
+        GameController.Instance.AudioController.Play("PlayerDie");
 
         GameController.Instance.StopGame(false);
 
@@ -40,14 +40,14 @@ public class PlayerStats : Stats
     {
         base.Heal(amount);
 
-        AudioController.Instance.Play("PlayerHeal");
+        GameController.Instance.AudioController.Play("PlayerHeal");
     }
 
     public override void TakeDamage(float amount)
     {
         if(!GameController.Instance.PlayerController.IsDodging)
         {
-            AudioController.Instance.Play("PlayerTakeDamage");
+            GameController.Instance.AudioController.Play("PlayerTakeDamage");
 
             base.TakeDamage(amount);
             regenCooldown.StartCooldown();
