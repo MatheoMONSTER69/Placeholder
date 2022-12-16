@@ -63,3 +63,4 @@ MonoBehaviour:
   trailDuration: 0.2
   trailWidth: 0.075
   trailLength: 50
+  shellParticles: {fileID: 0}

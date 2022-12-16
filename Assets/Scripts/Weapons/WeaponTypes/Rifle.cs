@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class Rifle : Weapon
 {
@@ -18,6 +19,9 @@ public class Rifle : Weapon
     [SerializeField] private float trailDuration = 0.19f;
     [SerializeField] private float trailWidth = 0.1f;
     [SerializeField] private float trailLength = 50.0f;
+
+    [Header("Bullet Shells")]
+    [SerializeField] private VisualEffect shellParticles;
 
     private Coroutine trailCoroutine;
     private bool trailCoroutineIsRunning = false;
@@ -51,6 +55,8 @@ public class Rifle : Weapon
         MuzzleFlashEffect();
 
         BulletTrailEffect(targetPos, (penetrationAmount != -1 && enemies.Count > penetrationAmount - 1) ? enemies[penetrationAmount-1].transform : null);
+
+        BulletShellSpawn();
 
         ApplyDamage(enemies);
 
@@ -179,6 +185,14 @@ public class Rifle : Weapon
         trail.gameObject.SetActive(false);
 
         trailCoroutineIsRunning = false;
+    }
+
+    private void BulletShellSpawn()
+    {
+        if(shellParticles != null)
+        {
+            shellParticles.SendEvent("SpawnParticle");
+        }
     }
 
 
