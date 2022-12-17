@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
@@ -10,7 +11,7 @@ public class Weapon : MonoBehaviour
     public GameObject HandGameObject = null;
     public WeaponAnimStance WeaponAnimStance = WeaponAnimStance.Long;
     [SerializeField] protected Transform weaponBarrelEnd;
-    [SerializeField] protected LayerMask enemyLayer;
+    [SerializeField] protected LayerMask CollisionLayer;
     protected PlayerController playerController;
 
     [Header("Settings")]
@@ -62,7 +63,7 @@ public class Weapon : MonoBehaviour
 
         Vector3 dir = GetDirectionToTarget(targetPos);
 
-        return Physics.RaycastAll(risedPlayerPos, dir, float.MaxValue, enemyLayer);
+        return ExtendedPhysics.OrderedRaycastAll(risedPlayerPos, dir, float.MaxValue, CollisionLayer);
     }
 
     protected virtual void ApplyDamage(List<EnemyStats> enemies)

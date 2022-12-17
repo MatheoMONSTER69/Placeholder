@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4207886224861776407}
   - component: {fileID: 5578228723925905650}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: AK74
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,9 +48,9 @@ MonoBehaviour:
   HandGameObject: {fileID: 0}
   WeaponAnimStance: 1
   weaponBarrelEnd: {fileID: 0}
-  enemyLayer:
+  CollisionLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 193
   Name: AK-74
   Damage: 10
   AttackSpeed: 0.3

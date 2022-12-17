@@ -26,6 +26,8 @@ public class Rifle : Weapon
     private Coroutine trailCoroutine;
     private bool trailCoroutineIsRunning = false;
 
+    private Vector3 collisionPosition = Vector3.zero;
+
 
     protected override void Start()
     {
@@ -54,7 +56,7 @@ public class Rifle : Weapon
 
         MuzzleFlashEffect();
 
-        BulletTrailEffect(targetPos, (penetrationAmount != -1 && enemies.Count > penetrationAmount - 1) ? enemies[penetrationAmount-1].transform : null);
+        BulletTrailEffect(targetPos);
 
         BulletShellSpawn();
 
@@ -69,7 +71,9 @@ public class Rifle : Weapon
     {
         List<EnemyStats> enemies = new();
 
-        if(weaponBarrelEnd != null && playerController != null)
+        collisionPosition = Vector3.zero;
+
+        if (weaponBarrelEnd != null && playerController != null)
         {
             RaycastHit[] hits = RaycastEnemies(targetPos);
 
@@ -77,10 +81,13 @@ public class Rifle : Weapon
 
             if (hits.Length > 0)
             {
-                foreach (RaycastHit hit in hits)
+                foreach(RaycastHit hit in hits)
                 {
+                    collisionPosition = hit.point;
+
                     if (hit.transform.TryGetComponent(out EnemyStats enemyStats))
                     {
+                        //no more enemies to hit in line
                         if (penetrationAmount != -1 && damagedEnemies >= penetrationAmount)
                         {
                             break;
@@ -89,6 +96,12 @@ public class Rifle : Weapon
                         enemies.Add(enemyStats);
 
                         damagedEnemies++;
+                    }
+
+                    //hit obstruction
+                    else
+                    {
+                        break;
                     }
                 }
             }
@@ -133,7 +146,7 @@ public class Rifle : Weapon
         muzzleFlash.SetActive(false);
     }
 
-    private void BulletTrailEffect(Vector3 targetPos, Transform enemy)
+    private void BulletTrailEffect(Vector3 targetPos)
     {
         if (trail != null && weaponBarrelEnd != null && playerController != null)
         {
@@ -148,9 +161,9 @@ public class Rifle : Weapon
             trail.SetPosition(0, weaponBarrelEnd.position);
 
             float currentTrailLength = trailLength;
-            if (enemy != null)
+            if (collisionPosition != Vector3.zero)
             {
-                currentTrailLength = Vector3.Distance(trail.GetPosition(0), enemy.transform.position);
+                currentTrailLength = Vector3.Distance(trail.GetPosition(0), collisionPosition);
             }
 
             //Direction on same Y level

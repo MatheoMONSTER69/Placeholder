@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Meele : Weapon
@@ -53,7 +54,7 @@ public class Meele : Weapon
 
         if (weaponBarrelEnd != null && playerController != null)
         {
-            RaycastHit[] hits = Physics.SphereCastAll(playerController.transform.position, range / 2, playerController.transform.forward, range, enemyLayer);
+            RaycastHit[] hits = ExtendedPhysics.OrderedSphereCastAll(playerController.transform.position, range / 2, playerController.transform.forward, range, CollisionLayer);
 
             if (hits.Length > 0)
             {

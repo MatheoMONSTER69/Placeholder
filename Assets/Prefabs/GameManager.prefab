@@ -53,6 +53,7 @@ MonoBehaviour:
   WavesController: {fileID: 0}
   EnemySpawner: {fileID: 0}
   ScoreCounter: {fileID: 0}
+  AudioController: {fileID: 0}
   CurrentTimeScale: 1
   IsGameStarted: 0
   OnGameStart:

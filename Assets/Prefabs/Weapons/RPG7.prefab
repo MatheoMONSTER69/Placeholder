@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3897466130965715516}
   - component: {fileID: 2095281660251175906}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RPG7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,9 +48,9 @@ MonoBehaviour:
   HandGameObject: {fileID: 0}
   WeaponAnimStance: 1
   weaponBarrelEnd: {fileID: 0}
-  enemyLayer:
+  CollisionLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 193
   Name: RPG-7
   Damage: 100
   AttackSpeed: 3

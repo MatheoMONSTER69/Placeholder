@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4923488650125389873}
   - component: {fileID: 839135912012335928}
   - component: {fileID: 6356963715619896927}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BulletShells
   m_TagString: Untagged
   m_Icon: {fileID: 0}
