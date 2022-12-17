@@ -15,18 +15,18 @@ public class EnemyParticlesPlacer : MonoBehaviour
 
     private void OnEnable()
     {
-        Invoke("AssignEvents", 0.1f);
+        //Invoke("AssignEvents", 0.1f);
     }
     private void AssignEvents()
     {
-        GameController.Instance.WavesController.OnWaveStart.AddListener(ResumeRemainsParticles);
-        GameController.Instance.WavesController.OnWaveFinish.AddListener(PauseRemainsParticles);
+        //GameController.Instance.WavesController.OnWaveStart.AddListener(ResumeRemainsParticles);
+        //GameController.Instance.WavesController.OnWaveFinish.AddListener(PauseRemainsParticles);
     }
 
     private void OnDisable()
     {
-        GameController.Instance.WavesController.OnWaveStart.RemoveListener(ResumeRemainsParticles);
-        GameController.Instance.WavesController.OnWaveFinish.RemoveListener(PauseRemainsParticles);
+        //GameController.Instance.WavesController.OnWaveStart.RemoveListener(ResumeRemainsParticles);
+        //GameController.Instance.WavesController.OnWaveFinish.RemoveListener(PauseRemainsParticles);
     }
 
     private void Update()

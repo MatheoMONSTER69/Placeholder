@@ -1543,7 +1543,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1684568219}
-  m_LocalRotation: {x: -0.12044598, y: 0.8769259, z: -0.29078233, w: -0.36323464}
+  m_LocalRotation: {x: -0.120446, y: 0.87692595, z: -0.29078236, w: -0.36323464}
   m_LocalPosition: {x: 8, y: 9.75, z: 8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1677,7 +1677,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1687258581}
-  m_LocalRotation: {x: -0.12044598, y: 0.8769259, z: -0.29078233, w: -0.36323464}
+  m_LocalRotation: {x: -0.120446, y: 0.87692595, z: -0.29078236, w: -0.36323464}
   m_LocalPosition: {x: 8, y: 9.75, z: 8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2974,10 +2974,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 8272357896749252970, guid: 236696853d7c4ce4b875327b9399c611, type: 3}
-      propertyPath: m_CastShadows
-      value: 0
-      objectReference: {fileID: 0}
+    - target: {fileID: 94327355, guid: 236696853d7c4ce4b875327b9399c611, type: 3}
+      propertyPath: Target
+      value: 
+      objectReference: {fileID: 9164188476261508549}
+    - target: {fileID: 1542947916, guid: 236696853d7c4ce4b875327b9399c611, type: 3}
+      propertyPath: Target
+      value: 
+      objectReference: {fileID: 9164188476261508549}
     - target: {fileID: 8272357896772280474, guid: 236696853d7c4ce4b875327b9399c611, type: 3}
       propertyPath: m_Name
       value: EnemyRemainsPlacer
@@ -3101,3 +3105,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d510c3aec9931ba43b5ac1fda415e433, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &9164188476261508549 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9164188476265922736, guid: 462992bc33b1cd84d8153df300f0ca92, type: 3}
+  m_PrefabInstance: {fileID: 9164188476261508541}
+  m_PrefabAsset: {fileID: 0}
