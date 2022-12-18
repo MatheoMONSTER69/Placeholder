@@ -29,7 +29,7 @@ public class GameController : MonoBehaviour
 	public UnityEvent OnGameStart;
 	public UnityEvent OnGamePause;
     public UnityEvent OnGameResume;
-	public UnityEvent OnGameStop;
+	public UnityEvent<bool> OnGameStop;
 
     [Header("Debug")]
     public bool ShowDebug = true;
@@ -94,7 +94,9 @@ public class GameController : MonoBehaviour
 
         GameTimer.PauseTimer();
 
-		OnGamePause.Invoke();
+        Debug.Log("Paused the game");
+
+        OnGamePause.Invoke();
     }
 
     public void ResumeGame()
@@ -106,7 +108,9 @@ public class GameController : MonoBehaviour
 
         GameTimer.ResumeTimer();
 
-		OnGameResume.Invoke();
+        Debug.Log("Resumed the game");
+
+        OnGameResume.Invoke();
     }
 
 	public void StopGame(bool win)
@@ -120,7 +124,9 @@ public class GameController : MonoBehaviour
 
         IsGameStarted = false;
 
-		OnGameStop.Invoke();
+        Debug.Log($"{(win ? "Won" : "Lost")} the game");
+
+        OnGameStop.Invoke(win);
 	}
 
 	[ContextMenu("Toggle Pause")]

@@ -64,6 +64,12 @@ public class WavesController : MonoBehaviour
     }
 
 
+    public void StartNextWave()
+    {
+        StartCoroutine(WaveCooldown((byte)(currentWaveId + 1), CurrentWave.CooldownAfterWave));
+    }
+
+
     private void StartWave(byte waveId)
     {
         isWaveRunning = true;
@@ -97,7 +103,7 @@ public class WavesController : MonoBehaviour
 
                 OnWaveFinish.Invoke();
 
-                StartCoroutine(WaveCooldown((byte)(currentWaveId + 1), CurrentWave.CooldownAfterWave));
+                //StartNextWave();
             }
         }
     }

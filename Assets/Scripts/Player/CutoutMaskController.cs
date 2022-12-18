@@ -16,18 +16,14 @@ public class CutoutMaskController : MonoBehaviour
     [ContextMenu("UpdateRendererMaterials")]
     public void UpdateRendererMaterials()
     {
-        GameObject[] maskedObjects = LayerUtils.FindGameObjectsInLayer(maskedLayer);
+        Renderer[] maskedObjects = LayerUtils.FindComponentsInLayer<Renderer>(maskedLayer, true);
 
         for (int i = 0; i < maskedObjects.Length; i++)
         {
-            if(maskedObjects[i].TryGetComponent(out Renderer renderer))
+            foreach (Material material in maskedObjects[i].materials)
             {
-                foreach (Material material in renderer.materials)
-                {
-                    material.renderQueue = 3002;
-                }
-            }          
+                material.renderQueue = 3002;
+            }
         }
     }
 }
-

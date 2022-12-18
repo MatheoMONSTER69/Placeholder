@@ -11,6 +11,7 @@ public enum InputType
     WeaponChangePrevButton,
     WeaponChangeNextButton,
     Meele,
+    MerchantInteraction,
 
     //Menu
 
