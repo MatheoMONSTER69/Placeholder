@@ -7,7 +7,8 @@ public class EnemyParticlesPlacer : MonoBehaviour
     [Header("References")]
     [SerializeField] private VisualEffect vfxRemains;
     [SerializeField] private VisualEffect vfxDeath;
-    
+    [SerializeField] private VisualEffect vfxSplatter;
+
     private static Queue<Vector3> positionsQueue = new();
 
     private float prevRemainsPlayRate = 1;
@@ -37,6 +38,7 @@ public class EnemyParticlesPlacer : MonoBehaviour
 
             SpawnRemainsParticle(position);
             SpawnDeathParticles(position);
+            SpawnSplatterParticle(position);
         }
     }
 
@@ -61,23 +63,33 @@ public class EnemyParticlesPlacer : MonoBehaviour
         vfxDeath.SendEvent("SpawnParticles");
     }
 
+    private void SpawnSplatterParticle(Vector3 position)
+    {
+        vfxSplatter.SetVector3("SpawnPosition", position);
+
+        vfxSplatter.SendEvent("SpawnParticle");
+    }
+
 
     [ContextMenu("PauseRemains")]
     private void PauseRemainsParticles()
     {
         prevRemainsPlayRate = vfxRemains.playRate;
         vfxRemains.playRate = 0;
+        vfxSplatter.playRate = 0;
     }
 
     [ContextMenu("ResumeRemains")]
     private void ResumeRemainsParticles()
     {
         vfxRemains.playRate = prevRemainsPlayRate;
+        vfxSplatter.playRate = prevRemainsPlayRate;
     }
 
     [ContextMenu("CleanRemainsParticles")]
     private void CleanRemainsParticles()
     {
         vfxRemains.Reinit();
+        vfxSplatter.Reinit();
     }
 }
