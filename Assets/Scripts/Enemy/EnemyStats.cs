@@ -13,6 +13,12 @@ public class EnemyStats : Stats
     private int PointsForKill = 1;
     private EnemyType enemyType;
 
+    [SerializeField] private Transform enemyModel;
+
+    [Header("Settings")]
+    [SerializeField] private float destroyAfter = 3.0f;
+    [SerializeField] private float shrinkSpeed = 0.5f;
+
 
     public void Init(EnemySO enemySO)
     {
@@ -24,18 +30,9 @@ public class EnemyStats : Stats
         Health = MaxHealth;
 	}
 
-    public override void TakeDamage(float amount)
-    {
-        base.TakeDamage(amount);
-
-        GameController.Instance.AudioController.Play("EnemyTakeDamage");
-    }
-
     public override void Die()
     {
         base.Die();
-
-        GameController.Instance.AudioController.Play("EnemyDie");
 
         if (GameController.Instance != null)
         {
@@ -49,6 +46,29 @@ public class EnemyStats : Stats
 
         EnemyParticlesPlacer.SpawnParticles(transform.position);
 
-        Destroy(transform.parent.gameObject);
+        StartCoroutine(DestroyObject(destroyAfter, shrinkSpeed));
 	}
+
+    private IEnumerator DestroyObject(float after, float shrinkSpeed)
+    {
+        yield return new WaitForSeconds(after);
+
+        float t = 0;
+        float time = 0;
+        float startScale = enemyModel.localScale.x;
+
+        while (t < 1)
+        {
+            t = time / shrinkSpeed;
+
+            float scale = Mathf.Lerp(startScale, 0, t);
+            enemyModel.localScale = new Vector3(scale, scale, scale);
+
+            time += Time.deltaTime;
+
+            yield return new WaitForEndOfFrame();
+        }
+
+        Destroy(transform.parent.gameObject);
+    }
 }

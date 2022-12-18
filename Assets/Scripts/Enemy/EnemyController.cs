@@ -13,6 +13,7 @@ public class EnemyController : MonoBehaviour
 	protected Transform playerTransform;
     protected NavMeshAgent navMesh;
     protected EnemyStats stats;
+    protected Collider col;
 
     protected Cooldown attackCooldown;
 
@@ -27,6 +28,7 @@ public class EnemyController : MonoBehaviour
         navMesh = GetComponent<NavMeshAgent>();
         stats = GetComponent<EnemyStats>();
         anim = enemyModel.GetComponentInChildren<Animator>();
+        col = GetComponent<Collider>();
 
         if (EnemySO != null)
         {
@@ -43,26 +45,31 @@ public class EnemyController : MonoBehaviour
 		attackCooldown.StartCooldown();
 
         stats.OnDamageTaken.AddListener(TakeDamage);
+        stats.OnDeath.AddListener(Die);
     }
 
     private void OnDisable()
     {
         stats.OnDamageTaken.RemoveListener(TakeDamage);
+        stats.OnDeath.RemoveListener(Die);
     }
 
     private void FixedUpdate()
     {
-        NavigateTowardsPlayer();
-        RotateModelTowardsPlayer();
-
-        if (EnemySO != null)
+        if(!stats.IsDead)
         {
-            if (!attackCooldown.IsInCooldown && GetDistanceToPlayer() <= EnemySO.AttackRange)
+            NavigateTowardsPlayer();
+            RotateModelTowardsPlayer();
+
+            if (EnemySO != null)
             {
-                AttackPlayer();
-                attackCooldown.StartCooldown();
+                if (!attackCooldown.IsInCooldown && GetDistanceToPlayer() <= EnemySO.AttackRange)
+                {
+                    AttackPlayer();
+                    attackCooldown.StartCooldown();
+                }
             }
-        }
+        } 
     }
 
     private void LateUpdate()
@@ -108,6 +115,15 @@ public class EnemyController : MonoBehaviour
     private void TakeDamage()
     {
         anim.SetTrigger("GetHurt");
+        GameController.Instance.AudioController.Play("EnemyTakeDamage");
+    }
+    private void Die()
+    {
+        anim.SetTrigger("Dies");
+        GameController.Instance.AudioController.Play("EnemyDie");
+
+        navMesh.enabled = false;
+        col.enabled = false;
     }
 
 

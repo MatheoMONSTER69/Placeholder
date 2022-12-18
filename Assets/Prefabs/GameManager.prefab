@@ -103,16 +103,8 @@ MonoBehaviour:
   - Enemies:
       dictionaryAsList:
       - key: {fileID: 11400000, guid: 138100be116295340b5506476c0c5280, type: 2}
-        value: 50
-    CooldownAfterWave: 10
-    Finished: 0
-    Time: 0
-    WaveScore: 0
-  - Enemies:
-      dictionaryAsList:
-      - key: {fileID: 11400000, guid: 138100be116295340b5506476c0c5280, type: 2}
         value: 100
-    CooldownAfterWave: 10
+    CooldownAfterWave: 5
     Finished: 0
     Time: 0
     WaveScore: 0
@@ -120,13 +112,21 @@ MonoBehaviour:
       dictionaryAsList:
       - key: {fileID: 11400000, guid: 138100be116295340b5506476c0c5280, type: 2}
         value: 150
-    CooldownAfterWave: 10
+    CooldownAfterWave: 5
+    Finished: 0
+    Time: 0
+    WaveScore: 0
+  - Enemies:
+      dictionaryAsList:
+      - key: {fileID: 11400000, guid: 138100be116295340b5506476c0c5280, type: 2}
+        value: 200
+    CooldownAfterWave: 5
     Finished: 0
     Time: 0
     WaveScore: 0
   currentWaveId: 0
   initialCooldown: 5
-  maxEnemiesOnScene: 200
+  maxEnemiesOnScene: 300
   cooldownBetweenEnemySpawn: 0.1
   isWaveRunning: 0
   allEnemiesSpawned: 0

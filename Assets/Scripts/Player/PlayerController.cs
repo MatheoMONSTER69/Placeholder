@@ -67,12 +67,16 @@ public class PlayerController : MonoBehaviour
 
         mainCam = Camera.main;
 
+        stats.OnHeal.AddListener(Heal);
         stats.OnDamageTaken.AddListener(TakeDamage);
+        stats.OnDeath.AddListener(Die);
     }
 
     private void OnDisable()
     {
+        stats.OnHeal.RemoveListener(Heal);
         stats.OnDamageTaken.RemoveListener(TakeDamage);
+        stats.OnDeath.RemoveListener(Die);
     }
 
     private void Update()
@@ -222,9 +226,23 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void Heal()
+    {
+        GameController.Instance.AudioController.Play("PlayerHeal");
+    }
     private void TakeDamage()
     {
         anim.SetTrigger("GetHurt");
+
+        GameController.Instance.AudioController.Play("PlayerTakeDamage");
+    }
+    private void Die()
+    {
+        GameController.Instance.AudioController.Play("PlayerDie");
+
+        anim.SetTrigger("Dies");
+
+        GameController.Instance.StopGame(false);
     }
 
     private void Dodge()

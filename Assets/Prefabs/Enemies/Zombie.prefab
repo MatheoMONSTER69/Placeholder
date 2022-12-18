@@ -245,6 +245,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   Damage: 0
+  enemyModel: {fileID: 7087238813634609034}
+  destroyAfter: 3
+  shrinkSpeed: 0.5
 --- !u!65 &6591827536826813520
 BoxCollider:
   m_ObjectHideFlags: 0
