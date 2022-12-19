@@ -51,7 +51,10 @@ public class WeaponController : MonoBehaviour
                 //1-9 keys
                 if (int.TryParse(weaponChangeAxis.activeControl.name, out int key))
                 {
-                    EquipWeapon(key - 1);
+                    if(key - 1 != CurrentWeaponId)
+                    {
+                        EquipWeapon(key - 1);
+                    }
                 }
                 //scroll / mouse buttons
                 else
