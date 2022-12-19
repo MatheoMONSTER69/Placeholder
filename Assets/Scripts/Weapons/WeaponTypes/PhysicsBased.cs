@@ -8,11 +8,9 @@ public class PhysicsBased : Weapon
 {
     [Header("PhysicsBasedWeapon")]
     [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private float bulletSpeed = 1.0f;
-    [SerializeField] private float detonateAfter = 5.0f;
-    [SerializeField] private float detonateRange = 3.0f;
+    [SerializeField] private float bulletSpeed = 20.0f;
+    [SerializeField] private float detonateRange = 5.0f;
 
-    private Vector3 bulletDir;
     private GameObject bulletGameObject;
     private Cooldown bulletDetonationCooldown;
 
@@ -22,7 +20,7 @@ public class PhysicsBased : Weapon
     [SerializeField] private float muzzleFlashDuration = 0.05f;
 
     /*[Header("Bullet Trail")]
-    [SerializeField] private LineRenderer trail;
+    [SerializeField] private LineRenderer trailRenderer;
     [SerializeField] private float trailDuration = 0.19f;
     [SerializeField] private float trailWidth = 0.1f;
     [SerializeField] private float trailLength = 50.0f;
@@ -49,42 +47,49 @@ public class PhysicsBased : Weapon
             trail.gameObject.SetActive(false);
         }*/
 
-        bulletDetonationCooldown = new(detonateAfter);
+        bulletDetonationCooldown = new(AttackSpeed);
     }
 
     private void Update()
     {
-        if(bulletGameObject != null)
-        {
-            bulletGameObject.transform.Translate(bulletDir * bulletSpeed);
-
-            if(Physics.Raycast(bulletGameObject.transform.position, bulletGameObject.transform.forward, CollisionLayer) || !bulletDetonationCooldown.IsInCooldown)
-            {
-                BulletCollision(bulletGameObject.transform.position);
-            }
-        }
+        MoveBullet();
     }
 
 
     public override void Attack(Vector3 targetPos)
-    {
-        ShootBullet(GetDirectionToTarget(targetPos));
+    { 
+        if(bulletGameObject == null)
+        {
+            ShootBullet(GetDirectionToTarget(targetPos));
 
 
-        MuzzleFlashEffect();
+            MuzzleFlashEffect();
 
-        //BulletTrailEffect(targetPos);
+            //BulletTrailEffect(targetPos);
 
 
-        base.Attack(targetPos);
+            base.Attack(targetPos);
+        }
     }
 
     private void ShootBullet(Vector3 direction)
     {
         bulletDetonationCooldown.StartCooldown();
 
-        bulletGameObject = Instantiate(bulletPrefab);
-        bulletDir = direction;
+        bulletGameObject = Instantiate(bulletPrefab, HandGameObject.transform.position, Quaternion.LookRotation(-direction));
+    }
+
+    private void MoveBullet()
+    {
+        if (bulletGameObject != null)
+        {
+            bulletGameObject.transform.position += bulletSpeed * Time.deltaTime * -bulletGameObject.transform.forward;
+
+            if (Physics.Raycast(bulletGameObject.transform.position, bulletGameObject.transform.forward, 1.0f, CollisionLayer) || !bulletDetonationCooldown.IsInCooldown)
+            {
+                BulletCollision(bulletGameObject.transform.position);
+            }
+        }
     }
 
     private void BulletCollision(Vector3 position)
@@ -94,11 +99,13 @@ public class PhysicsBased : Weapon
         bulletGameObject = null;
 
 
+        GameController.Instance.AudioController.Play(weaponSoundName);
+
+
         List<EnemyStats> enemies = GetEnemies(position);
 
         ApplyDamage(enemies);
     }
-
 
 
     protected override List<EnemyStats> GetEnemies(Vector3 targetPos)
@@ -130,8 +137,9 @@ public class PhysicsBased : Weapon
             {
                 //Apply half of weapon damage, then apply the other half scaled by how close the enemy is to the player
                 float enemyFract = 1 - (float)((float)damagedEnemies / (float)enemies.Count);
+                float damage = (Damage - (Damage / 4)) + ((Damage / 4) * enemyFract);
 
-                enemy.TakeDamage(enemyFract);
+                enemy.TakeDamage(damage);
 
                 damagedEnemies++;
             }

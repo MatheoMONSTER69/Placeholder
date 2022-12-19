@@ -6,7 +6,6 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     [Header("References")]
-
     public GameObject BackGameObject = null;
     public GameObject HandGameObject = null;
     public WeaponAnimStance WeaponAnimStance = WeaponAnimStance.Long;

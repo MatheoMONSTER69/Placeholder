@@ -56,3 +56,8 @@ MonoBehaviour:
   AttackSpeed: 3
   SwitchTime: 3
   weaponSoundName: WeaponRPG7Attack
+  bulletPrefab: {fileID: 6098051697305686261, guid: 6f7f611a41a4a8b469fe917e084431eb, type: 3}
+  bulletSpeed: 20
+  detonateRange: 5
+  muzzleFlash: {fileID: 0}
+  muzzleFlashDuration: 0.05

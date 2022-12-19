@@ -78,7 +78,6 @@ public class Meele : Weapon
             int damagedEnemies = 0;
             foreach (EnemyStats enemy in enemies)
             {
-                //Apply half of weapon damage, then apply the other half scaled by how close the enemy is to the player
                 float enemyFract = 1 - (float)((float)damagedEnemies / (float)enemies.Count);
                 float delay = damageTime * enemyFract;
 
