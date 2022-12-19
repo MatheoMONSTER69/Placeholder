@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cacc12fe14d7b0d4cb4174d31362b378, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  WeaponEnabled: 1
   BackGameObject: {fileID: 0}
   HandGameObject: {fileID: 0}
   WeaponAnimStance: 1
@@ -54,10 +55,11 @@ MonoBehaviour:
   Name: RPG-7
   Damage: 100
   AttackSpeed: 3
-  SwitchTime: 3
+  SwitchTime: 2.5
   weaponSoundName: WeaponRPG7Attack
-  bulletPrefab: {fileID: 6098051697305686261, guid: 6f7f611a41a4a8b469fe917e084431eb, type: 3}
-  bulletSpeed: 20
-  detonateRange: 5
+  projectilePrefab: {fileID: 6098051697305686261, guid: 6f7f611a41a4a8b469fe917e084431eb, type: 3}
+  projectileSpeed: 20
+  projectileDetonateRange: 4
+  projectileDetonateAfter: 3
   muzzleFlash: {fileID: 0}
   muzzleFlashDuration: 0.05

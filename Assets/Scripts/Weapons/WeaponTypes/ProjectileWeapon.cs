@@ -4,15 +4,13 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.VFX;
 
-public class PhysicsBased : Weapon
+public class ProjectileWeapon : Weapon
 {
-    [Header("PhysicsBasedWeapon")]
-    [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private float bulletSpeed = 20.0f;
-    [SerializeField] private float detonateRange = 5.0f;
-
-    private GameObject bulletGameObject;
-    private Cooldown bulletDetonationCooldown;
+    [Header("ProjectileBasedWeapon")]
+    [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private float projectileSpeed = 20.0f;
+    [SerializeField] private float projectileDetonateRange = 4.0f;
+    [SerializeField] private float projectileDetonateAfter = 3.0f;
 
     [Header("Effects")]
     [Header("Muzzle Flash")]
@@ -46,59 +44,34 @@ public class PhysicsBased : Weapon
         {
             trail.gameObject.SetActive(false);
         }*/
-
-        bulletDetonationCooldown = new(AttackSpeed);
-    }
-
-    private void Update()
-    {
-        MoveBullet();
     }
 
 
     public override void Attack(Vector3 targetPos)
     { 
-        if(bulletGameObject == null)
-        {
-            ShootBullet(GetDirectionToTarget(targetPos));
+        ShootProjectile(GetDirectionToTarget(targetPos));
 
 
-            MuzzleFlashEffect();
+        MuzzleFlashEffect();
 
-            //BulletTrailEffect(targetPos);
+        //BulletTrailEffect(targetPos);
 
 
-            base.Attack(targetPos);
-        }
+        base.Attack(targetPos);
     }
 
-    private void ShootBullet(Vector3 direction)
+    private void ShootProjectile(Vector3 direction)
     {
-        bulletDetonationCooldown.StartCooldown();
+        GameObject projectileGO = Instantiate(projectilePrefab, HandGameObject.transform.position, Quaternion.LookRotation(-direction));
 
-        bulletGameObject = Instantiate(bulletPrefab, HandGameObject.transform.position, Quaternion.LookRotation(-direction));
+        Projectile projectile = projectileGO.GetComponent<Projectile>();
+
+        projectile.Init(projectileSpeed, CollisionLayer, ProjectileCollision, projectileDetonateAfter, true, true);
     }
 
-    private void MoveBullet()
+
+    private void ProjectileCollision(Vector3 position, GameObject col)
     {
-        if (bulletGameObject != null)
-        {
-            bulletGameObject.transform.position += bulletSpeed * Time.deltaTime * -bulletGameObject.transform.forward;
-
-            if (Physics.Raycast(bulletGameObject.transform.position, bulletGameObject.transform.forward, 1.0f, CollisionLayer) || !bulletDetonationCooldown.IsInCooldown)
-            {
-                BulletCollision(bulletGameObject.transform.position);
-            }
-        }
-    }
-
-    private void BulletCollision(Vector3 position)
-    {
-        Destroy(bulletGameObject);
-
-        bulletGameObject = null;
-
-
         GameController.Instance.AudioController.Play(weaponSoundName);
 
 
@@ -112,7 +85,7 @@ public class PhysicsBased : Weapon
     {
         List<EnemyStats> enemies = new();
 
-        RaycastHit[] hits = ExtendedPhysics.OrderedSphereCastAll(targetPos, detonateRange / 2, Vector3.forward, detonateRange, CollisionLayer);
+        RaycastHit[] hits = ExtendedPhysics.OrderedSphereCastAll(targetPos, projectileDetonateRange / 2, Vector3.forward, projectileDetonateRange, CollisionLayer);
 
         if (hits.Length > 0)
         {

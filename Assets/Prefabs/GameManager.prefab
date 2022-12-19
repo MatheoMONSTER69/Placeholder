@@ -55,6 +55,7 @@ MonoBehaviour:
   EnemySpawner: {fileID: 0}
   ScoreCounter: {fileID: 0}
   AudioController: {fileID: 0}
+  WeaponController: {fileID: 0}
   CurrentTimeScale: 1
   IsGameStarted: 0
   OnGameStart:
@@ -104,6 +105,8 @@ MonoBehaviour:
       dictionaryAsList:
       - key: {fileID: 11400000, guid: 138100be116295340b5506476c0c5280, type: 2}
         value: 100
+      - key: {fileID: 11400000, guid: 4391c211c20537540a757de437c4213a, type: 2}
+        value: 10
     CooldownAfterWave: 5
     Finished: 0
     Time: 0
@@ -112,6 +115,8 @@ MonoBehaviour:
       dictionaryAsList:
       - key: {fileID: 11400000, guid: 138100be116295340b5506476c0c5280, type: 2}
         value: 150
+      - key: {fileID: 11400000, guid: 4391c211c20537540a757de437c4213a, type: 2}
+        value: 15
     CooldownAfterWave: 5
     Finished: 0
     Time: 0
@@ -120,13 +125,15 @@ MonoBehaviour:
       dictionaryAsList:
       - key: {fileID: 11400000, guid: 138100be116295340b5506476c0c5280, type: 2}
         value: 200
+      - key: {fileID: 11400000, guid: 4391c211c20537540a757de437c4213a, type: 2}
+        value: 20
     CooldownAfterWave: 5
     Finished: 0
     Time: 0
     WaveScore: 0
   currentWaveId: 0
   initialCooldown: 5
-  maxEnemiesOnScene: 300
+  maxEnemiesOnScene: 200
   cooldownBetweenEnemySpawn: 0.1
   isWaveRunning: 0
   allEnemiesSpawned: 0

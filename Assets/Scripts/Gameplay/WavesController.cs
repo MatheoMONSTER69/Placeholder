@@ -132,29 +132,61 @@ public class WavesController : MonoBehaviour
 
     private IEnumerator EnemySpawning()
     {
+        //Highest amount of enemeies under single type
         float maxEnemyAmountToSpawn = CurrentWave.Enemies.dictionary.Values.Max();
 
+        //Assign default values
+        Dictionary<EnemySO, int> waitCyclesToSpawn = new();
+        Dictionary<EnemySO, int> enemiesSpawned = new();
+
+        foreach (EnemySO enemy in CurrentWave.Enemies.dictionary.Keys)
+        {
+            //wait spawn cycles before spawning this type of enemy
+            float enemyAmountToSpawn = CurrentWave.Enemies.dictionary[enemy];
+
+            float spawnEvery = maxEnemyAmountToSpawn / enemyAmountToSpawn;
+
+            waitCyclesToSpawn.Add(enemy, (int)spawnEvery);
+
+            //Enemies of type spawned counter
+            enemiesSpawned.Add(enemy, 0);
+        }
+
+        //Cycle through enemies and spawn them
         while (enemiesSpawnedInCurrentWave < CurrentWave.TotalEnemyCount)
         {
             while (enemySpawner.TotalCount < maxEnemiesOnScene)
             {
                 foreach (EnemySO enemy in CurrentWave.Enemies.dictionary.Keys)
                 {
-                    //TODO: Test with different enemy types
-                    float enemyAmountToSpawn = CurrentWave.Enemies.dictionary[enemy];
+                    int enemyAmountToSpawn = CurrentWave.Enemies.dictionary[enemy];
 
-                    float typeFraction = enemyAmountToSpawn / maxEnemyAmountToSpawn;
-
-                    if(enemiesSpawnedInCurrentWave % typeFraction == 0)
+                    //if there should be more enemies of this type spawned
+                    if(enemiesSpawned[enemy] < enemyAmountToSpawn)
                     {
-                        enemySpawner.SpawnEnemy(enemy);
-                        enemiesSpawnedInCurrentWave++;
-                    } 
-                }
+                        waitCyclesToSpawn[enemy]--;
 
-                if (enemiesSpawnedInCurrentWave >= CurrentWave.TotalEnemyCount)
-                {
-                    break;
+                        if (waitCyclesToSpawn[enemy] == 0)
+                        {
+                            //Spawn enemy
+                            enemySpawner.SpawnEnemy(enemy);
+
+                            enemiesSpawned[enemy]++;
+                            enemiesSpawnedInCurrentWave++;
+
+
+                            //Reset waitCycles value
+                            float spawnEvery = maxEnemyAmountToSpawn / enemyAmountToSpawn;
+                            waitCyclesToSpawn[enemy] = (int)spawnEvery;
+                        }
+                    }
+
+                    //All enemies got spawned
+                    if (enemiesSpawnedInCurrentWave >= CurrentWave.TotalEnemyCount)
+                    {
+                        allEnemiesSpawned = true;
+                        yield break;
+                    }
                 }
 
                 yield return new WaitForSeconds(cooldownBetweenEnemySpawn);
@@ -162,8 +194,6 @@ public class WavesController : MonoBehaviour
 
             yield return new WaitUntil(() => enemySpawner.TotalCount < maxEnemiesOnScene * 0.5f);
         }
-
-        allEnemiesSpawned = true;
     }
 
 

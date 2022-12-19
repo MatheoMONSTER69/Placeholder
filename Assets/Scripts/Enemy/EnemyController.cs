@@ -7,7 +7,7 @@ public class EnemyController : MonoBehaviour
 	[Header("References")]
 	public EnemySO EnemySO = null;
 
-	[SerializeField] private Transform enemyModel;
+	[SerializeField] protected Transform enemyModel;
     protected Animator anim;
 
 	protected Transform playerTransform;
@@ -22,7 +22,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] protected float movementOffset = 1.5f;
 
 
-    private void Start()
+    protected virtual void Start()
     {
         playerTransform = GameController.Instance.PlayerController.transform;
         navMesh = GetComponent<NavMeshAgent>();
@@ -48,13 +48,13 @@ public class EnemyController : MonoBehaviour
         stats.OnDeath.AddListener(Die);
     }
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         stats.OnDamageTaken.RemoveListener(TakeDamage);
         stats.OnDeath.RemoveListener(Die);
     }
 
-    private void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         if(!stats.IsDead)
         {
@@ -79,7 +79,7 @@ public class EnemyController : MonoBehaviour
     }
 
 
-    private void NavigateTowardsPlayer()
+    protected virtual void NavigateTowardsPlayer()
     {
         Vector3 movePos = Vector3.MoveTowards(playerTransform.position, transform.position, movementOffset);
         navMesh.SetDestination(movePos);
@@ -89,7 +89,7 @@ public class EnemyController : MonoBehaviour
         transform.LookAt(new Vector3(playerTransform.position.x, enemyModel.transform.position.y, playerTransform.position.z));
     }
 
-    private float GetDistanceToPlayer()
+    protected float GetDistanceToPlayer()
     {
         return Vector3.Distance(transform.position, playerTransform.position);
     }
@@ -104,7 +104,7 @@ public class EnemyController : MonoBehaviour
         enemyModel.transform.rotation = transform.rotation;
     }
 
-    private void AttackPlayer()
+    protected virtual void AttackPlayer()
     {
         anim.SetTrigger("Attack");
 
@@ -127,7 +127,7 @@ public class EnemyController : MonoBehaviour
     }
 
 
-    private void OnDrawGizmos()
+    protected virtual void OnDrawGizmos()
     {
         if (GameController.Instance != null && GameController.Instance.ShowDebug)
         {
