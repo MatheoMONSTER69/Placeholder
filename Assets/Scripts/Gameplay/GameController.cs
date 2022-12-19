@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour
     [HideInInspector] public EnemySpawner EnemySpawner;
     [HideInInspector] public ScoreCounter ScoreCounter;
     [HideInInspector] public AudioController AudioController;
+    [HideInInspector] public WeaponController WeaponController;
 
     private InputAction pauseGameplay;
 	private InputAction pauseMenu;

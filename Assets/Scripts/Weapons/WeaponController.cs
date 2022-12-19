@@ -1,18 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-
 public class WeaponController : MonoBehaviour
 {
-    [HideInInspector] public Weapon CurrentWeapon => Weapons.Count > 0 ? Weapons[CurrentWeaponId] : null;
-    [HideInInspector] public Weapon PrevWeapon => Weapons.Count > 0 && PrevWeaponId != -1 ? Weapons[PrevWeaponId] : null;
+    [HideInInspector] public Weapon CurrentWeapon => enabledWeapons.Count > CurrentWeaponId ? enabledWeapons[CurrentWeaponId] : null;
+    [HideInInspector] public Weapon PrevWeapon => enabledWeapons.Count > PrevWeaponId && PrevWeaponId != -1 ? enabledWeapons[PrevWeaponId] : null;
 	[HideInInspector] public int PrevWeaponId = -1;
     [HideInInspector] public int CurrentWeaponId = 0;
 
     [Header("References")]
     public List<Weapon> Weapons = new();
+    private List<Weapon> enabledWeapons;
     public Weapon Meele = null;
 
     [SerializeField] private Animator anim;
@@ -25,19 +26,24 @@ public class WeaponController : MonoBehaviour
     private Cooldown switchCooldown = new(1);
 
 
-    private void Awake()
+    private void Start()
     {
+        if (GameController.Instance != null)
+        {
+            GameController.Instance.WeaponController = this;
+        }
+
         weaponChangeAxis = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.WeaponChangeAxis);
         prevWeapon = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.PrevWeapon);
         meeleInput = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.Meele);
 
-        foreach (Weapon weapon in Weapons)
+        GetEnabledWeapons();
+
+        foreach (Weapon weapon in enabledWeapons)
         {
             weapon.ShowBack();
         }
         Meele.ShowBack();
-
-        EquipWeapon(0);
     }
 
     private void Update()
@@ -51,21 +57,18 @@ public class WeaponController : MonoBehaviour
                 //1-9 keys
                 if (int.TryParse(weaponChangeAxis.activeControl.name, out int key))
                 {
-                    if(key - 1 != CurrentWeaponId)
-                    {
-                        EquipWeapon(key - 1);
-                    }
+                    EquipWeapon(key - 1);
                 }
                 //scroll / mouse buttons
                 else
                 {
-                    EquipWeaponUp();
+                    EquipWeaponUp(CurrentWeaponId);
                 }
             }
             //scroll / mouse buttons
             else if (weaponChangeValue < 0)
             {
-                EquipWeaponDown();
+                EquipWeaponDown(CurrentWeaponId);
             }
 
             if (prevWeapon.triggered)
@@ -86,38 +89,53 @@ public class WeaponController : MonoBehaviour
         EquipWeapon(PrevWeaponId);
     }
 
-    public void EquipWeaponDown()
+    public void EquipWeaponDown(int weaponId)
     {
-        if (CurrentWeaponId == 0)
+        if (weaponId == 0)
         {
-            EquipWeapon(Weapons.Count - 1);
+            EquipWeapon(enabledWeapons.Count - 1);
         }
         else
         {
-            EquipWeapon(CurrentWeaponId - 1);
+            EquipWeapon(weaponId - 1);
         }
     }
-    public void EquipWeaponUp()
+    public void EquipWeaponUp(int weaponId)
     {
-        if(CurrentWeaponId == Weapons.Count - 1)
+        if(weaponId == enabledWeapons.Count - 1)
         {
             EquipWeapon(0);
         }
         else
         {
-            EquipWeapon(CurrentWeaponId + 1);
+            EquipWeapon(weaponId + 1);
         }
     }
 
     public void EquipWeapon(int weaponId)
     {
-        if(Weapons.Count > 0 && weaponId < Weapons.Count)
+        if(enabledWeapons.Count > 0 && weaponId < enabledWeapons.Count && weaponId != CurrentWeaponId)
         {
-            PrevWeaponId = CurrentWeaponId;
+            if (enabledWeapons[weaponId].WeaponEnabled)
+            {
+                PrevWeaponId = CurrentWeaponId;
 
-            CurrentWeaponId = weaponId;
+                CurrentWeaponId = weaponId;
 
-            LoadCurrentWeapon();
+                LoadCurrentWeapon();
+            }
+            else
+            {
+                //Weapon is disabled, skip it
+                if(CurrentWeaponId > weaponId)
+                {
+                    EquipWeaponDown(weaponId);
+                }
+                else if(CurrentWeaponId < weaponId)
+                {
+                    EquipWeaponUp(weaponId);
+                }
+            }
         }
     }
 
@@ -140,10 +158,23 @@ public class WeaponController : MonoBehaviour
     }
     public void SwapVisibleWeapon()
     {
-        PrevWeapon.ShowBack();
-        CurrentWeapon.ShowHand();
+        if(PrevWeapon != null)
+        {
+            PrevWeapon.ShowBack();
+        }
+        
+        if(CurrentWeapon != null)
+        {
+            CurrentWeapon.ShowHand();
+        }
 
         anim.SetBool("WeaponSwap", false);
+    }
+
+    [ContextMenu("GetEnabledWeapons")]
+    public void GetEnabledWeapons()
+    {
+        enabledWeapons = Weapons.Where(x => x.WeaponEnabled == true).ToList();
     }
 
 

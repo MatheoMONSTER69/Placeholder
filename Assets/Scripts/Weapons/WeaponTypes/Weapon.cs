@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
+    [HideInInspector] public bool WeaponEnabled = true;
+
     [Header("References")]
     public GameObject BackGameObject = null;
     public GameObject HandGameObject = null;
@@ -30,7 +32,10 @@ public class Weapon : MonoBehaviour
     {
         AttackCooldown = new Cooldown(AttackSpeed);
 
-        ShowBack();
+        if(WeaponEnabled)
+        {
+            ShowBack();
+        }
 
         if(GameController.Instance != null)
         {
@@ -86,6 +91,27 @@ public class Weapon : MonoBehaviour
     {
         HandGameObject.SetActive(true);
         BackGameObject.SetActive(false);
+    }
+
+    [ContextMenu("Enable")]
+    public void Enable()
+    {
+        WeaponEnabled = true;
+
+        ShowBack();
+
+        GameController.Instance.WeaponController.GetEnabledWeapons();
+    }
+
+    [ContextMenu("Disable")]
+    public void Disable()
+    {
+        WeaponEnabled = false;
+
+        BackGameObject.SetActive(false);
+        HandGameObject.SetActive(false);
+
+        GameController.Instance.WeaponController.GetEnabledWeapons();
     }
 
 
