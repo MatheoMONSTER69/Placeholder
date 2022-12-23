@@ -81,7 +81,21 @@ public class EnemyController : MonoBehaviour
 
     protected virtual void NavigateTowardsPlayer()
     {
-        Vector3 movePos = Vector3.MoveTowards(playerTransform.position, transform.position, movementOffset);
+        //Vector3 movePos = Vector3.MoveTowards(playerTransform.position, transform.position, movementOffset);
+
+        Vector3 dir = (playerTransform.position - transform.position).normalized;
+
+        Vector3 movePos = transform.position + dir;
+
+        if (Vector3.Distance(playerTransform.position, transform.position) <= movementOffset * 0.9f)
+        {
+            movePos = transform.position - dir;
+        }
+        else if (Vector3.Distance(playerTransform.position, transform.position) <= movementOffset)
+        {
+            movePos = transform.position;
+        }
+
         navMesh.SetDestination(movePos);
     }
     private void RotateModelTowardsPlayer()

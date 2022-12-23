@@ -43,9 +43,6 @@ public class WavesController : MonoBehaviour
             GameController.Instance.WavesController = this;
         }
 
-        enemySpawner = GameController.Instance.EnemySpawner;
-        enemySpawner.OnNoEnemiesLeft.AddListener(FinishWave);
-
         currentWaveId = 0;
         isWaveRunning = false;
         allEnemiesSpawned = false;
@@ -53,6 +50,13 @@ public class WavesController : MonoBehaviour
 
         //Start first wave
         StartCoroutine(WaveCooldown(0, initialCooldown));
+
+        Invoke("AddSingletonListeners", 0.1f);
+    }
+    private void AddSingletonListeners()
+    {
+        enemySpawner = GameController.Instance.EnemySpawner;
+        enemySpawner.OnNoEnemiesLeft.AddListener(FinishWave);
     }
 
     private void OnDisable()
@@ -212,7 +216,7 @@ public class WavesController : MonoBehaviour
             GUILayout.Label($"cooldownTimer: {TimeConverter.ConvertTimeStripped(cooldownTimer.GetTime())}");
 
             GUILayout.Label($"maxEnemiesOnScene: {maxEnemiesOnScene}");
-            GUILayout.Label($"AliveEnemiesCount: {enemySpawner.TotalCount}");
+            GUILayout.Label($"AliveEnemiesCount: {(enemySpawner != null ? enemySpawner.TotalCount : 0)}");
             GUILayout.Label($"EnemiesSpawnedInCurrentWave: {enemiesSpawnedInCurrentWave}");
             GUILayout.Label($"CurrentWave.TotalEnemyCount: {CurrentWave.TotalEnemyCount}");
             GUILayout.Label($"cooldownBetweenEnemySpawn: {cooldownBetweenEnemySpawn}");

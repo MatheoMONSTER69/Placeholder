@@ -167,7 +167,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnemySO: {fileID: 11400000, guid: 4391c211c20537540a757de437c4213a, type: 2}
   enemyModel: {fileID: 7087238813634609034}
-  movementOffset: 10
+  movementOffset: 6
   projectileShooter: {fileID: 6111217467361986375}
   projectilePrefab: {fileID: 6098051697305686261, guid: bc7b8ec7e43f8cf41a38c7fddddc4ef7, type: 3}
   projectileSpeed: 10
