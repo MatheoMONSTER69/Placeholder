@@ -23,7 +23,7 @@ public class EnemyShooterController : EnemyController
         ShootProjectile();
     }
 
-    private void ShootProjectile()
+    protected virtual void ShootProjectile()
     {
         GameObject projectileGO = Instantiate(projectilePrefab, projectileShooter.position, Quaternion.LookRotation(-projectileShooter.forward));
 

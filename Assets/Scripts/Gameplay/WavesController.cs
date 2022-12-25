@@ -16,13 +16,9 @@ public class WavesController : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private float initialCooldown = 5;
-    [SerializeField] private float maxEnemiesOnScene = 100;
-    [SerializeField] private float cooldownBetweenEnemySpawn = 0.1f;
 
     [Header("States")]
     [HideInInspector] public bool isWaveRunning = false;
-    [HideInInspector] public bool allEnemiesSpawned = false;
-    [HideInInspector] public int enemiesSpawnedInCurrentWave = 0;
 
     [Header("Timers")]
     [HideInInspector] public Timer waveTimer = new Timer();
@@ -45,8 +41,6 @@ public class WavesController : MonoBehaviour
 
         currentWaveId = 0;
         isWaveRunning = false;
-        allEnemiesSpawned = false;
-        enemiesSpawnedInCurrentWave = 0;
 
         //Start first wave
         StartCoroutine(WaveCooldown(0, initialCooldown));
@@ -80,12 +74,9 @@ public class WavesController : MonoBehaviour
 
         currentWaveId = waveId;
 
-        allEnemiesSpawned = false;
-        enemiesSpawnedInCurrentWave = 0;
-
         waveTimer.StartTimer();
 
-        StartCoroutine(EnemySpawning());
+        StartCoroutine(enemySpawner.EnemySpawning(CurrentWave));
 
         GameController.Instance.AudioController.Play("WaveStart");
 
@@ -94,7 +85,7 @@ public class WavesController : MonoBehaviour
 
     public void FinishWave()
     {
-        if (allEnemiesSpawned == true)
+        if (enemySpawner.allEnemiesSpawned == true)
         {
             if (Waves.Count <= currentWaveId + 1) //Finished all waves
             {
@@ -134,71 +125,7 @@ public class WavesController : MonoBehaviour
         StartWave(waveIdToLaunch);
     }
 
-    private IEnumerator EnemySpawning()
-    {
-        //Highest amount of enemeies under single type
-        float maxEnemyAmountToSpawn = CurrentWave.Enemies.dictionary.Values.Max();
-
-        //Assign default values
-        Dictionary<EnemySO, int> waitCyclesToSpawn = new();
-        Dictionary<EnemySO, int> enemiesSpawned = new();
-
-        foreach (EnemySO enemy in CurrentWave.Enemies.dictionary.Keys)
-        {
-            //wait spawn cycles before spawning this type of enemy
-            float enemyAmountToSpawn = CurrentWave.Enemies.dictionary[enemy];
-
-            float spawnEvery = maxEnemyAmountToSpawn / enemyAmountToSpawn;
-
-            waitCyclesToSpawn.Add(enemy, (int)spawnEvery);
-
-            //Enemies of type spawned counter
-            enemiesSpawned.Add(enemy, 0);
-        }
-
-        //Cycle through enemies and spawn them
-        while (enemiesSpawnedInCurrentWave < CurrentWave.TotalEnemyCount)
-        {
-            while (enemySpawner.TotalCount < maxEnemiesOnScene)
-            {
-                foreach (EnemySO enemy in CurrentWave.Enemies.dictionary.Keys)
-                {
-                    int enemyAmountToSpawn = CurrentWave.Enemies.dictionary[enemy];
-
-                    //if there should be more enemies of this type spawned
-                    if(enemiesSpawned[enemy] < enemyAmountToSpawn)
-                    {
-                        waitCyclesToSpawn[enemy]--;
-
-                        if (waitCyclesToSpawn[enemy] == 0)
-                        {
-                            //Spawn enemy
-                            enemySpawner.SpawnEnemy(enemy);
-
-                            enemiesSpawned[enemy]++;
-                            enemiesSpawnedInCurrentWave++;
-
-
-                            //Reset waitCycles value
-                            float spawnEvery = maxEnemyAmountToSpawn / enemyAmountToSpawn;
-                            waitCyclesToSpawn[enemy] = (int)spawnEvery;
-                        }
-                    }
-
-                    //All enemies got spawned
-                    if (enemiesSpawnedInCurrentWave >= CurrentWave.TotalEnemyCount)
-                    {
-                        allEnemiesSpawned = true;
-                        yield break;
-                    }
-                }
-
-                yield return new WaitForSeconds(cooldownBetweenEnemySpawn);
-            }
-
-            yield return new WaitUntil(() => enemySpawner.TotalCount < maxEnemiesOnScene * 0.5f);
-        }
-    }
+   
 
 
     private void OnGUI()
@@ -215,12 +142,12 @@ public class WavesController : MonoBehaviour
             GUILayout.Label($"WaveTimer: {TimeConverter.ConvertTimeStripped(waveTimer.GetTime())}");
             GUILayout.Label($"cooldownTimer: {TimeConverter.ConvertTimeStripped(cooldownTimer.GetTime())}");
 
-            GUILayout.Label($"maxEnemiesOnScene: {maxEnemiesOnScene}");
+            GUILayout.Label($"maxEnemiesOnScene: {(enemySpawner != null ? enemySpawner.maxEnemiesOnScene : 0)}");
             GUILayout.Label($"AliveEnemiesCount: {(enemySpawner != null ? enemySpawner.TotalCount : 0)}");
-            GUILayout.Label($"EnemiesSpawnedInCurrentWave: {enemiesSpawnedInCurrentWave}");
+            GUILayout.Label($"EnemiesSpawnedInCurrentWave: {(enemySpawner != null ? enemySpawner.enemiesSpawnedInCurrentWave : 0)}");
             GUILayout.Label($"CurrentWave.TotalEnemyCount: {CurrentWave.TotalEnemyCount}");
-            GUILayout.Label($"cooldownBetweenEnemySpawn: {cooldownBetweenEnemySpawn}");
-            GUILayout.Label($"AllEnemiesSpawned: {allEnemiesSpawned}");
+            GUILayout.Label($"cooldownBetweenEnemySpawn: {(enemySpawner != null ? enemySpawner.cooldownBetweenEnemySpawn : 0)}");
+            GUILayout.Label($"AllEnemiesSpawned: {(enemySpawner != null ? enemySpawner.allEnemiesSpawned : false)}");
 
             GUILayout.EndArea();
         }

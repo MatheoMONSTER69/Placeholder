@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1737032784729929899}
   - component: {fileID: 1737032784729929898}
-  - component: {fileID: 1737032784729929896}
-  - component: {fileID: 1737032784729929897}
-  - component: {fileID: 320262071}
   - component: {fileID: 1737032784729929903}
   - component: {fileID: 1737032784729929902}
+  - component: {fileID: 1737032784729929896}
+  - component: {fileID: 320262071}
+  - component: {fileID: 1737032784729929897}
   - component: {fileID: 2362361556774199440}
   m_Layer: 0
   m_Name: GameManager
@@ -71,6 +71,49 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   ShowDebug: 1
+--- !u!114 &1737032784729929903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1737032784729929877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bf6e5397bfb4014db0737a1b9a2c750, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LastInputDevice: 0
+--- !u!114 &1737032784729929902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1737032784729929877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: e4d98744d93d00a4ca8e65e32adc419e, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Gameplay
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!114 &1737032784729929896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86,6 +129,38 @@ MonoBehaviour:
   Score: 0
   CurrentMultiplier: 1
   OnScoreChange:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &320262071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1737032784729929877}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42f55506d74f17345bec3aea11f2e5a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawningEnabled: 1
+  maxEnemiesOnScene: 200
+  cooldownBetweenEnemySpawn: 0.1
+  spawnPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  enemyContainer: {fileID: 0}
+  allEnemiesSpawned: 0
+  enemiesSpawnedInCurrentWave: 0
+  OnEnemySpawn:
+    m_PersistentCalls:
+      m_Calls: []
+  OnEnemyRemove:
+    m_PersistentCalls:
+      m_Calls: []
+  OnNoEnemiesLeft:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &1737032784729929897
@@ -131,90 +206,25 @@ MonoBehaviour:
     Finished: 0
     Time: 0
     WaveScore: 0
+  - Enemies:
+      dictionaryAsList:
+      - key: {fileID: 11400000, guid: 138100be116295340b5506476c0c5280, type: 2}
+        value: 300
+      - key: {fileID: 11400000, guid: 8cb2b5e29a1498e46b128dab875c761d, type: 2}
+        value: 1
+    CooldownAfterWave: 5
+    Finished: 0
+    Time: 0
+    WaveScore: 0
   currentWaveId: 0
   initialCooldown: 5
-  maxEnemiesOnScene: 200
-  cooldownBetweenEnemySpawn: 0.1
   isWaveRunning: 0
-  allEnemiesSpawned: 0
-  enemiesSpawnedInCurrentWave: 0
   OnWaveStart:
     m_PersistentCalls:
       m_Calls: []
   OnWaveFinish:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &320262071
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1737032784729929877}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42f55506d74f17345bec3aea11f2e5a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawningEnabled: 1
-  spawnPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  enemyContainer: {fileID: 0}
-  OnEnemySpawn:
-    m_PersistentCalls:
-      m_Calls: []
-  OnEnemyRemove:
-    m_PersistentCalls:
-      m_Calls: []
-  OnNoEnemiesLeft:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &1737032784729929903
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1737032784729929877}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bf6e5397bfb4014db0737a1b9a2c750, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LastInputDevice: 0
---- !u!114 &1737032784729929902
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1737032784729929877}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: e4d98744d93d00a4ca8e65e32adc419e, type: 3}
-  m_NotificationBehavior: 0
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents: []
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: Gameplay
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!114 &2362361556774199440
 MonoBehaviour:
   m_ObjectHideFlags: 0

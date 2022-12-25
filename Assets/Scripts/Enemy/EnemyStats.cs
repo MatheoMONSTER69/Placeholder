@@ -17,7 +17,7 @@ public class EnemyStats : Stats
 
     [Header("Settings")]
     [SerializeField] private float destroyAfter = 3.0f;
-    [SerializeField] private float shrinkSpeed = 0.5f;
+    [SerializeField] private float sizeChangeSpeed = 0.5f;
 
 
     public void Init(EnemySO enemySO)
@@ -28,6 +28,8 @@ public class EnemyStats : Stats
         PointsForKill = enemySO.PointsForKill;
 
         Health = MaxHealth;
+
+        StartCoroutine(ShowObject(enemyModel.localScale, sizeChangeSpeed));
 	}
 
     public override void Die()
@@ -46,8 +48,29 @@ public class EnemyStats : Stats
 
         EnemyParticlesPlacer.SpawnParticles(transform.position);
 
-        StartCoroutine(DestroyObject(destroyAfter, shrinkSpeed));
+        StartCoroutine(DestroyObject(destroyAfter, sizeChangeSpeed));
 	}
+
+
+    private IEnumerator ShowObject(Vector3 targetScale, float speed)
+    {
+        float t = 0;
+        float time = 0;
+
+        while (t < 1)
+        {
+            t = time / speed;
+
+            float scale = Mathf.Lerp(0, targetScale.x, t);
+            enemyModel.localScale = new Vector3(scale, scale, scale);
+
+            time += Time.deltaTime;
+
+            yield return new WaitForEndOfFrame();
+        }
+
+        enemyModel.localScale = targetScale;
+    }
 
     private IEnumerator DestroyObject(float after, float shrinkSpeed)
     {

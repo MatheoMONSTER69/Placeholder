@@ -41,7 +41,8 @@ public class EnemyController : MonoBehaviour
 
         navMesh.speed = EnemySO.MovingSpeed;
 
-		attackCooldown = new(EnemySO.AttackCooldown);
+        float initialCooldown = Random.Range(0, (EnemySO.AttackCooldown / 2));
+        attackCooldown = new(EnemySO.AttackCooldown + initialCooldown);
 		attackCooldown.StartCooldown();
 
         stats.OnDamageTaken.AddListener(TakeDamage);
@@ -66,6 +67,7 @@ public class EnemyController : MonoBehaviour
                 if (!attackCooldown.IsInCooldown && GetDistanceToPlayer() <= EnemySO.AttackRange)
                 {
                     AttackPlayer();
+                    attackCooldown = new(EnemySO.AttackCooldown);
                     attackCooldown.StartCooldown();
                 }
             }
