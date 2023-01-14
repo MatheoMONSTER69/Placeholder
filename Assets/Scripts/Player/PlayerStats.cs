@@ -10,11 +10,14 @@ public class PlayerStats : Stats
     [SerializeField] private float regenTime = 3.0f;
 
     private Cooldown regenCooldown;
+    public UIController UIController; 
 
 
     private void Start()
     {
         regenCooldown = new Cooldown(regenTime);
+        //UIController.SetMaxHealth(MaxHealth);
+        
     }
 
     private void Update()
@@ -24,6 +27,7 @@ public class PlayerStats : Stats
             Heal(healthRegen);
             regenCooldown.StartCooldown();
         }
+        //UIController.SetHealth(Health);
     }
 
 
@@ -34,6 +38,7 @@ public class PlayerStats : Stats
             base.TakeDamage(amount);
             regenCooldown.StartCooldown();
         }
+        //UIController.SetHealth(Health);
     }
 
     private void OnGUI()

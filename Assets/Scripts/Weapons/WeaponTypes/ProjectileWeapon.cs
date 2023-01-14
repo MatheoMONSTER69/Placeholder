@@ -17,6 +17,8 @@ public class ProjectileWeapon : Weapon
     [SerializeField] private GameObject muzzleFlash;
     [SerializeField] private float muzzleFlashDuration = 0.05f;
 
+    [SerializeField] protected string weaponProjectileCollisionSoundName;
+
     /*[Header("Bullet Trail")]
     [SerializeField] private LineRenderer trailRenderer;
     [SerializeField] private float trailDuration = 0.19f;
@@ -72,7 +74,7 @@ public class ProjectileWeapon : Weapon
 
     private void ProjectileCollision(Vector3 position, GameObject col)
     {
-        GameController.Instance.AudioController.Play(weaponSoundName);
+        GameController.Instance.AudioController.Play(weaponProjectileCollisionSoundName);
 
 
         List<EnemyStats> enemies = GetEnemies(position);

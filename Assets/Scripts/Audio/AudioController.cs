@@ -30,9 +30,9 @@ public class AudioController : MonoBehaviour
 			s.source.volume = s.volume;
 			s.defaultVolume = s.volume;
 
-			s.source.pitch = s.pitch;
+            s.source.pitch = s.pitch;
 
-			s.source.spatialBlend = s.spatialBlend;
+            s.source.spatialBlend = s.spatialBlend;
 
 			if (s.playOnAwake)
 			{

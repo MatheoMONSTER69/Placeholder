@@ -795,6 +795,7 @@ MonoBehaviour:
       m_Calls: []
   healthRegen: 5
   regenTime: 3
+  UIController: {fileID: 0}
 --- !u!114 &9164188476261508547
 MonoBehaviour:
   m_ObjectHideFlags: 0
