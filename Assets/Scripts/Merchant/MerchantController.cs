@@ -12,6 +12,8 @@ public class MerchantController : MonoBehaviour
 
     private InputAction merchantInteraction;
 
+    public GameObject MerchantText;
+
     public UnityEvent OnInteractionStart;
     public UnityEvent OnPickedUpgrade;
     public UnityEvent OnInteractionFinish;
@@ -52,10 +54,11 @@ public class MerchantController : MonoBehaviour
     [ContextMenu("StartMerchantInteraction")]
     public void StartInteraction()
     {
-        //Debug.Log("Started merchant interaction");
+        Debug.Log("Started merchant interaction");
 
 
         //TODO: Show UI etc.
+        
 
 
         OnInteractionStart.Invoke();
@@ -68,10 +71,11 @@ public class MerchantController : MonoBehaviour
     [ContextMenu("FinishMerchantInteraction")]
     public void FinishInteraction()
     {
-        //Debug.Log("Finished merchant interaction");
+        Debug.Log("Finished merchant interaction");
 
 
         //TODO: Hide UI etc.
+        
 
 
         OnInteractionFinish.Invoke();
@@ -87,6 +91,7 @@ public class MerchantController : MonoBehaviour
 
 
         //TODO: Save picked upgrade from UI etc.
+        
 
 
         OnPickedUpgrade.Invoke();

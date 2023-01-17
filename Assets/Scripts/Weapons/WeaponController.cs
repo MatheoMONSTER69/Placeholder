@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
 
 public class WeaponController : MonoBehaviour
 {
@@ -24,6 +25,9 @@ public class WeaponController : MonoBehaviour
     private InputAction meeleInput;
 
     private Cooldown switchCooldown = new(1);
+
+    [Header("Events")]
+    public UnityEvent OnWeaponSwitch;
 
 
     private void Start()
@@ -137,6 +141,7 @@ public class WeaponController : MonoBehaviour
                 }
             }
         }
+        OnWeaponSwitch.Invoke();
     }
 
     public void ShowMeele()
