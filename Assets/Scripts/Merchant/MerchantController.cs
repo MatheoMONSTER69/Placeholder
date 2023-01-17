@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -11,6 +12,8 @@ public class MerchantController : MonoBehaviour
     [HideInInspector] public bool HasPlayerPickedUpgrade = false;
 
     private InputAction merchantInteraction;
+
+    public GameObject MerchantText;
 
     public UnityEvent OnInteractionStart;
     public UnityEvent OnPickedUpgrade;
@@ -52,10 +55,11 @@ public class MerchantController : MonoBehaviour
     [ContextMenu("StartMerchantInteraction")]
     public void StartInteraction()
     {
-        //Debug.Log("Started merchant interaction");
+        Debug.Log("Started merchant interaction");
 
 
         //TODO: Show UI etc.
+        
 
 
         OnInteractionStart.Invoke();
@@ -68,10 +72,11 @@ public class MerchantController : MonoBehaviour
     [ContextMenu("FinishMerchantInteraction")]
     public void FinishInteraction()
     {
-        //Debug.Log("Finished merchant interaction");
+        Debug.Log("Finished merchant interaction");
 
 
         //TODO: Hide UI etc.
+        
 
 
         OnInteractionFinish.Invoke();
@@ -84,9 +89,27 @@ public class MerchantController : MonoBehaviour
         //Debug.Log("Picked upgrade");
 
         HasPlayerPickedUpgrade = true;
+        
+        int x = GameController.Instance.WavesController.currentWaveId+1;
+        switch(x)
+        {
+            case 1:
+                GameController.Instance.WeaponController.Weapons[x].Enable();
+                break;
+            case 2:
+                GameController.Instance.WeaponController.Weapons[x].Enable();
+                break;
+            case 3:
+                GameController.Instance.WeaponController.Weapons[x].Enable();
+                break;
+            default:
+                 // code block
+            break;
+        }
 
 
         //TODO: Save picked upgrade from UI etc.
+
 
 
         OnPickedUpgrade.Invoke();

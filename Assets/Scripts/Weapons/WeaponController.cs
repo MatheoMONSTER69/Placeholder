@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
 
 public class WeaponController : MonoBehaviour
 {
@@ -25,6 +26,9 @@ public class WeaponController : MonoBehaviour
 
     private Cooldown switchCooldown = new(1);
 
+    [Header("Events")]
+    public UnityEvent OnWeaponSwitch;
+
 
     private void Start()
     {
@@ -36,7 +40,9 @@ public class WeaponController : MonoBehaviour
         weaponChangeAxis = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.WeaponChangeAxis);
         prevWeapon = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.PrevWeapon);
         meeleInput = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.Meele);
-
+        Weapons[1].Disable();
+        Weapons[2].Disable();
+        Weapons[3].Disable();
         GetEnabledWeapons();
 
         foreach (Weapon weapon in enabledWeapons)
@@ -137,6 +143,7 @@ public class WeaponController : MonoBehaviour
                 }
             }
         }
+        OnWeaponSwitch.Invoke();
     }
 
     public void ShowMeele()

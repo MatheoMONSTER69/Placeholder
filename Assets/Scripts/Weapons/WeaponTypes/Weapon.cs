@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    [HideInInspector] public bool WeaponEnabled = true;
+    public bool WeaponEnabled = true;
 
     [Header("References")]
     public GameObject BackGameObject = null;
