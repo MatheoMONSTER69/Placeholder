@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -76,7 +77,7 @@ public class MerchantController : MonoBehaviour
 
 
         //TODO: Hide UI etc.
-        
+        MerchantText.SetActive(false);
 
 
         OnInteractionFinish.Invoke();
@@ -84,7 +85,7 @@ public class MerchantController : MonoBehaviour
 
     //Launched from picking upgrade in UI
     [ContextMenu("PickUpgrade")]
-    public void PickUpgrade()
+    public async void PickUpgrade()
     {
         //Debug.Log("Picked upgrade");
 
@@ -107,14 +108,14 @@ public class MerchantController : MonoBehaviour
             break;
         }
 
-
+        MerchantText.SetActive(true);
         //TODO: Save picked upgrade from UI etc.
 
 
 
         OnPickedUpgrade.Invoke();
 
-
+        await Task.Delay(3000);
         FinishInteraction(); //TEMP, until there's no UI
     }
 

@@ -19,7 +19,7 @@ public class UIController : MonoBehaviour
     private void OnDisable()
     {
         GameController.Instance.PlayerController.stats.OnDamageTaken.RemoveListener(SetHealth);
-        GameController.Instance.PlayerController.stats.OnHeal.AddListener(SetHealth);
+        GameController.Instance.PlayerController.stats.OnHeal.RemoveListener(SetHealth);
     }
 
     public void SetHealth()
