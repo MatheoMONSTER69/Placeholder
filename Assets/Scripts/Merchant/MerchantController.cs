@@ -107,8 +107,8 @@ public class MerchantController : MonoBehaviour
                  // code block
             break;
         }
-        MerchantText.SetActive(true);
 
+        MerchantText.SetActive(true);
         //TODO: Save picked upgrade from UI etc.
 
 
