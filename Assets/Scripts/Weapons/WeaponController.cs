@@ -40,7 +40,9 @@ public class WeaponController : MonoBehaviour
         weaponChangeAxis = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.WeaponChangeAxis);
         prevWeapon = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.PrevWeapon);
         meeleInput = InputManager.Instance.GetAction(ActionMapType.Gameplay, InputType.Meele);
-
+        Weapons[1].Disable();
+        Weapons[2].Disable();
+        Weapons[3].Disable();
         GetEnabledWeapons();
 
         foreach (Weapon weapon in enabledWeapons)

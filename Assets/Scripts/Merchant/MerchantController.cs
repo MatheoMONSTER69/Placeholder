@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -88,10 +89,27 @@ public class MerchantController : MonoBehaviour
         //Debug.Log("Picked upgrade");
 
         HasPlayerPickedUpgrade = true;
+        
+        int x = GameController.Instance.WavesController.currentWaveId+1;
+        switch(x)
+        {
+            case 1:
+                GameController.Instance.WeaponController.Weapons[x].Enable();
+                break;
+            case 2:
+                GameController.Instance.WeaponController.Weapons[x].Enable();
+                break;
+            case 3:
+                GameController.Instance.WeaponController.Weapons[x].Enable();
+                break;
+            default:
+                 // code block
+            break;
+        }
 
 
         //TODO: Save picked upgrade from UI etc.
-        
+
 
 
         OnPickedUpgrade.Invoke();
