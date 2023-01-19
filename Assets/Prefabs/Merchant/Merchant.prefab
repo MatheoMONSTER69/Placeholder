@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6338324856474602789}
-  m_Layer: 0
-  m_Name: Back
+  m_Layer: 7
+  m_Name: Front
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78,7 +78,7 @@ GameObject:
   - component: {fileID: 6338324856877440453}
   - component: {fileID: 6338324856877440454}
   - component: {fileID: 6338324856877440455}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,7 +128,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 50b573adcb56d904aaba18d7f36461b2, type: 2}
+  - {fileID: 2100000, guid: 05a7e5deff2c12941a2d8f2fc459d1ce, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -175,7 +175,7 @@ GameObject:
   - component: {fileID: 6338324856975411604}
   - component: {fileID: 6338324856975411605}
   - component: {fileID: 6338324856975411606}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Wall (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -225,7 +225,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 05a7e5deff2c12941a2d8f2fc459d1ce, type: 2}
+  - {fileID: 2100000, guid: 50b573adcb56d904aaba18d7f36461b2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -343,7 +343,7 @@ GameObject:
   - component: {fileID: 6338324857586486020}
   - component: {fileID: 6338324857586486021}
   - component: {fileID: 6338324857586486022}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wall (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -393,7 +393,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 50b573adcb56d904aaba18d7f36461b2, type: 2}
+  - {fileID: 2100000, guid: 05a7e5deff2c12941a2d8f2fc459d1ce, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -551,8 +551,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6338324857619244269}
-  m_Layer: 7
-  m_Name: Front
+  m_Layer: 0
+  m_Name: Back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -799,6 +799,7 @@ MonoBehaviour:
   roomTrigger: {fileID: 6338324857179716161}
   doorTrigger: {fileID: 6338324857641067952}
   IsPlayerInMerchantRoom: 0
+  IsDoorOpen: 0
 --- !u!114 &6338324857951104289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -813,6 +814,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   merchantRoomController: {fileID: 6338324857951104290}
   HasPlayerPickedUpgrade: 0
+  MerchantText: {fileID: 0}
   OnInteractionStart:
     m_PersistentCalls:
       m_Calls: []

@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d9992f686ac0f04d86f9d5bf12acf3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  WeaponEnabled: 1
   BackGameObject: {fileID: 0}
   HandGameObject: {fileID: 0}
   WeaponAnimStance: 1
@@ -55,7 +56,7 @@ MonoBehaviour:
   Damage: 20
   AttackSpeed: 1
   SwitchTime: 2
-  weaponSoundName: WeaponBennelli_M4Attack
+  weaponSoundName: WeaponBenelli_M4Attack
   penetrationAmount: -1
   muzzleFlash: {fileID: 0}
   muzzleFlashDuration: 0.05

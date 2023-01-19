@@ -70,7 +70,7 @@ MonoBehaviour:
   OnGameStop:
     m_PersistentCalls:
       m_Calls: []
-  ShowDebug: 1
+  ShowDebug: 0
 --- !u!114 &1737032784729929903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,6 +210,8 @@ MonoBehaviour:
       dictionaryAsList:
       - key: {fileID: 11400000, guid: 138100be116295340b5506476c0c5280, type: 2}
         value: 300
+      - key: {fileID: 11400000, guid: 4391c211c20537540a757de437c4213a, type: 2}
+        value: 25
       - key: {fileID: 11400000, guid: 8cb2b5e29a1498e46b128dab875c761d, type: 2}
         value: 1
     CooldownAfterWave: 5

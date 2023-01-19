@@ -5,8 +5,8 @@ using UnityEngine.Audio;
 
 public class AudioController : MonoBehaviour
 {
-	[HideInInspector] public float globalVolume = 0.5f;
-	[HideInInspector] public float musicVolume = 0.5f;
+	public static float globalVolume = 0.5f;
+	public static float musicVolume = 0.5f;
 
 	[SerializeField] private List<Sound> sounds;
 
@@ -143,4 +143,12 @@ public class AudioController : MonoBehaviour
 
 		}
 	}
+
+    public void SetVolume(float val)
+    {
+		PlayerPrefs.SetFloat("Options_Volume", val);
+        PlayerPrefs.SetFloat("Options_MusicVolume", val);
+
+		GetSettingsFromPlayerPrefs();
+    }
 }

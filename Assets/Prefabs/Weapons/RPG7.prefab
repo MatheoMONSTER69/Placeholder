@@ -63,3 +63,4 @@ MonoBehaviour:
   projectileDetonateAfter: 3
   muzzleFlash: {fileID: 0}
   muzzleFlashDuration: 0.05
+  weaponProjectileCollisionSoundName: WeaponRPG7Explosion

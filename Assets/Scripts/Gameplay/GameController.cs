@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 [DefaultExecutionOrder(-50)]
 public class GameController : MonoBehaviour
@@ -98,6 +99,8 @@ public class GameController : MonoBehaviour
         Debug.Log("Paused the game");
 
         OnGamePause.Invoke();
+
+        SceneManager.LoadSceneAsync(0); //TEMP
     }
 
     public void ResumeGame()
@@ -128,7 +131,9 @@ public class GameController : MonoBehaviour
         Debug.Log($"{(win ? "Won" : "Lost")} the game");
 
         OnGameStop.Invoke(win);
-	}
+
+        SceneManager.LoadSceneAsync(0); //TEMP
+    }
 
 	[ContextMenu("Toggle Pause")]
     public void TogglePauseGame()

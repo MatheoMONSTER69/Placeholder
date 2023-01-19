@@ -2032,7 +2032,7 @@ MonoBehaviour:
     spatialBlend: 0
   - name: PlayerDodge
     source: {fileID: 6552057629105795462}
-    clip: {fileID: 8300000, guid: da1b1b4a12d95c0479eada8a9595b1e7, type: 3}
+    clip: {fileID: 8300000, guid: ad4cc0db8df16174ab28005824781c78, type: 3}
     playOnAwake: 0
     loop: 0
     stopOnGamePause: 0
@@ -2044,7 +2044,7 @@ MonoBehaviour:
     spatialBlend: 0
   - name: PlayerDie
     source: {fileID: 1097935561243453102}
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 76c1be09dc19f7d4ab93a88c570cd148, type: 3}
     playOnAwake: 0
     loop: 0
     stopOnGamePause: 0
@@ -2068,7 +2068,7 @@ MonoBehaviour:
     spatialBlend: 0
   - name: PlayerTakeDamage
     source: {fileID: 8541170270754080020}
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: abd11c1fd565551428ab742213f9921e, type: 3}
     playOnAwake: 0
     loop: 0
     stopOnGamePause: 0
@@ -2080,7 +2080,7 @@ MonoBehaviour:
     spatialBlend: 0
   - name: WaveStart
     source: {fileID: 7823874841876862203}
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: c05cc2a04c9b3894895fd66a8f1c9a05, type: 3}
     playOnAwake: 0
     loop: 0
     stopOnGamePause: 0
@@ -2092,7 +2092,7 @@ MonoBehaviour:
     spatialBlend: 0
   - name: WaveFinish
     source: {fileID: 3809284816619083229}
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 894d1c6cb1add8b4c9f153051be7d967, type: 3}
     playOnAwake: 0
     loop: 0
     stopOnGamePause: 0
@@ -2116,7 +2116,7 @@ MonoBehaviour:
     spatialBlend: 0
   - name: EnemyAttack
     source: {fileID: 4019326063122123743}
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: e012f9607f8b1ef468ce62ca70388733, type: 3}
     playOnAwake: 0
     loop: 0
     stopOnGamePause: 0
@@ -2140,7 +2140,7 @@ MonoBehaviour:
     spatialBlend: 1
   - name: EnemyTakeDamage
     source: {fileID: 8059344343435969001}
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 2ee0dc78e8a49ab40bdf7001d827b00e, type: 3}
     playOnAwake: 0
     loop: 0
     stopOnGamePause: 0
@@ -2152,7 +2152,7 @@ MonoBehaviour:
     spatialBlend: 1
   - name: EnemyDie
     source: {fileID: 2197092083952403372}
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: fee27830c5a5e054ca219bc765c4b53a, type: 3}
     playOnAwake: 0
     loop: 0
     stopOnGamePause: 0
@@ -2164,7 +2164,7 @@ MonoBehaviour:
     spatialBlend: 1
   - name: WeaponUziAttack
     source: {fileID: 8652560278682732588}
-    clip: {fileID: 8300000, guid: f35300e1c3fad144d8e683c1cd8cc316, type: 3}
+    clip: {fileID: 8300000, guid: 18b4a6e76a7ac034b92e92f7c624f364, type: 3}
     playOnAwake: 0
     loop: 0
     stopOnGamePause: 0
@@ -2200,7 +2200,7 @@ MonoBehaviour:
     spatialBlend: 0
   - name: WeaponRPG7Attack
     source: {fileID: 5597884090571158116}
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 8d9e51f6f5fb05f42b6ae91560d3504e, type: 3}
     playOnAwake: 0
     loop: 0
     stopOnGamePause: 0
@@ -2224,7 +2224,7 @@ MonoBehaviour:
     spatialBlend: 0
   - name: Ambient
     source: {fileID: 908312729}
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 0c7a66c3efa71ac4b8be9624527f276c, type: 3}
     playOnAwake: 1
     loop: 1
     stopOnGamePause: 1
@@ -2236,12 +2236,24 @@ MonoBehaviour:
     spatialBlend: 0
   - name: Music
     source: {fileID: 203281064}
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 4d8b566c5bfe0fe4c9018d2ccb6b0cd4, type: 3}
     playOnAwake: 1
     loop: 1
     stopOnGamePause: 1
     playOnGameResume: 1
     useMusicVolume: 1
+    volume: 0.11
+    defaultVolume: 0
+    pitch: 1
+    spatialBlend: 0
+  - name: WeaponRPG7Explosion
+    source: {fileID: 5597884090571158116}
+    clip: {fileID: 8300000, guid: 6747cff1413326c49bd88cc7291444e3, type: 3}
+    playOnAwake: 0
+    loop: 0
+    stopOnGamePause: 0
+    playOnGameResume: 0
+    useMusicVolume: 0
     volume: 1
     defaultVolume: 0
     pitch: 1

@@ -16,24 +16,20 @@ public class WeaponUI : MonoBehaviour
     }
     private void OnEnable()
     {
-        Invoke(nameof(InvokedEnable), 1);
+        Invoke(nameof(InvokedEnable), 0.1f);
     }
 
-    private void Update()
-    {
-        //SetWeapon(weaponSprites);
-    }
     private void InvokedEnable()
     {
-        GameController.Instance.WeaponController.OnWeaponSwitch.AddListener(() => SetWeapon(weaponSprites));
+        GameController.Instance.WeaponController.OnWeaponSwitch.AddListener(SetWeapon);
     }
     private void OnDisable()
     {
-        GameController.Instance.WeaponController.OnWeaponSwitch.AddListener(() => SetWeapon(weaponSprites));
+        GameController.Instance.WeaponController.OnWeaponSwitch.RemoveListener(SetWeapon);
     }
 
-    private void SetWeapon(Sprite[] sprites)
+    private void SetWeapon()
     {
-        spriteRenderer.sprite = sprites[GameController.Instance.WeaponController.CurrentWeaponId];
+        spriteRenderer.sprite = weaponSprites[GameController.Instance.WeaponController.CurrentWeaponId];
     }
 }

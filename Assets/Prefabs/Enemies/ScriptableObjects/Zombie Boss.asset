@@ -15,9 +15,9 @@ MonoBehaviour:
   Name: Zombie Boss
   Prefab: {fileID: 1797762309222904390, guid: dbbce48190e7798439f796a7e7a29d3f, type: 3}
   EnemyType: 2
-  Health: 1000
-  Damage: 25
-  MovingSpeed: 7
+  Health: 400
+  Damage: 15
+  MovingSpeed: 5
   PointsForKill: 100
   AttackRange: 20
   AttackCooldown: 1

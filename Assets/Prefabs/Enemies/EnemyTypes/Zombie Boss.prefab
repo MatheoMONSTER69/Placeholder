@@ -72,7 +72,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnemySO: {fileID: 11400000, guid: 8cb2b5e29a1498e46b128dab875c761d, type: 2}
-  enemyModel: {fileID: 0}
+  enemyModel: {fileID: 1424065879234381465}
   movementOffset: 1.5
   projectileShooter: {fileID: 3343753969968395978}
   projectilePrefab: {fileID: 6098051697305686261, guid: bc7b8ec7e43f8cf41a38c7fddddc4ef7, type: 3}
@@ -108,7 +108,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   Damage: 0
-  enemyModel: {fileID: 0}
+  enemyModel: {fileID: 1424065879234381465}
   destroyAfter: 3
   sizeChangeSpeed: 0.5
 --- !u!65 &2437258104123031005
